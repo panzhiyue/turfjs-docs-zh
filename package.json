@@ -1,7 +1,8 @@
 {
   "scripts": {
     "docs:dev": " vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "docs:deploy": "node ./scripts/deploy.js"
   },
   "dependencies": {
     "@gis-js/geojson2shp": "^1.0.0-beta.1",
@@ -14,5 +15,8 @@
     "ol-echarts": "^3.0.0",
     "vuepress": "^1.9.7",
     "vuepress-plugin-one-click-copy": "^1.0.6"
+  },
+  "devDependencies": {
+    "shelljs": "^0.8.5"
   }
 }
