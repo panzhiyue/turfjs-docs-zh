@@ -41,7 +41,7 @@ module.exports = {
       },
       {
         text: "文档",
-        link: "/category/",
+        link: "/category/start",
       },
       {
         text: "英文网",
@@ -79,7 +79,6 @@ module.exports = {
     module: {
       rules: [
         {
-          include: /packages/,
           test: /\.mjs$/,
           type: "javascript/auto",
         },

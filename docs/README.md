@@ -4,7 +4,7 @@ heroImage: /img/favicon.ico
 heroText: Welcome to Turf.js
 tagline: 针对浏览器和Node.js的高级地理空间分析工具库
 actionText: 快速上手 →
-actionLink: /start/
+actionLink: /category/start
 features:
   - title: 简单地
     details: 模块化且易于理解的表达 GeoJSON 的 JavaScript 函数。

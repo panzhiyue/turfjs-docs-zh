@@ -1,5 +1,5 @@
 // import Vue from "vue"
-
+// import Vue2ol from "@gis-js/vue2ol"
 import "ol/ol.css";
 
 /**
@@ -25,6 +25,17 @@ export default async ({
       "@gis-js/vue2ol-extend" /* webpackChunkName: "notification" */
     ).then((module) => {
       Vue.use(module.default);
+    });
+
+    await import(
+      "../components/BaseMap.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("BaseMap", module.default);
+    });
+    await import(
+      "../components/LengthUnits.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("LengthUnits", module.default);
     });
   }
 };
