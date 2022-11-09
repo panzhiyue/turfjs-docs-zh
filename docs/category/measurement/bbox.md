@@ -1,7 +1,7 @@
 # 计算边界(bbox)
 
 > Takes a set of features, calculates the bbox of all input features, and returns a bounding box.
-> 
+>
 > 获取一组`feature`，计算所有`feature`的`bbox`，并返回一个边界框。
 
 **参数**
@@ -107,7 +107,7 @@ export default {
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
           :active="true"
-          type="Polygon"
+          :type="type"
           @drawend="handleDrawEnd"
         ></vue2ol-interaction-draw>
       </vue2ol-source-vector>

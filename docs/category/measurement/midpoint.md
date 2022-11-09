@@ -1,6 +1,7 @@
 # 计算两点中心点(midpoint)
 
 > Takes two points and returns a point midway between them. The midpoint is calculated geodesically, meaning the curvature of the earth is taken into account.
+> 
 > 获取两个点并返回中间的一个点。中点是测地线计算的，这意味着地球的 [曲率 (opens new window)](https://baike.baidu.com/item/曲率/9985286?fr=aladdin)被考虑在内。
 
 **参数**
@@ -23,6 +24,232 @@ var point2 = turf.point([145.14244, -37.830937]);
 var midpoint = turf.midpoint(point1, point2);
 ```
 
-
-
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/midpoint.c2f5c5cb.webp)
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <base-map>
+    <vue2ol-layer-vector>
+      <vue2ol-source-vector>
+        <vue2ol-feature :style-obj="startStyle">
+          <vue2ol-geom-point
+            :coordinates="startCoordinates"
+          ></vue2ol-geom-point>
+        </vue2ol-feature>
+        <vue2ol-feature :style-obj="endStyle">
+          <vue2ol-geom-point :coordinates="endCoordinates"></vue2ol-geom-point>
+        </vue2ol-feature>
+        <vue2ol-feature>
+          <vue2ol-geom-point :coordinates="midPoint"></vue2ol-geom-point>
+        </vue2ol-feature>
+      </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+import { Style, Stroke, Text, Circle, Fill } from "ol/style";
+export default {
+  data() {
+    return {
+      startCoordinates: [119.76160526275636, 27.91434097290039],
+      endCoordinates: [120.11316776275636, 28.11209487915039],
+      startStyle: null,
+      endStyle: null,
+      midPoint: null,
+    };
+  },
+  mounted() {
+    this.startStyle = new Style({
+      image: new Circle({
+        stroke: new Stroke({
+          color: "#ff0000",
+          width: 2,
+        }),
+        radius: 4,
+      }),
+      text: new Text({
+        text: "起点",
+        overflow: true,
+        fill: new Fill({
+          color: "#ffffff",
+        }),
+        font: "20px sans-serif",
+      }),
+    });
+    this.endStyle = new Style({
+      image: new Circle({
+        stroke: new Stroke({
+          color: "#ff0000",
+          width: 2,
+        }),
+        radius: 4,
+      }),
+      text: new Text({
+        text: "终点",
+        overflow: true,
+        fill: new Fill({
+          color: "#ffffff",
+        }),
+        font: "20px sans-serif",
+      }),
+    });
+    var options = { units: "miles" };
+    let value = turf.midpoint(
+      turf.point(this.startCoordinates),
+      turf.point(this.endCoordinates)
+    );
+    this.midPoint = value.geometry.coordinates;
+  },
+};
+</script>
+```
+
+:::
+
+**动态绘制**
+
+::: demo
+
+```vue
+<template>
+  <base-map>
+    <input type="button" value="起点" @click="handleStart" />
+    <input type="button" value="终点" @click="handleEnd" />
+    <vue2ol-layer-vector :style-obj="startStyle">
+      <vue2ol-source-vector @ready="handleReadyStartSource">
+        <vue2ol-interaction-draw
+          type="Point"
+          :active="isDrawStart"
+          @drawend="handleDrawEndStart"
+        ></vue2ol-interaction-draw>
+      </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+
+    <vue2ol-layer-vector :style-obj="endStyle">
+      <vue2ol-source-vector @ready="handleReadyEndSource">
+        <vue2ol-interaction-draw
+          type="Point"
+          :active="isDrawEnd"
+          @drawend="handleDrawEndEnd"
+        ></vue2ol-interaction-draw>
+      </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+
+    <vue2ol-layer-vector>
+      <vue2ol-source-vector>
+        <vue2ol-feature v-if="midPoint">
+          <vue2ol-geom-point :coordinates="midPoint"></vue2ol-geom-point>
+        </vue2ol-feature>
+      </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+import { Style, Stroke, Text, Circle, Fill } from "ol/style";
+export default {
+  data() {
+    return {
+      isDrawEnd: false,
+      isDrawStart: false,
+      startStyle: null,
+      endStyle: null,
+      startGeometry: null,
+      endGeometry: null,
+      startSource: null,
+      endSource: null,
+      midPoint: null,
+    };
+  },
+  watch: {
+    startGeometry() {
+      this.init();
+    },
+    endGeometry() {
+      this.init();
+    },
+    units() {
+      this.init();
+    },
+  },
+  mounted() {
+    this.startStyle = new Style({
+      image: new Circle({
+        stroke: new Stroke({
+          color: "#ff0000",
+          width: 2,
+        }),
+        radius: 4,
+      }),
+      text: new Text({
+        text: "起点",
+        overflow: true,
+        fill: new Fill({
+          color: "#ffffff",
+        }),
+        font: "20px sans-serif",
+      }),
+    });
+    this.endStyle = new Style({
+      image: new Circle({
+        stroke: new Stroke({
+          color: "#ff0000",
+          width: 2,
+        }),
+        radius: 4,
+      }),
+      text: new Text({
+        text: "终点",
+        overflow: true,
+        fill: new Fill({
+          color: "#ffffff",
+        }),
+        font: "20px sans-serif",
+      }),
+    });
+  },
+  methods: {
+    init() {
+      if (!this.startGeometry || !this.endGeometry) {
+        return;
+      }
+      let value = turf.midpoint(
+        turf.point(this.startGeometry.getCoordinates()),
+        turf.point(this.endGeometry.getCoordinates())
+      );
+      this.midPoint = value.geometry.coordinates;
+    },
+    handleStart() {
+      this.isDrawStart = !this.isDrawStart;
+      this.isDrawEnd = false;
+    },
+    handleEnd() {
+      this.isDrawEnd = !this.isDrawEnd;
+      this.isDrawStart = false;
+    },
+    handleDrawEndStart(e) {
+      this.startSource.clear();
+      this.startGeometry = e.feature.getGeometry();
+    },
+    handleDrawEndEnd(e) {
+      this.endSource.clear();
+      this.endGeometry = e.feature.getGeometry();
+    },
+    handleReadyStartSource(mapObject) {
+      this.startSource = mapObject;
+    },
+    handleReadyEndSource(mapObject) {
+      this.endSource = mapObject;
+    },
+  },
+};
+</script>
+```
+
+:::
