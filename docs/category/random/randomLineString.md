@@ -1,4 +1,4 @@
-# randomLineString
+# 随机线段(randomLineString)
 
 > Returns a random linestring.
 > 返回一个随机的`LineString`

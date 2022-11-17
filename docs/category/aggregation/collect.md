@@ -1,4 +1,4 @@
-# collect
+# 收集(collect)
 
 > Merges a specified property from a FeatureCollection of points into a FeatureCollection of polygons. Given an inProperty on points and an outProperty for polygons, this finds every point that lies within each polygon, collects the inProperty values from those points, and adds them as an array to outProperty on the polygon.
 > 将指定属性从点的`FeatureCollection`合并到一个`FeatureCollection`的多边形。给定点上的`inProperty`和多边形的`outProperty`，它将查找每个多边形内的每个点，从这些点收集`inProperty`值，并将它们作为数组添加到多边形上的`outProperty`中。

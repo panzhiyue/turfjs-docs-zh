@@ -1,4 +1,4 @@
-# getCoord
+# 获取单个坐标(getCoord)
 
 > Unwrap a coordinate from a Point Feature, Geometry or a single coordinate.
 > 从点特征、几何图形或单个坐标展开坐标。

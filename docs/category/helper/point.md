@@ -1,4 +1,4 @@
-# point
+# 点(point)
 
 > Creates a Point Feature from a Position.
 > 从一个位置创建一个`Point`。

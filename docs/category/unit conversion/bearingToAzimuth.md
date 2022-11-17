@@ -1,4 +1,4 @@
-# bearingToAzimuth
+# 转换方位角(bearingToAzimuth)
 
 > Converts any bearing angle from the north line direction (positive clockwise) and returns an angle between 0-360 degrees (positive clockwise), 0 being the north line
 > 转换从正北方向(顺时针正方向)开始的任何方位角度，并返回0-360度(顺时针正方向)之间的角度，0为正北

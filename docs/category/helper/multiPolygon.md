@@ -1,4 +1,4 @@
-# multiPolygon
+# 多个多边形(multiPolygon)
 
 > Creates a Feature based on a coordinate array. Properties can be added optionally.
 > 基于坐标数组创建`Feature`。属性可以随意添加。

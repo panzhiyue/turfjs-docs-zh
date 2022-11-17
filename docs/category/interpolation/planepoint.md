@@ -1,4 +1,4 @@
-# planepoint
+# 平面点(planepoint)
 
 > Takes a triangular plane as a Polygon and a Point within that triangle and returns the z-value at that point. The Polygon should have properties a , b , and c that define the values at its three corners. Alternatively, the z-values of each triangle point can be provided by their respective 3rd coordinate if their values are not provided as properties.
 > 获取一个三角形平面作为一个多边形和该三角形内的一个点，并返回该点的z值。多边形应该有属性a、b和c来定义它的三个角的值。或者，如果没有以属性的形式提供每个三角形点的值，则可以通过它们各自的第三坐标提供它们的z值。

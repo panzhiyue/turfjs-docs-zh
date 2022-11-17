@@ -1,4 +1,4 @@
-# squareGrid
+# 正方形网格(squareGrid)
 
 > Creates a square grid from a bounding box, Feature or FeatureCollection.
 > 从一个边界框，`Feature`或`FeatureCollection`创建一个正方形网格。。

@@ -1,4 +1,4 @@
-# lineSlice
+# 根据点截取多线段(lineSlice)
 
 > Takes a line , a start Point , and a stop point and returns a subsection of the line in-between those points. The start & stop points don't need to fall exactly on the line.
 > 获取一条线、起点和终点，并返回这些点之间的线段。起止点不需要正好落在直线上。

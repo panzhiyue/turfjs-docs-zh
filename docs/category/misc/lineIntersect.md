@@ -1,4 +1,4 @@
-# lineIntersect
+# 计算两线段相交点(lineIntersect)
 
 > Takes any LineString or Polygon GeoJSON and returns the intersecting point(s).
 > 获取任何`LineString`或`Polygon`GeoJSON，并返回相交点。

@@ -1,4 +1,4 @@
-# tin
+# tin多边形(tin)
 
 > Takes a set of points and creates a Triangulated Irregular Network , or a TIN for short, returned as a collection of Polygons. These are often used for developing elevation contour maps or stepped heat visualizations.
 > 获取一组点并创建一个三角形的不规则网络，或简称为一个TIN，返回为多边形的集合。这些经常用于发展高程等高线地图或阶梯热可视化。

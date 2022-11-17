@@ -1,4 +1,4 @@
-# interpolate
+# 插入网格点(interpolate)
 
 > Takes a set of points and estimates their 'property' values on a grid using the Inverse Distance Weighting (IDW) method.
 > 采用一组点，并估计它们在网格上的“属性”值，使用 [反向距离加权(IDW) (opens new window)](https://baike.baidu.com/item/反距离加权插值/3689866?fr=aladdin)方法。

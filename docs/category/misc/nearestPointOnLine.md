@@ -1,4 +1,4 @@
-# nearestPointOnLine
+# 计算点到多线段最短间距的点(nearestPointOnLine)
 
 > Takes a Point and a LineString and calculates the closest Point on the (Multi)LineString.
 > 获取一个点和一个LineString，并计算(多)LineString上最近的点。

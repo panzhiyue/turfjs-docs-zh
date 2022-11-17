@@ -1,4 +1,4 @@
-# sample
+# 返回指定数量的点(sample)
 
 > Takes a FeatureCollection and returns a FeatureCollection with given number of features at random.
 > 获取一个`FeatureCollection`，并随机返回一个具有给定数量`Feature`的`FeatureCollection`。

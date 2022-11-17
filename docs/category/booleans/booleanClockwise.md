@@ -1,4 +1,4 @@
-# booleanClockwise
+# 判断是否是顺时针(booleanClockwise)
 
 > Takes a ring and return true or false whether or not the ring is clockwise or counter-clockwise.
 > 取一个环，无论环是顺时针还是逆时针，都返回真或假。

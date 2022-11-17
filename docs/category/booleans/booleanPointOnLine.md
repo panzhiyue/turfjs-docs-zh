@@ -1,4 +1,4 @@
-# booleanPointOnLine
+# 判断点是否在线上(booleanPointOnLine)
 
 > Returns true if a point is on a line. Accepts a optional parameter to ignore the start and end vertices of the linestring.
 > 如果一个点在直线上，则返回true。接受一个可选参数来忽略`linestring`的起始点和结束点。

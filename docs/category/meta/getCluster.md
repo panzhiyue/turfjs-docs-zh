@@ -1,4 +1,4 @@
-# getCluster
+# 获取聚类(getCluster)
 
 > Get Cluster
 > 获取聚类

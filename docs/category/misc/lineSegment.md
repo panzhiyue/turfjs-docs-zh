@@ -1,4 +1,4 @@
-# lineSegment
+# 多边形顶点连线(lineSegment)
 
 > Creates a FeatureCollection of 2-vertex LineString segments from a (Multi)LineString or (Multi)Polygon.
 > 从一个(多)`LineString`或(多)多`Polygon`创建一个`2-vertex`线段的`FeatureCollection`。

@@ -1,4 +1,4 @@
-# isolines
+# 等值线(isolines)
 
 > Takes a grid FeatureCollection of Point features with z-values and an array of value breaks and generates isolines.
 > 采用带有z值的点特征的网格`FeatureCollection`和一组断点值并生成等值线。

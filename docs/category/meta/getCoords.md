@@ -1,4 +1,4 @@
-# getCoords
+# 获取多个坐标(getCoords)
 
 > Unwrap coordinates from a Feature, Geometry Object or an Array
 > 从特征、几何对象或数组中展开坐标

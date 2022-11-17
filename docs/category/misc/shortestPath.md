@@ -1,4 +1,4 @@
-# shortestPath
+# 计算最短路径(shortestPath)
 
 > Returns the shortest path from start to end without colliding with any Feature in obstacles
 > 返回从头到尾的最短路径，而不与障碍物中的任何`Feature`发生碰撞

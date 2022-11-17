@@ -1,4 +1,4 @@
-# featureReduce
+# feature累加(featureReduce)
 
 > Reduce features in any GeoJSON object, similar to Array.reduce().
 > 任何GeoJSON对象中的Reduce`Feature`，类似于`Array.reduce()`。

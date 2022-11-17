@@ -1,4 +1,4 @@
-# propEach
+# 属性遍历(propEach)
 
 > Iterate over properties in any GeoJSON object, similar to Array.forEach()
 > 迭代任何GeoJSON对象中的属性，类似于`Array.forEach()`

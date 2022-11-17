@@ -1,4 +1,4 @@
-# lineChunk
+# 分割多线段(lineChunk)
 
 > Divides a LineString into chunks of a specified length. If the line is shorter than the segment length then the original line is returned.
 > 将一个`LineString`分割成指定长度的块。如果`LineString`比分隔段长度短，则返回原始`LineString`。

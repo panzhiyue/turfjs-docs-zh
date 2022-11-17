@@ -1,4 +1,4 @@
-# booleanEqual
+# 判断是否相等(booleanEqual)
 
 > Determine whether two geometries of the same type have identical X,Y coordinate values. See http://edndoc.esri.com/arcsde/9.0/general_topics/understand_spatial_relations.htm
 > 确定相同类型的两个几何图形是否具有相同的X、Y坐标值。参见http://edndoc.esri.com/arcsde/9.0/general_topics/understand_spatial_relations.htm

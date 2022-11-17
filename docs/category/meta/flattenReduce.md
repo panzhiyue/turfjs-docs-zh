@@ -1,4 +1,4 @@
-# flattenReduce
+# flatten累加(flattenReduce)
 
 > Reduce flattened features in any GeoJSON object, similar to Array.reduce().
 > 在GeoJSON对象中减少扁平`feature`，类似于`Array.reduce()`。

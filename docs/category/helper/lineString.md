@@ -1,4 +1,4 @@
-# lineString
+# 线(lineString)
 
 > Creates a LineString Feature from an Array of Positions.
 > 从位置数组中创建`LineString`。

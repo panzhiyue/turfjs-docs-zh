@@ -1,4 +1,4 @@
-# booleanParallel
+# 判断是否平行(booleanParallel)
 
 > Boolean-Parallel returns True if each segment of line1 is parallel to the correspondent segment of line2
 > 如果line1的每个线段与line2的对应线段平行，则返回True。

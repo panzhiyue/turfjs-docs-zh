@@ -1,4 +1,4 @@
-# randomPoint
+# 随机点(randomPoint)
 
 > Returns a random point.
 > 返回一个随机`Point`

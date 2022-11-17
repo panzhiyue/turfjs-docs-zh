@@ -1,4 +1,4 @@
-# lineSplit
+# 根据Feature分割线段(lineSplit)
 
 > Split a LineString by another GeoJSON Feature.
 > 通过另一个GeoJSON`Feature`分割一个LineString。

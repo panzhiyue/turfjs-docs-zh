@@ -1,4 +1,4 @@
-# kinks
+# 返回相交点(kinks)
 
 > Takes a linestring , multi-linestring , multi-polygon , or polygon and returns points at all self-intersections.
 > 获取一个`linestring`、`multi-linestring`、`multi-polygon`，并返回所有自身相交点。

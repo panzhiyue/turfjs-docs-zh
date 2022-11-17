@@ -1,4 +1,4 @@
-# degreesToRadians
+# 角度转弧度(degreesToRadians)
 
 > Converts an angle in degrees to radians
 > 将角度转换为弧度

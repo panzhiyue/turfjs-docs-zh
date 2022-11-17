@@ -1,4 +1,4 @@
-# toWgs84
+# 墨卡托转WGS84(toWgs84)
 
 > Converts a Mercator (EPSG:900913) GeoJSON object into WGS84 projection
 > 将Mercator (EPSG:900913) GeoJSON对象转换为WGS84投影

@@ -1,4 +1,4 @@
-# coordEach
+# 坐标遍历(coordEach)
 
 > Iterate over coordinates in any GeoJSON object, similar to Array.forEach()
 > 迭代任何GeoJSON对象中的坐标，类似于`Array.forEach()`

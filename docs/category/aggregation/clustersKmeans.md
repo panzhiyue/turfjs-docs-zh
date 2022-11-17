@@ -1,4 +1,4 @@
-# clustersKmeans
+# K-Means聚类算法(clustersKmeans)
 
 > Takes a set of points and partition them into clusters using the k-mean. It uses the k-means algorithm
 > 获取一组点，并使用[K-Means聚类算法 (opens new window)](https://baike.baidu.com/item/K均值聚类算法/15779627?fr=aladdin)将它们聚类划分。

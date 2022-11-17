@@ -1,4 +1,4 @@
-# segmentReduce
+# 线段累加(segmentReduce)
 
 > Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce() (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
 > 在任何GeoJSON对象中减少`2-vertex`线段，类似于`Array.reduce()`(多)`Point`几何图形不包含线段，因此在此操作期间将忽略它们。

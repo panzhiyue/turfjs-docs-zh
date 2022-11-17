@@ -1,4 +1,4 @@
-# flattenEach
+# flatten遍历(flattenEach)
 
 > Iterate over flattened features in any GeoJSON object, similar to Array.forEach.
 > 迭代任何GeoJSON对象中的扁平特性，类似于`Array.forEach`。

@@ -1,4 +1,4 @@
-# geomEach
+# 几何对象遍历(geomEach)
 
 > Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
 > 迭代任何GeoJSON对象中的每个几何图形，类似于`Array.forEach()`

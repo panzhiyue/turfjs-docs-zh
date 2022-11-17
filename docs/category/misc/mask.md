@@ -1,4 +1,4 @@
-# mask
+# 返回非遮罩多边形(mask)
 
 > Takes any type of polygon and an optional mask and returns a polygon exterior ring with holes.
 > 获取任意类型的多边形和一个可选的遮罩，并返回一个带孔的多边形外部环。

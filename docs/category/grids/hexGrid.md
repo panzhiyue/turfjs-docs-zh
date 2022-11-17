@@ -1,4 +1,4 @@
-# hexGrid
+# 六边形网格(hexGrid)
 
 > Takes a bounding box and the diameter of the cell and returns a FeatureCollection of flat-topped hexagons or triangles ( Polygon features) aligned in an "odd-q" vertical grid as described in Hexagonal Grids.
 > 获取一个边界框和单元格的直径，并返回一个`FeatureCollection`平顶六边形或三角形(多边形特征)对齐在一个“odd-q”垂直网格中描述的六边形网格。

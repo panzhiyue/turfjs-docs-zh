@@ -1,4 +1,4 @@
-# randomPolygon
+# 随机多边形(randomPolygon)
 
 > Returns a random polygon.
 > 返回一个随机`Polygon`

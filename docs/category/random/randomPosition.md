@@ -1,4 +1,4 @@
-# randomPosition
+# 随机位置(randomPosition)
 
 > Returns a random position within a box.
 > 返回边界内的随机位置

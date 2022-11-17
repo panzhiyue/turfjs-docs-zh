@@ -1,4 +1,4 @@
-# lineArc
+# 创建圆弧(lineArc)
 
 > Creates a circular arc, of a circle of the given radius and center point, between bearing1 and bearing2; 0 bearing is North of center point, positive clockwise.
 > 在bearing1和bearing2之间创建给定半径和圆心点的圆弧；0方位为中心点以北，顺时针正。

@@ -1,4 +1,4 @@
-# triangleGrid
+# 三角形网格(triangleGrid)
 
 > Takes a bounding box and a cell depth and returns a set of triangular polygons in a grid.
 > 获取边界框和单元格深度，并返回网格中的一组三角形多边形。

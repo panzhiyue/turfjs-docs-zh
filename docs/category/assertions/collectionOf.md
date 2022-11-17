@@ -1,4 +1,4 @@
-# collectionOf
+# 集合类型(collectionOf)
 
 > Enforce expectations about types of FeatureCollection inputs for Turf. Internally this uses geojsonType to judge geometry types.
 > 加强对Turf的`FeatureCollection`输入类型的期望。在内部，它使用`geojsonType`来判断几何类型。

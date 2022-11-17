@@ -1,4 +1,4 @@
-# booleanOverlap
+# 判断是否重叠(booleanOverlap)
 
 > Compares two geometries of the same dimension and returns true if their intersection set results in a geometry different from both but of the same dimension. It applies to Polygon/Polygon, LineString/LineString, Multipoint/Multipoint, MultiLineString/MultiLineString and MultiPolygon/MultiPolygon.
 > 比较相同维度的两个几何图形，如果它们的交集集产生的几何图形与两个几何图形不同，但维度相同，则返回true。适用于`Polygon/Polygon`、`LineString/LineString`、`Multipoint/Multipoint`、`MultiLineString/MultiLineString`、`MultiPolygon/MultiPolygon`。

@@ -1,4 +1,4 @@
-# geomReduce
+# 几何对象累加(geomReduce)
 
 > Reduce geometry in any GeoJSON object, similar to Array.reduce().
 > 减少GeoJSON对象中的几何形状，类似于`Array.reduce()`。

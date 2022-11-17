@@ -1,4 +1,4 @@
-# nearestPoint
+# 计算最近的点(nearestPoint)
 
 > Takes a reference point and a FeatureCollection of Features with Point geometries and returns the point from the FeatureCollection closest to the reference. This calculation is geodesic.
 > 获取一个参考点和一个具有点几何特征的`FeatureCollection`，并从`FeatureCollection`最接近的参考点返回点。这个计算是测地线的。

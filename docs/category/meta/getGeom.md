@@ -1,4 +1,4 @@
-# getGeom
+# 获取几何对象(getGeom)
 
 > Get Geometry from Feature or Geometry Object
 > 从`Feature`或几何对象获得几何

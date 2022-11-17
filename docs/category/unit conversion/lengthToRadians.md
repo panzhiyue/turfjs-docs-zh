@@ -1,7 +1,7 @@
-# lengthToDegrees
+# 长度转弧度(lengthToRadians)
 
-> Convert a distance measurement (assuming a spherical Earth) from a real-world unit into degrees Valid units: miles, nauticalmiles, inches, yards, meters, metres, centimeters, kilometres, feet
-> 将距离度量(假设地球是球形的)从真实的单位转换为度数的有效单位:英里、航海英里、英寸、码、米、米、厘米、公里、英尺
+> Convert a distance measurement (assuming a spherical Earth) from a real-world unit into radians Valid units: miles, nauticalmiles, inches, yards, meters, metres, kilometers, centimeters, feet
+> 将距离测量(假设地球是球形的)从真实的单位转换为弧度的有效单位:英里、海洋英里、英寸、码、米、米、公里、厘米、英尺
 
 ```text
 > npm install @turf/helpers
@@ -16,8 +16,8 @@
 
 **返回**
 
-number - degrees
+number - radians
 
 ```js
-turf.lengthToDegrees(6671704.814011974, 'meters'); // 60
+turf.lengthToRadians(6671704.814011974, 'meters');  // 1.0471975511965976
 ```

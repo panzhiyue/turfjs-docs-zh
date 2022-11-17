@@ -1,4 +1,4 @@
-# booleanDisjoint
+# 判断是否不相交(booleanDisjoint)
 
 > Boolean-disjoint returns (TRUE) if the intersection of the two geometries is an empty set.
 > 如果两个几何图形的交点为空集，则返回(TRUE)。

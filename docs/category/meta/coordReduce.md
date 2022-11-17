@@ -1,4 +1,4 @@
-# coordReduce
+# 坐标累加(coordReduce)
 
 > Reduce coordinates in any GeoJSON object, similar to Array.reduce()
 > 在GeoJSON对象中减少坐标，类似于`Array.reduce()`

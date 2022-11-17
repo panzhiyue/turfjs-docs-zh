@@ -78,7 +78,7 @@ export default {
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
           :active="true"
-          type="Polygon"
+          :type="type"
           @drawend="handleDrawEnd"
         ></vue2ol-interaction-draw>
       </vue2ol-source-vector>

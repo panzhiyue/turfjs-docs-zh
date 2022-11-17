@@ -1,4 +1,4 @@
-# geojsonType
+# geojson类型(geojsonType)
 
 > Enforce expectations about types of GeoJSON objects for Turf.
 > 强化对`GeoJSON`对象类型的期望。

@@ -1,4 +1,4 @@
-# clustersDbscan
+# Dbscan聚类算法(clustersDbscan)
 
 > Takes a set of points and partition them into clusters according to https://en.wikipedia.org/wiki/DBSCAN data clustering algorithm.
 > 获取一组点，并根据 [DBSCAN (opens new window)](https://baike.baidu.com/item/DBSCAN/4864716?fr=aladdin)聚类算法将它们聚类划分。

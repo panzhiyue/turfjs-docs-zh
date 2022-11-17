@@ -1,4 +1,4 @@
-# featureOf
+# feature类型(featureOf)
 
 > Enforce expectations about types of Feature inputs for Turf. Internally this uses geojsonType to judge geometry types.
 > 加强对`Feature`类型的期望。在内部，它使用geojsonType来判断几何类型。

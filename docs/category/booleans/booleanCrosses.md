@@ -1,4 +1,4 @@
-# booleanCrosses
+# 判断是否交叉(booleanCrosses)
 
 > Boolean-Crosses returns True if the intersection results in a geometry whose dimension is one less than the maximum dimension of the two source geometries and the intersection set is interior to both source geometries.
 > 如果交集产生的几何图形的维数比两个源几何图形的最大维数小1，并且交集集位于两个源几何图形的内部，则返回True。

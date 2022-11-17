@@ -1,4 +1,4 @@
-# unkinkPolygon
+# 计算非弯曲多边形(unkinkPolygon)
 
 > Takes a kinked polygon and returns a feature collection of polygons that have no kinks. Uses simplepolygon internally.
 > 获取一个弯曲的多边形，并返回没有弯曲的多边形的`FeatureCollection`。使用simplepolygon内部。

@@ -1,4 +1,4 @@
-# pointGrid
+# 点网格(pointGrid)
 
 > Creates a Point grid from a bounding box, FeatureCollection or Feature.
 > 从一个边界框，`FeatureCollection`或`Feature`创建一个点网格。

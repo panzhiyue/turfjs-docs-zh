@@ -1,4 +1,4 @@
-# lineOverlap
+# 计算两多线段重叠端(lineOverlap)
 
 > Takes any LineString or Polygon and returns the overlapping lines between both features.
 > 获取任何`LineString`或`Polygon`，并返回两个`Feature`之间的重叠线。

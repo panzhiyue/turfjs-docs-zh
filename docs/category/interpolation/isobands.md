@@ -1,4 +1,4 @@
-# isobands
+# 等压线(isobands)
 
 > Takes a grid FeatureCollection of Point features with z-values and an array of value breaks and generates filled contour isobands.
 > 取带有z值和一组值断点的点`Feature`的网格`FeatureCollection`，并生成填充的等边线。

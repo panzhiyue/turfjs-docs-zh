@@ -1,4 +1,4 @@
-# sector
+# 计算扇形多边形(sector)
 
 > Creates a circular sector of a circle of given radius and center Point , between (clockwise) bearing1 and bearing2; 0 bearing is North of center point, positive clockwise.
 > 创建给定半径和中心点的圆的一个扇形，位于(顺时针)bearing1和bearing2之间;0方位为中心点以北，顺时针正。

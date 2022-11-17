@@ -1,4 +1,4 @@
-# clusterReduce
+# 聚类累加(clusterReduce)
 
 > Reduce clusters in GeoJSON Features, similar to Array.reduce()
 > 在GeoJSON`Feature`中减少聚类，类似于`Array.reduce()`

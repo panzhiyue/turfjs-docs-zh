@@ -1,4 +1,4 @@
-# polygon
+# 多边形(polygon)
 
 > Creates a Polygon Feature from an Array of LinearRings.
 > 从`LinearRing`数组创建`Polygon`。

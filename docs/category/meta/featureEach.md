@@ -1,4 +1,4 @@
-# featureEach
+# feature遍历(featureEach)
 
 > Iterate over features in any GeoJSON object, similar to Array.forEach.
 > 迭代任何GeoJSON对象中的`feature`，类似于`Array.forEach`。

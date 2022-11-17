@@ -1,4 +1,4 @@
-# lineSliceAlong
+# 根据距离截取多线段(lineSliceAlong)
 
 > Takes a line , a specified distance along the line to a start Point , and a specified distance along the line to a stop point and returns a subsection of the line in-between those points.
 > 取一条线，沿该线到起始点的指定距离，以及沿该线到终止点的指定距离，并返回这些点之间的该线的分段。

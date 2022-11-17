@@ -1,4 +1,4 @@
-# getType
+# 获取类型(getType)
 
 > Get GeoJSON object's type, Geometry type is prioritize.
 > 获取GeoJSON对象的类型，几何类型是优先级。

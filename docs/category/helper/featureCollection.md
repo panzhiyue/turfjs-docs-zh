@@ -1,4 +1,4 @@
-# featureCollection
+# feature集合(featureCollection)
 
 > Takes one or more Features and creates a FeatureCollection.
 > 获取一个或多个`Feature`并创建一个`FeatureCollection`。

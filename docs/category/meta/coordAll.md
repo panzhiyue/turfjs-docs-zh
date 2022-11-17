@@ -1,4 +1,4 @@
-# coordAll
+# 获取所有坐标(coordAll)
 
 > Get all coordinates from any GeoJSON object.
 > 从任何GeoJSON对象获取所有坐标。

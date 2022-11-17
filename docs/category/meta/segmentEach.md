@@ -1,4 +1,4 @@
-# segmentEach
+# 线段遍历(segmentEach)
 
 > Iterate over 2-vertex line segment in any GeoJSON object, similar to Array.forEach() (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
 > 迭代任何GeoJSON对象中的`2-vertex`线段，类似于`Array.forEach()` (Multi)`Point`几何图形不包含线段，因此在此操作期间将忽略它们。
