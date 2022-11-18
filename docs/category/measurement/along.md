@@ -8,7 +8,7 @@
 
 | 参数     | 类型                   | 描述                           |
 | :------- | :--------------------- | :----------------------------- |
-| line     | Feature `<LineString>` | input line                     |
+| line     | `Feature <LineString>` | input line                     |
 | distance | number                 | distance along the line        |
 | options  | Object                 | Optional parameters: see below |
 
