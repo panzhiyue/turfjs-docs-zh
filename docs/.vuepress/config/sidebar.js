@@ -5,13 +5,11 @@ module.exports = {
   "/category/": [
     {
       title: "GET START",
-      collapsable: true,
       children: ["start"],
     },
     {
       title: "测量(measurement)",
-      collapsable: true,
-      collaps:false,
+      collapsable: false,
       children: [
         "measurement/along",
         "measurement/area",

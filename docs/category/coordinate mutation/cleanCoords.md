@@ -1,7 +1,7 @@
 # 清除重复坐标点(cleanCoords)
 
 > Removes redundant coordinates from any GeoJSON Geometry.
-> 
+>
 > 从任何`GeoJSON`中删除多余的坐标。
 
 ```text
@@ -15,7 +15,7 @@
 | geojson | (Geometry\|Feature) | Feature or Geometry            |
 | options | Object              | Optional parameters: see below |
 
-**options选项**
+**options 选项**
 
 | 属性   | 类型    | 默认值 | 描述                               |
 | :----- | :------ | :----- | :--------------------------------- |
@@ -28,8 +28,19 @@
 **示例**
 
 ```js
-var line = turf.lineString([[0, 0], [0, 2], [0, 5], [0, 8], [0, 8], [0, 10]]);
-var multiPoint = turf.multiPoint([[0, 0], [0, 0], [2, 2]]);
+var line = turf.lineString([
+  [0, 0],
+  [0, 2],
+  [0, 5],
+  [0, 8],
+  [0, 8],
+  [0, 10],
+]);
+var multiPoint = turf.multiPoint([
+  [0, 0],
+  [0, 0],
+  [2, 2],
+]);
 
 turf.cleanCoords(line).geometry.coordinates;
 //= [[0, 0], [0, 10]]
@@ -37,3 +48,48 @@ turf.cleanCoords(line).geometry.coordinates;
 turf.cleanCoords(multiPoint).geometry.coordinates;
 //= [[0, 0], [2, 2]]
 ```
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <base-map>
+    <input type="button" value="执行" @click="handleClick" />
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+export default {
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {
+    handleClick() {
+      var line = turf.lineString([
+        [0, 0],
+        [0, 2],
+        [0, 5],
+        [0, 8],
+        [0, 8],
+        [0, 10],
+      ]);
+      var multiPoint = turf.multiPoint([
+        [0, 0],
+        [0, 0],
+        [2, 2],
+      ]);
+
+      console.log(turf.cleanCoords(line).geometry.coordinates);
+      //= [[0, 0], [0, 10]]
+
+      console.log(turf.cleanCoords(multiPoint).geometry.coordinates);
+      //= [[0, 0], [2, 2]]
+    },
+  },
+};
+</script>
+```
+
+:::

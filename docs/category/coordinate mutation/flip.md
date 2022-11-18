@@ -1,7 +1,7 @@
 # 翻转经纬度(flip)
 
 > Takes input features and flips all of their coordinates from [x, y] to [y, x].
-> 
+>
 > 获取输入`feature`并将它们的所有坐标从`[x, y]`翻转为`[y, x]`。
 
 **参数**
@@ -11,10 +11,10 @@
 | geojson | GeoJSON | input features                 |
 | options | Object  | Optional parameters: see below |
 
-**options选项**
+**options 选项**
 
-| 属性   | 类型    | 默认值 | 描述                                                         |
-| :----- | :------ | :----- | :----------------------------------------------------------- |
+| 属性   | 类型    | 默认值 | 描述                                                                          |
+| :----- | :------ | :----- | :---------------------------------------------------------------------------- |
 | mutate | boolean | false  | allows GeoJSON input to be mutated (significant performance increase if true) |
 
 **返回**
@@ -30,3 +30,46 @@ var saudiArabia = turf.flip(serbia);
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/flip.ed33165b.webp)
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <base-map>
+    <input type="button" value="执行" @click="handleClick" />
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+export default {
+  data() {
+    return {};
+  },
+  mounted() {},
+  methods: {
+    handleClick() {
+      var line = turf.lineString([
+        [0, 0],
+        [0, 1],
+        [0, 2],
+        [0, 3],
+        [0, 4],
+      ]);
+      var multiPoint = turf.multiPoint([
+        [0, 2],
+        [2, 1],
+      ]);
+
+      console.log(turf.flip(line).geometry.coordinates);
+      //= [[0, 0], [0, 10]]
+
+      console.log(turf.flip(multiPoint).geometry.coordinates);
+      //= [[0, 0], [2, 2]]
+    },
+  },
+};
+</script>
+```
+
+:::
