@@ -37,7 +37,7 @@ var points = turf.randomPoint(25, { bbox: [-180, -90, 180, 90] }); // 25个点�
 
 ```vue
 <template>
-  <base-map :zoom="1" style="position:relative;">
+  <base-map :zoom="1" >
     <a-button
       type="primary"
       @click="

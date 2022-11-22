@@ -31,7 +31,26 @@ var position = turf.randomPosition([-180, -90, 180, 90]); // [lng, lat]
 ```vue
 <template>
   <base-map :center="coordinate ? coordinate : [120, 28]" :zoom="1">
-    <a-button type="primary" @click="btnClick">确定</a-button>{{ coordinate }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible">
+      <a-row>
+        <a-space><bbox :value.sync="bbox"></bbox></a-space
+      ></a-row>
+      <a-row>
+        <a-button type="primary" @click="handleSure">确定</a-button>
+      </a-row>
+      <a-row>
+        <a-space>{{ coordinate }}</a-space>
+      </a-row>
+    </drawer>
     <vue2ol-layer-vector :zIndex="20">
       <vue2ol-source-vector>
         <vue2ol-feature v-if="coordinate">
@@ -49,11 +68,14 @@ export default {
   data() {
     return {
       coordinate: null,
+      visible: true,
+      result: null,
+      bbox: [-180, -90, 180, 90],
     };
   },
   mounted() {},
   methods: {
-    btnClick() {
+    handleSure() {
       this.coordinate = turf.randomPosition([-180, -90, 180, 90]);
     },
   },

@@ -55,5 +55,6 @@ export default {
 .vue2ol-map {
   height: 400px;
   overflow: hidden;
+  position: relative;
 }
 </style>
