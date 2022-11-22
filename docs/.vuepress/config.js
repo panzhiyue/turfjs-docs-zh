@@ -7,7 +7,7 @@ module.exports = {
   description: "Turf.js 中文文档",
   base: "/turfjs-docs-zh/", // 默认'/'。如果你想将你的网站部署到如 https://foo.github.io/bar/，那么 base 应该被设置成 "/bar/",（否则页面将失去样式等文件）
   cache: false,
-  dest:"dist",
+  dest: "dist",
   head: [
     // 注入到页面<head> 中的标签，格式[tagName, { attrName: attrValue }, innerHTML?]
     [
@@ -91,6 +91,9 @@ module.exports = {
     //     'vue2ol-extend': "../../src",
     //   },
     // },
+  },
+  chainWebpack: (config) => {
+    config.resolve.alias.set("core-js/library/fn", "core-js/features");
   },
   markdown: {
     toc: {

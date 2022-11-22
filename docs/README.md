@@ -13,6 +13,4 @@ features:
   - title: 快速地
     details: 运用最新的算法，无需与后端交互。
 footer: GPL | Copyright © 2020 Psilo Lau
-
 ---
-

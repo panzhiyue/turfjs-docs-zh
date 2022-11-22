@@ -1,6 +1,9 @@
 // import Vue from "vue"
 // import Vue2ol from "@gis-js/vue2ol"
 import "ol/ol.css";
+import "ant-design-vue/dist/antd.css";
+// import a from "ant-design-vue"
+// console.log(a);
 
 /**
  * to主题使用者：你可以去掉本文件的所有代码
@@ -27,6 +30,19 @@ export default async ({
       Vue.use(module.default);
     });
 
+    await import("ant-design-vue" /* webpackChunkName: "notification" */).then(
+      (module) => {
+        // console.log(module);
+        Vue.use(module.default);
+      }
+    );
+    await import("vue-json-viewer" /* webpackChunkName: "notification" */).then(
+      (module) => {
+        // console.log(module);
+        Vue.component("VueJsonViewer", module.default);
+      }
+    );
+
     await import(
       "../components/BaseMap.vue" /* webpackChunkName: "notification" */
     ).then((module) => {
@@ -36,6 +52,22 @@ export default async ({
       "../components/LengthUnits.vue" /* webpackChunkName: "notification" */
     ).then((module) => {
       Vue.component("LengthUnits", module.default);
+    });
+
+    await import(
+      "../components/Drawer.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("Drawer", module.default);
+    });
+    await import(
+      "../components/Json.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("Json", module.default);
+    });
+    await import(
+      "../components/Bbox.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("Bbox", module.default);
     });
   }
 };
