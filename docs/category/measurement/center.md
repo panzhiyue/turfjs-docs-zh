@@ -1,25 +1,31 @@
 # 计算中心点(center)
 
+```
+> npm install @turf/center
+```
+
 > Takes a Feature or FeatureCollection and returns the absolute center point of all features.
 > 
-> 获取一个`Feature`或`FeatureCollection`，并返回所有`Feature`的绝对中心点。
+> 接收入参要素`Feature`或要素集`FeatureCollection`，计算并返回它们的绝对中心点。
 
 **参数**
 
-| 参数    | 类型    | 描述                           |
-| :------ | :------ | :----------------------------- |
-| geojson | GeoJSON | GeoJSON to be centered         |
-| options | Object  | Optional parameters: see below |
+| 参数    | 类型    | 描述            |
+| :------ | :------ | :-------------- |
+| geojson | GeoJSON | 任意geojson对象 |
+| options | Object  | 可配置项        |
 
 **options 选项**
 
-| 属性       | 类型   | 默认值 | 描述                          |
-| :--------- | :----- | :----- | :---------------------------- |
-| properties | Object | {}     | an Object that is used as the |
+| 属性       | 类型   | 默认值 | 描述                        |
+| :--------- | :----- | :----- | :-------------------------- |
+| properties | Object | {}     | 输出geojson的properties属性 |
 
 **返回**
 
-Feature `<Point>` - a Point feature at the absolute center point of all input features
+`Feature <Point>` - a Point feature at the absolute center point of all input features
+
+`Feature <Point>` - 所有输入要素的绝对中心点
 
 **示例**
 
@@ -27,10 +33,49 @@ Feature `<Point>` - a Point feature at the absolute center point of all input fe
 var features = turf.featureCollection([
   turf.point([-97.522259, 35.4691]),
   turf.point([-97.502754, 35.463455]),
-  turf.point([-97.508269, 35.463245]),
+  turf.point([-97.508269, 35.463245])
 ]);
 
 var center = turf.center(features);
+/*
+{
+  type: "Feature",
+  geometry: {
+    coordinates: [-97.5125065, 35.4661725],
+    type: "point"
+  },
+  properties: {}
+}
+*/
+
+// 单一要素
+var center = turf.center(
+  turf.polygon([
+    [
+      [-97.522259, 35.4691],
+      [-97.502754, 35.463455],
+      [-97.508269, 35.463245],
+      [-97.522259, 35.4691]
+    ]
+  ]),
+  {
+    properties: {
+      desc: "center point"
+    }
+  }
+);
+/*
+{
+  type: "Feature",
+  geometry: {
+    coordinates: [-97.5125065, 35.4661725],
+    type: "point"
+  },
+  properties: {
+    desc: "center point"
+  }
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/center.57e658f3.webp)

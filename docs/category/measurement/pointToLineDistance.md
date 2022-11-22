@@ -1,31 +1,35 @@
 # 计算点到多段线的最短距离(pointToLineDistance)
 
-> Returns the minimum distance between a Point and a LineString , being the distance from a line the minimum distance between the point and any segment of the LineString.
->
-> 返回点与`LineString`之间的最小距离，即到直线的距离，即点与`LineString`任意线段之间的最小距离。
-
-```text
+```
 > npm install @turf/point-to-line-distance
 ```
 
+> Returns the minimum distance between a Point and a LineString , being the distance from a line the minimum distance between the point and any segment of the LineString.
+>
+> 接收一个点和一条线段，获取二者之间的最小距离
+
+
+
 **参数**
 
-| 参数    | 类型                   | 描述                           |
-| :------ | :--------------------- | :----------------------------- |
-| pt      | Coord                  | Feature or Geometry            |
-| line    | Feature `<LineString>` | GeoJSON Feature or Geometry    |
-| options | Object                 | Optional parameters: see below |
+| 参数    | 类型                   | 描述           |
+| :------ | :--------------------- | :------------- |
+| pt      | Coord\|GeoJSON         | 参与计算的点   |
+| line    | `Feature <LineString>` | 参与计算的线段 |
+| options | Object                 | 可配置项       |
 
 **options 选项**
 
-| 属性     | 类型    | 默认值     | 描述                                                  |
-| :------- | :------ | :--------- | :---------------------------------------------------- |
-| units    | string  | kilometers | can be degrees, radians, miles, or kilometers         |
-| mercator | boolean | false      | if distance should be on Mercator or WGS84 projection |
+| 属性     | 类型    | 默认值     | 描述                                               |
+| :------- | :------ | :--------- | :------------------------------------------------- |
+| units    | string  | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
+| mercator | boolean | false      | 是否要以墨卡托投影计算                             |
 
 **返回**
 
 number - distance between point and line
+
+number - 点到线的距离
 
 **示例**
 

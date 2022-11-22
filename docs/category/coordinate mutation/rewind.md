@@ -1,26 +1,34 @@
 # 重新定义环顺序(rewind)
 
+```
+> npm install @turf/rewind
+```
+
+
+
 > Rewind (Multi)LineString or (Multi)Polygon outer ring counterclockwise and inner rings clockwise (Uses Shoelace Formula ).
 >
-> `LineString`或`Polygon`外圈逆时针`Rewind`，内圈顺时针`Rewind`(采用[Shoelace formula 公式 (opens new window)](https://blog.csdn.net/zhangll98/article/details/84150535))。
+> 接收(Multi)LineString或(Multi)Polygon，将外环顺序修改为逆时针，内环顺序修改为顺时针(采用[Shoelace formula 公式 (opens new window)](https://blog.csdn.net/zhangll98/article/details/84150535))。
 
 **参数**
 
-| 参数    | 类型    | 描述                           |
-| :------ | :------ | :----------------------------- |
-| geojson | GeoJSON | input GeoJSON Polygon          |
-| options | Object  | Optional parameters: see below |
+| 参数    | 类型    | 描述                   |
+| :------ | :------ | :--------------------- |
+| geojson | GeoJSON | 类型为Polygon的GeoJSON |
+| options | Object  | 可配置项               |
 
 **options 选项**
 
-| 属性    | 类型    | 默认值 | 描述                                                                          |
-| :------ | :------ | :----- | :---------------------------------------------------------------------------- |
-| reverse | boolean | false  | enable reverse winding                                                        |
-| mutate  | boolean | false  | allows GeoJSON input to be mutated (significant performance increase if true) |
+| 属性    | 类型    | 默认值 | 描述                                           |
+| :------ | :------ | :----- | :--------------------------------------------- |
+| reverse | boolean | false  | 启用反向绕组，即坐标组使用 reverse 方法        |
+| mutate  | boolean | false  | 是否返回入参的 GeoJSON，为 true 性能能显著提高 |
 
 **返回**
 
 GeoJSON - rewind Polygon
+
+GeoJSON - 重绕后的Polygon
 
 **示例**
 
@@ -31,14 +39,31 @@ var polygon = turf.polygon([
     [138, -29],
     [138, -18],
     [121, -18],
-    [121, -29],
-  ],
+    [121, -29]
+  ]
 ]);
 
 var rewind = turf.rewind(polygon);
+/*
+本来就是顺时针顺序，所以坐标顺序未发生变化
+{
+  type: "Feature",
+  geometry: {
+    type: "Polygon",
+    coordinates: [
+      [
+        [121, -29],
+        [138, -29],
+        [138, -18],
+        [121, -18],
+        [121, -29]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
 ```
-
-![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/rewind.91a2c211.webp)
 
 **基础用法**
 ::: demo

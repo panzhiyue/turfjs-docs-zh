@@ -1,13 +1,17 @@
-# 计算非弯曲多边形(unkinkPolygon)
+# 去除自相交多边形(unkinkPolygon)
+
+```
+> npm install @turf/unkink-polygon
+```
 
 > Takes a kinked polygon and returns a feature collection of polygons that have no kinks. Uses simplepolygon internally.
-> 获取一个弯曲的多边形，并返回没有弯曲的多边形的`FeatureCollection`。使用simplepolygon内部。
+> 接收一个有自相交的面要素(`Feature<Polygon|MultiPolygon>`)或面要素集合(`FeatureCollection<Polygon|MultiPolygon>`)，计算并返回没有自相交的面要素集合，如果入参没有自相交，则返回入参数据的要素集。内部使用simplepolygon算法。
 
 **参数**
 
 | 参数    | 类型                                                      | 描述                            |
 | :------ | :-------------------------------------------------------- | :------------------------------ |
-| geojson | (`FeatureCollection`|`Feature <(Polygon\|MultiPolygon)>`) | GeoJSON Polygon or MultiPolygon |
+| geojson | `FeatureCollection|Feature<Polygon|MultiPolygon>` | |
 
 **返回**
 

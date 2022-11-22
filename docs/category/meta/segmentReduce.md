@@ -1,19 +1,22 @@
 # 线段累加(segmentReduce)
 
-> Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce() (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
-> 在任何GeoJSON对象中减少`2-vertex`线段，类似于`Array.reduce()`(多)`Point`几何图形不包含线段，因此在此操作期间将忽略它们。
-
-```text
+```
 > npm install @turf/meta
 ```
 
+> Reduce 2-vertex line segment in any GeoJSON object, similar to Array.reduce() (Multi)Point geometries do not contain segments therefore they are ignored during this operation.
+>
+> 接收任意类型的 `GeoJSON`，遍历它的 `2-vertex` 线段并累加操作。功能类似 `Array.reduce()`。`(Multi)Point`几何图形不包含线段，因此在此操作期间将忽略它们。
+
+
+
 **参数**
 
-| 参数         | 类型                                   | 描述                                                         |
-| :----------- | :------------------------------------- | :----------------------------------------------------------- |
-| geojson      | (FeatureCollection\|Feature\|Geometry) | any GeoJSON                                                  |
-| callback     | Function                               | a method that takes (previousValue, currentSegment, currentIndex) |
-| initialValue | (*)                                    | Value to use as the first argument to the first call of the callback. |
+| 参数         | 类型                                 | 描述                                                         |
+| :----------- | :----------------------------------- | :----------------------------------------------------------- |
+| geojson      | FeatureCollection\|Feature\|Geometry | 任意 GeoJSON 对象                                            |
+| callback     | Function                             | 回调，参数依次是 previousValue、currentProperties、featureIndex |
+| initialValue | (*)                                  | 初始值                                                       |
 
 **返回**
 

@@ -1,18 +1,26 @@
 # 计算多点范围(envelope)
 
+```
+> npm install @turf/envelope
+```
+
 > Takes any number of features and returns a rectangular Polygon that encompasses all vertices.
 > 
 > 接受任意数量的`feature`并返回包含所有顶点的矩形多边形。
 
+> 值得注意的是，矩形是正四边形，所以会去包含更靠外的要素顶点，从而保证所有的要素都在矩形内
+
 **参数**
 
-| 参数    | 类型    | 描述           |
-| :------ | :------ | :------------- |
-| geojson | GeoJSON | input features |
+| 参数    | 类型    | 描述        |
+| :------ | :------ | :---------- |
+| geojson | GeoJSON | 任意GeoJSON |
 
 **返回**
 
-Feature `<Polygon>` - a rectangular Polygon feature that encompasses all vertices
+`Feature <Polygon>` - a rectangular Polygon feature that encompasses all vertices
+
+`Feature <Polygon>` - 包含所有入参要素顶点的 GeoJSON
 
 **示例**
 
@@ -20,9 +28,36 @@ Feature `<Polygon>` - a rectangular Polygon feature that encompasses all vertice
 var features = turf.featureCollection([
   turf.point([-75.343, 39.984], { name: "Location A" }),
   turf.point([-75.833, 39.284], { name: "Location B" }),
-  turf.point([-75.534, 39.123], { name: "Location C" }),
+  turf.point([-75.534, 39.123], { name: "Location C" })
 ]);
 
+var enveloped = turf.envelope(features);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Polygon",
+    coordinates: [
+      [
+        [-75.833, 39.123],
+        [-75.343, 39.123],
+        [-75.343, 39.984],
+        [-75.833, 39.984],
+        [-75.833, 39.123]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
+
+// 包含更靠外的要素，第四个点[-75.12, 38.4]比第三个点[-75.534, 39.123]有更小的维度，所以第三个点不在矩形的边上
+var features = turf.featureCollection([
+  turf.point([-75.343, 39.984], { name: "Location A" }),
+  turf.point([-75.833, 39.284], { name: "Location B" }),
+  turf.point([-75.534, 39.123], { name: "Location C" }),
+  turf.point([-75.12, 38.4], { name: "Location D" })
+]);
 var enveloped = turf.envelope(features);
 ```
 

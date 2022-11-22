@@ -1,24 +1,25 @@
 # 聚类累加(clusterReduce)
 
-> Reduce clusters in GeoJSON Features, similar to Array.reduce()
-> 在GeoJSON`Feature`中减少聚类，类似于`Array.reduce()`
-
-```text
+```
 > npm install @turf/clusters
 ```
+
+> Reduce clusters in GeoJSON Features, similar to Array.reduce()
+>
+> 接收要素集`FeatureCollection`，遍历通过指定属性过滤后的要素集集群并累加操作
 
 **参数**
 
 | 参数         | 类型              | 描述                                                         |
 | :----------- | :---------------- | :----------------------------------------------------------- |
-| geojson      | FeatureCollection | GeoJSON Features                                             |
-| property     | (string\|number)  | GeoJSON property key/value used to create clusters           |
-| callback     | Function          | a method that takes (previousValue, cluster, clusterValue, currentIndex) |
-| initialValue | (*)               | Value to use as the first argument to the first call of the callback. |
+| geojson      | FeatureCollection | GeoJSON 要素集                                               |
+| property     | (string\|number)  | 用于过滤、区分要素集的属性值                                 |
+| callback     | Function          | 回调，参数依次是 previousValue、cluster、clusterValue、currentIndex |
+| initialValue | (*)               | 初始值                                                       |
 
 **返回**
 
-- The value that results from the reduction.
+- \* - reduce 产生的值
 
 **示例**
 

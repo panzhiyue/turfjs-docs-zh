@@ -1,22 +1,24 @@
 # 获取聚类(getCluster)
 
-> Get Cluster
-> 获取聚类
-
-```text
+```
 > npm install @turf/clusters
 ```
 
+> Get Cluster
+> 接收要素集`FeatureCollection`，过滤指定属性的要素并返回要素集
+
+
+
 **参数**
 
-| 参数    | 类型              | 描述                                             |
-| :------ | :---------------- | :----------------------------------------------- |
-| geojson | FeatureCollection | GeoJSON Features                                 |
-| filter  | *                 | Filter used on GeoJSON properties to get Cluster |
+| 参数    | 类型              | 描述                 |
+| :------ | :---------------- | :------------------- |
+| geojson | FeatureCollection | GeoJSON 要素集       |
+| filter  | *                 | 用于获取群集的筛选器 |
 
 **返回**
 
-FeatureCollection - Single Cluster filtered by GeoJSON Properties
+FeatureCollection - 过滤后的要素集
 
 **示例**
 

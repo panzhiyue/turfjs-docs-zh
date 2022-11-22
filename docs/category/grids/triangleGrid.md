@@ -1,28 +1,34 @@
 # 三角形网格(triangleGrid)
 
+```
+> npm install @turf/triangle-grid
+```
+
 > Takes a bounding box and a cell depth and returns a set of triangular polygons in a grid.
-> 获取边界框和单元格深度，并返回网格中的一组三角形多边形。
+>
+> 接收一个边界框(BBox),单元格长度，创建并返回网格中的三角形多边形集合(`FeatureCollection<Polygon>`)。
 
 **参数**
 
-| 参数     | 类型   | 描述                                   |
-| :------- | :----- | :------------------------------------- |
-| bbox     | Array  | extent in minX, minY, maxX, maxY order |
-| cellSide | number | dimension of each cell                 |
-| options  | Object | Optional parameters: see below         |
+| 参数     | 类型   | 描述                     |
+| :------- | :----- | :----------------------- |
+| bbox     | BBox   | [xmin,ymin,xmax,ymax]    |
+| cellSide | number | 三角形面要素的直角边边长 |
+| options  | Object | 可配置项                 |
 
 **options选项**
 
-| 属性       | 类型                                 | 默认值     | 描述                                                         |
-| :--------- | :----------------------------------- | :--------- | :----------------------------------------------------------- |
-| units      | string                               | kilometers | used in calculating cell size, can be degrees, radians, miles, or kilometers |
-| properties | Object                               | {}         | passed to each hexagon or triangle of the grid               |
-| mask       | (`Feature <(Polygon|MultiPolygon)>`) |            | if passed a Polygon or MultiPolygon, the grid Points will be created only inside it |
-| properties | Object                               | {}         | passed to each point of the grid                             |
+| 属性       | 类型                                 | 默认值       | 描述                                                         |
+| :--------- | :----------------------------------- | :----------- | :----------------------------------------------------------- |
+| units      | string                               | "kilometers" | 单位，可选的有 degrees、radians、miles、kilometers           |
+| mask       | (`Feature <(Polygon|MultiPolygon)>`) |              | 如果传递了 Polygon 或 MultiPollygon，则仅在传入的 mask 面要素内创建，如果范围大于 bbox，则相当于不传 |
+| properties | Object                               | {}           | 出参 的 properties 属性                                      |
 
 **返回**
 
 `FeatureCollection <Polygon>` - grid of polygons
+
+`FeatureCollection <Polygon>` - 网格面要素集合
 
 **示例**
 

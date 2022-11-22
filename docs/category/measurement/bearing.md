@@ -1,39 +1,49 @@
 # 计算两点间角度(bearing)
 
+```
+> npm install @turf/bearing
+```
+
 > Takes two points and finds the geographic bearing between them, i.e. the angle measured in degrees from the north line (0 degrees)
 > 
-> 获取两个点，找出它们之间的地理方位，即从正北算起的角度(0 度)
+> 接收两个点类型的 GeoJSON，计算获取二者之间的地理方位，并与正北方向所形成的角度(0 度)
+
+> 即以起始点为参照物，终止点的偏移角度
 
 **参数**
 
-| 参数    | 类型   | 描述                           |
-| :------ | :----- | :----------------------------- |
-| start   | Coord  | starting Point                 |
-| end     | Coord  | ending Point                   |
-| options | Object | Optional parameters: see below |
+| 参数    | 类型           | 描述                     |
+| :------ | :------------- | :----------------------- |
+| start   | Coord\|GeoJSON | 起始点，即作为参照物的点 |
+| end     | Coord\|GeoJSON | 终止点，即要对比计算的点 |
+| options | Object         | 可配置项                 |
 
 **options 选项**
 
-| 属性  | 类型    | 默认值 | 描述                                 |
-| :---- | :------ | :----- | :----------------------------------- |
-| final | boolean | false  | calculates the final bearing if true |
+| 属性  | 类型    | 默认值 | 描述                                                   |
+| :---- | :------ | :----- | :----------------------------------------------------- |
+| final | boolean | false  | 为 true 只计算最终轴承，即返回的数值介于 0 至 360 之间 |
 
 **返回**
 
 number - bearing in decimal degrees, between -180 and 180 degrees (positive clockwise)
 
+number - 如果final为false,返回的数值介于 -180 至 180 之间，顺时针为正值,否则返回的数值介于 0 至 360 之间
+
 **示例**
 
 ```js
-var point1 = turf.point([109.104262, 37.831315]);
-var point2 = turf.point([102.865569, 34.089941]);
+var point1 = turf.point([-75.343, 39.984]);
+var point2 = turf.point([-75.534, 39.123]);
 
-var bearing = turf.bearing(point1, point2);
+var bearing = turf.bearing(point1, point2); // -170.2330491349224
+var bearing = turf.bearing(point1, point2, { final: true }); // 189.6453188611693
+
+// 也可以用经纬度坐标
+var bearing = turf.bearing([-75.343, 39.984], [-75.534, 39.123]); // -170.2330491349224
 ```
 
-```
-npm install @turf/bearing
-```
+
 
 ![image-20221108114651670](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/image-20221108114651670.webp)
 
@@ -218,7 +228,8 @@ export default {
       }
       this.value = turf.bearing(
         turf.point(this.startGeometry.getCoordinates()),
-        turf.point(this.endGeometry.getCoordinates())
+        turf.point(this.endGeometry.getCoordinates()),
+          {final:true}
       );
     },
     handleStart() {

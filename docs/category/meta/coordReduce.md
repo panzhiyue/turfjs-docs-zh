@@ -1,24 +1,25 @@
 # 坐标累加(coordReduce)
 
-> Reduce coordinates in any GeoJSON object, similar to Array.reduce()
-> 在GeoJSON对象中减少坐标，类似于`Array.reduce()`
-
-```text
+```
 > npm install @turf/meta
 ```
+
+> Reduce coordinates in any GeoJSON object, similar to Array.reduce()
+>
+> 接收任意GeoJSON对象(包括要素集合)，遍历累加操作。功能类似`Array.reduce()`。
 
 **参数**
 
 | 参数             | 类型                                   | 描述                                                         |
 | :--------------- | :------------------------------------- | :----------------------------------------------------------- |
-| geojson          | (FeatureCollection\|Geometry\|Feature) | any GeoJSON object                                           |
-| callback         | Function                               | a method that takes (previousValue, currentCoord, coordIndex) |
-| initialValue     | (*)                                    | Value to use as the first argument to the first call of the callback. |
-| excludeWrapCoord | boolean                                | whether or not to include the final coordinate of LinearRings that wraps the ring in its iteration. |
+| geojson          | (FeatureCollection\|Geometry\|Feature) | 任意 GeoJSON 对象                                            |
+| callback         | Function                               | 回调，参数依次是 previousValue、currentCoord、coordIndex、featureIndex、multiFeatureIndex、geometryIndex |
+| initialValue     | (*)                                    | 要用作回调的第一个调用的第一个参数的值。                     |
+| excludeWrapCoord | boolean                                | 是否包含最后一个坐标对(针对闭环线、面要素等坐标是首位闭合的情况)，默认为 false |
 
 **返回**
 
-- The value that results from the reduction.
+- 累加的结果值
 
 **示例**
 

@@ -1,19 +1,25 @@
 # 计算多边形切线点(polygonTangents)
 
+```
+> npm install @turf/polygon-tangents
+```
+
 > Finds the tangents of a (Multi)Polygon from a Point.
 >
-> 从一个点找到一个(多)多边形的切线。
+> 接收一个点和一个(Multi)Polygon，计算二者的切线，返回切线在(Multi)Polygon上的点
 
 **参数**
 
-| 参数    | 类型               | 描述                                 |
-| :------ | :----------------- | :----------------------------------- | -------------------- |
-| pt      | Coord              | to calculate the tangent points from |
-| polygon | `Feature <(Polygon | MultiPolygon)>`                      | to get tangents from |
+| 参数    | 类型                            | 描述             |
+| ------- | ------------------------------- | ---------------- |
+| pt      | Coord \| GeoJSON                | 参与计算的点     |
+| polygon | `Feature<Polygon|MultiPolygon>` | 参与计算的多边形 |
 
 **返回**
 
-FeatureCollection `<Point>` - Feature Collection containing the two tangent points
+`FeatureCollection <Point>` - Feature Collection containing the two tangent points
+
+`FeatureCollection <Point>` - 包含两个切点的要素集合
 
 **示例**
 
@@ -26,12 +32,35 @@ var polygon = turf.polygon([
     [31, 11],
     [21, 15],
     [11, 11],
-    [11, 0],
-  ],
+    [11, 0]
+  ]
 ]);
 var point = turf.point([61, 5]);
 
 var tangents = turf.polygonTangents(point, polygon);
+/*
+{
+  type: "FeatureCollection",
+  features: [
+    {
+      type: "Feature",
+      geometry: {
+        type: "point",
+        coordinates: [21, 15]
+      },
+      properties: {}
+    },
+    {
+      type: "Feature",
+      geometry: {
+        type: "point",
+        coordinates: [31, 0]
+      },
+      properties: {}
+    }
+  ]
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/polygonTangents.b465321f.webp)

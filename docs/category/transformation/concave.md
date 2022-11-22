@@ -1,26 +1,34 @@
 # 生成凹多边形(concave)
 
+```
+> npm install @turf/concave
+```
+
 > Takes a set of points and returns a concave hull Polygon or MultiPolygon. Internally, this uses turf-tin to generate geometries.
 >
-> 获取一组点并返回一个凹`Polygon`或`MultiPolygon`。在内部，它使用`turf-tin`生成几何图形。
+> 接收一组点并返回一个凹`Polygon`或`MultiPolygon`。在内部，它使用`turf-tin`生成几何图形。
+
+> 值得注意的是，少于等于两个点要素都会返回 null，数量和 maxEdge 都会影响
 
 **参数**
 
-| 参数    | 类型                        | 描述                           |
-| :------ | :-------------------------- | :----------------------------- |
-| points  | `FeatureCollection <Point>` | input points                   |
-| options | Object                      | Optional parameters: see below |
+| 参数    | 类型                        | 描述       |
+| :------ | :-------------------------- | :--------- |
+| points  | `FeatureCollection <Point>` | 若干点要素 |
+| options | Object                      | 可配置项   |
 
 **options 选项**
 
-| 属性    | 类型   | 默认值     | 描述                                                                                 |
-| :------ | :----- | :--------- | :----------------------------------------------------------------------------------- |
-| maxEdge | number | Infinity   | the length (in 'units') of an edge necessary for part of the hull to become concave. |
-| units   | string | kilometers | can be degrees, radians, miles, or kilometers                                        |
+| 属性    | 类型   | 默认值     | 描述                                               |
+| :------ | :----- | :--------- | :------------------------------------------------- |
+| maxEdge | number | Infinity   | 以 units 为单位的多边形边缘的长度                  |
+| units   | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
 
 **返回**
 
 (`Feature <(Polygon|MultiPolygon)>`|`null`) - a concave hull (null value is returned if unable to compute hull)
+
+(`Feature <(Polygon|MultiPolygon)>`|`null`) - 凹型多边形，若无法计算则返回 null
 
 **示例**
 
@@ -31,11 +39,30 @@ var points = turf.featureCollection([
   turf.point([-63.580799, 44.648749]),
   turf.point([-63.573589, 44.641788]),
   turf.point([-63.587665, 44.64533]),
-  turf.point([-63.595218, 44.64765]),
+  turf.point([-63.595218, 44.64765])
 ]);
 var options = { units: "miles", maxEdge: 1 };
 
 var hull = turf.concave(points, options);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Polygon",
+    coordinates: [
+      [
+        [-63.591442, 44.651436],
+        [-63.580799, 44.648749],
+        [-63.573589, 44.641788],
+        [-63.587665, 44.64533],
+        [-63.601226, 44.642643],
+        [-63.591442, 44.651436]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/concave.b58bd36a.webp)

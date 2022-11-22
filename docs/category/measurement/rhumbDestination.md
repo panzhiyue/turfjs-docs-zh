@@ -1,28 +1,36 @@
 # 根据点、距离和角度计算目标点(rhumbDestination)
 
+```
+> npm install @turf/rhumb-destination
+```
+
+
+
 > Returns the destination Point having travelled the given distance along a Rhumb line from the origin Point with the (varant) given bearing.
 >
-> 返回从原点到给定方位(变值)沿 [恒向线 (opens new window)](https://baike.baidu.com/item/恒向线/61737?fr=aladdin)移动给定距离的目标点。
+> 获取以入参的点为参照物，通过指定单位的距离计算出沿[恒向线 (opens new window)](https://baike.baidu.com/item/恒向线/61737?fr=aladdin) 的目标点的位置
 
 **参数**
 
-| 参数     | 类型   | 描述                                                             |
-| :------- | :----- | :--------------------------------------------------------------- |
-| origin   | Coord  | starting Point                                                   |
-| distance | number | distance from the starting point                                 |
-| bearing  | number | varant bearing angle ranging from -180 to 180 degrees from north |
-| options  | Object | Optional parameters: see below                                   |
+| 参数     | 类型           | 描述                            |
+| :------- | :------------- | :------------------------------ |
+| origin   | Coord\|GeoJSON | 参与计算的点                    |
+| distance | number         | 参与计算的线段                  |
+| bearing  | number         | 与正北的角度，范围从-180到180度 |
+| options  | Object         | 可配置项                        |
 
 **options 选项**
 
-| 属性       | 类型   | 默认值     | 描述                                          |
-| :--------- | :----- | :--------- | :-------------------------------------------- |
-| units      | string | kilometers | can be degrees, radians, miles, or kilometers |
-| properties | Object | {}         | translate properties to destination point     |
+| 属性       | 类型   | 默认值     | 描述                                               |
+| :--------- | :----- | :--------- | :------------------------------------------------- |
+| units      | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
+| properties | Object | {}         | 输出GeoJSON的properties 属性                       |
 
 **返回**
 
-Feature `<Point>` - Destination point.
+`Feature <Point>` - Destination point。
+
+`Feature <Point>` - 目标点
 
 **示例**
 
@@ -33,6 +41,16 @@ var bearing = 90;
 var options = { units: "miles" };
 
 var destination = turf.rhumbDestination(pt, distance, bearing, options);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Point",
+    coordinates: [-74.3985529486182, 39.984]
+  },
+  properties: {}
+}
+*/
 ```
 
 **基础用法**

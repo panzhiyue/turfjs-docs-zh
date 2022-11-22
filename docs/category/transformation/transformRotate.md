@@ -1,27 +1,35 @@
 # 旋转(transformRotate)
 
+```
+> npm install @turf/transform-rotate
+```
+
 > Rotates any geojson Feature or Geometry of a specified angle, around its centroid or a given pivot point; all rotations follow the right-hand rule: https://en.wikipedia.org/wiki/Right-hand_rule
 >
-> 旋转任何 geojson`Feature`或几何学的一个指定的角度，围绕其质心或一个给定的枢轴点;所有的旋转都遵循右手规则:https://en.wikipedia.org/wiki/righthand_rule
+> 接收一个要素，围绕其质心或给定的轴心点旋转指定角度，并返回
+>
+> 所有的旋转都遵循右手规则:https://en.wikipedia.org/wiki/righthand_rule
 
 **参数**
 
-| 参数    | 类型    | 描述                                                                                     |
-| :------ | :------ | :--------------------------------------------------------------------------------------- |
-| geojson | GeoJSON | object to be rotated                                                                     |
-| angle   | number  | of rotation (along the vertical axis), from North in decimal degrees, negative clockwise |
-| options | Object  | Optional parameters: see below                                                           |
+| 参数    | 类型    | 描述                                           |
+| :------ | :------ | :--------------------------------------------- |
+| geojson | GeoJSON | 需要旋转的要素                                 |
+| angle   | number  | 旋转角度，与正北方向所形成的角度，正数为顺时针 |
+| options | Object  | 可配置项                                       |
 
 **options 选项**
 
-| 属性   | 类型    | 默认值   | 描述                                                                          |
-| :----- | :------ | :------- | :---------------------------------------------------------------------------- |
-| pivot  | Coord   | centroid | point around which the rotation will be performed                             |
-| mutate | boolean | false    | allows GeoJSON input to be mutated (significant performance increase if true) |
+| 属性   | 类型    | 默认值   | 描述                                                  |
+| :----- | :------ | :------- | :---------------------------------------------------- |
+| pivot  | Coord   | centroid | 围绕旋转的中心点                                      |
+| mutate | boolean | false    | 是否返回入参的 GeoJSON。如果为 true，则可显着提高性能 |
 
 **返回**
 
 GeoJSON - the rotated GeoJSON feature
+
+GeoJSON - 旋转后的要素
 
 **示例**
 
@@ -31,11 +39,28 @@ var poly = turf.polygon([
     [0, 29],
     [3.5, 29],
     [2.5, 32],
-    [0, 29],
-  ],
+    [0, 29]
+  ]
 ]);
 var options = { pivot: [0, 25] };
 var rotatedPoly = turf.transformRotate(poly, 10, options);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "polygon",
+    coordinates: [
+      [
+        [0.7795822621476418, 28.93923101204884],
+        [4.215029062075928, 28.39787231953407],
+        [3.8371754734060914, 31.512519272167843],
+        [0.7795822621476418, 28.93923101204884]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/transformRotate.a9355690.webp)

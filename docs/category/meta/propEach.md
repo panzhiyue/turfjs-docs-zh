@@ -1,18 +1,18 @@
 # 属性遍历(propEach)
 
-> Iterate over properties in any GeoJSON object, similar to Array.forEach()
-> 迭代任何GeoJSON对象中的属性，类似于`Array.forEach()`
-
-```text
+```
 > npm install @turf/meta
 ```
 
+> Iterate over properties in any GeoJSON object, similar to Array.forEach()
+> 接收任意类型的 GeoJSON，遍历它的每个要素的 properties。功能类似 `Array.forEach()`
+
 **参数**
 
-| 参数     | 类型                         | 描述                                                  |
-| :------- | :--------------------------- | :---------------------------------------------------- |
-| geojson  | (FeatureCollection\|Feature) | any GeoJSON object                                    |
-| callback | Function                     | a method that takes (currentProperties, featureIndex) |
+| 参数     | 类型                       | 描述                                             |
+| :------- | :------------------------- | :----------------------------------------------- |
+| geojson  | FeatureCollection\|Feature | 任意 GeoJSON 对象                                |
+| callback | Function                   | 回调，参数依次是 currentProperties、featureIndex |
 
 **返回**
 

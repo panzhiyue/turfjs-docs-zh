@@ -1,25 +1,33 @@
 # 分解多边形(dissolve)
 
+```
+> npm install @turf/dissolve
+```
+
 > Dissolves a FeatureCollection of polygon features, filtered by an optional property name:value. Note that mulitpolygon features within the collection are not supported
 > 
-> 分解`Polygon`的一个`FeatureCollection`，通过一个可选的属性`name:value`来过滤。注意，不支持集合中的`MultiPolygon`
+> 接收一个多边形的要素集合FeatureCollection，通过 properties 的某个属性进行分解，但是不支持 type 为 MultiPolygon 的多边形
+
+> 值得注意的是，不传属性的时候返回原来的要素集合，不会进行分解
 
 **参数**
 
-| 参数              | 类型                          | 描述                                     |
-| :---------------- | :---------------------------- | :--------------------------------------- |
-| featureCollection | `FeatureCollection <Polygon>` | input feature collection to be dissolved |
-| options           | Object                        | Optional parameters: see below           |
+| 参数              | 类型                          | 描述                 |
+| :---------------- | :---------------------------- | :------------------- |
+| featureCollection | `FeatureCollection <Polygon>` | 需要被分解的要素集合 |
+| options           | Object                        | 可配置项             |
 
 **options选项**
 
-| 属性         | 类型   | 默认值 | 描述                                   |
-| :----------- | :----- | :----- | :------------------------------------- |
-| propertyName | string |        | features with equals 'propertyName' in |
+| 属性         | 类型   | 默认值 | 描述                      |
+| :----------- | :----- | :----- | :------------------------ |
+| propertyName | string |        | properties 对象的某个属性 |
 
 **返回**
 
 `FeatureCollection <Polygon>` - a FeatureCollection containing the dissolved polygons
+
+`FeatureCollection <Polygon>` - 分解后的多边形要素集
 
 **示例**
 

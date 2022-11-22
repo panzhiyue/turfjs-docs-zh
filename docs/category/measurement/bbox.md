@@ -1,34 +1,40 @@
 # 计算边界(bbox)
 
+```
+> npm install @turf/bbox
+```
+
 > Takes a set of features, calculates the bbox of all input features, and returns a bounding box.
 >
-> 获取一组`feature`，计算所有`feature`的`bbox`，并返回一个边界框。
+> 传入一组`feature`，计算所有`feature`的`bbox`，并返回一个边界框。
+
+> 边界框是由右上角的坐标和左下角的坐标组成的一位数组
 
 **参数**
 
-| 参数    | 类型    | 描述               |
-| :------ | :------ | :----------------- |
-| geojson | GeoJSON | any GeoJSON object |
+| 参数    | 类型    | 描述                   |
+| :------ | :------ | :--------------------- |
+| geojson | GeoJSON | 一个任意类型的 GeoJSON |
 
 **返回**
 
 BBox - bbox extent in minX, minY, maxX, maxY order
 
+BBox - bbox范围，按minX、minY、maxX、maxY顺序排列
+
 **示例**
 
 ```js
 var line = turf.lineString([
-  [104.99467, 30.071677],
-  [107.13797, 36.550462],
-  [112.607082, 34.991467],
+  [-74, 40],
+  [-78, 42],
+  [-82, 35]
 ]);
-var bbox = turf.bbox(line);
+var bbox = turf.bbox(line); // [-82, 35, -74, 42]
 var bboxPolygon = turf.bboxPolygon(bbox);
 ```
 
-```
-npm install @turf/bbox
-```
+
 
 **基础用法**
 ::: demo

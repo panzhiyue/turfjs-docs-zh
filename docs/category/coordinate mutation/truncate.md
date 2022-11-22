@@ -1,27 +1,35 @@
 # 坐标小数点处理(truncate)
 
+```
+> npm install @turf/truncate
+```
+
 > Takes a GeoJSON Feature or FeatureCollection and truncates the precision of the geometry.
 > 
-> 获取GeoJSON`Feature`或`FeatureCollection`，并截断几何图形的精度。
+> 接收GeoJSON，返回四舍五入后的GeoJSON。
 
 **参数**
 
-| 参数    | 类型    | 描述                                                         |
-| :------ | :------ | :----------------------------------------------------------- |
-| geojson | GeoJSON | any GeoJSON Feature, FeatureCollection, Geometry or GeometryCollection. |
-| options | Object  | Optional parameters: see below                               |
+| 参数    | 类型    | 描述            |
+| :------ | :------ | :-------------- |
+| geojson | GeoJSON | 任意GeoJSON对象 |
+| options | Object  | 可配置项        |
 
 **options选项**
 
-| 属性        | 类型    | 默认值 | 描述                                                         |
-| :---------- | :------ | :----- | :----------------------------------------------------------- |
-| precision   | number  | 6      | coordinate decimal precision                                 |
-| coordinates | number  | 3      | maximum number of coordinates (primarly used to remove z coordinates) |
-| mutate      | boolean | false  | allows GeoJSON input to be mutated (significant performance increase if true) |
+| 属性        | 类型    | 默认值 | 描述                                           |
+| :---------- | :------ | :----- | :--------------------------------------------- |
+| precision   | number  | 6      | 坐标的小数点精确位数                           |
+| coordinates | number  | 3      | 最大坐标数(主要用于删除 z 坐标)                |
+| mutate      | boolean | false  | 是否返回入参的 GeoJSON，为 true 性能能显著提高 |
 
 **返回**
 
 GeoJSON - layer with truncated geometry
+
+GeoJSON - 四舍五入后的GeoJSON
+
+
 
 **示例**
 

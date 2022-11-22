@@ -1,26 +1,32 @@
 # 计算两点间距离(distance)
 
+```
+> npm install @turf/distance
+```
+
 > Calculates the distance between two points in degrees, radians, miles, or kilometers. This uses the Haversine formula to account for global curvature.
 >
 > 以度、弧度、英里或公里为单位计算两点之间的距离。
 
 **参数**
 
-| 参数    | 类型   | 描述                           |
-| :------ | :----- | :----------------------------- |
-| from    | Coord  | origin point                   |
-| to      | Coord  | destination point              |
-| options | Object | Optional parameters: see below |
+| 参数    | 类型           | 描述     |
+| :------ | :------------- | :------- |
+| from    | Coord\|GeoJSON | 起始点   |
+| to      | Coord\|GeoJSON | 目标点   |
+| options | Object         | 可配置项 |
 
 **options 选项**
 
-| 属性  | 类型   | 默认值     | 描述                                          |
-| :---- | :----- | :--------- | :-------------------------------------------- |
-| units | string | kilometers | can be degrees, radians, miles, or kilometers |
+| 属性  | 类型   | 默认值     | 描述                                               |
+| :---- | :----- | :--------- | :------------------------------------------------- |
+| units | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
 
 **返回**
 
 number - distance between the two points
+
+number - 两点的距离
 
 **示例**
 
@@ -29,10 +35,8 @@ var from = turf.point([-75.343, 39.984]);
 var to = turf.point([-75.534, 39.123]);
 var options = { units: "miles" };
 
-var distance = turf.distance(from, to, options);
+var distance = turf.distance(from, to, options); // 60.35329997171415
 ```
-
-![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/distance.8648291e.webp)
 
 **基础用法**
 ::: demo

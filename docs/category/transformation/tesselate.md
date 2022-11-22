@@ -1,18 +1,24 @@
 # 多边形划分三角形(tesselate)
 
+```
+> npm install @turf/tesselate
+```
+
 > Tesselates a Feature into a FeatureCollection of triangles using earcut.
 >
-> 使用 [earcut (opens new window)](https://www.npmjs.com/package/earcut)算法将`Feature`细分为`FeatureCollection`三角形。
+> 使用 [earcut (opens new window)](https://www.npmjs.com/package/earcut)算法将`Feature`细分为三角形`FeatureCollection`。
 
 **参数**
 
-| 参数 | 类型                | 描述                     |
-| :--- | :------------------ | :----------------------- |
-| poly | `Feature <Polygon>` | the polygon to tesselate |
+| 参数 | 类型                | 描述                   |
+| :--- | :------------------ | :--------------------- |
+| poly | `Feature <Polygon>` | type 为 polygon 的要素 |
 
 **返回**
 
 `FeatureCollection <Polygon>` - a geometrycollection feature
+
+`FeatureCollection <Polygon>` - 三角形要素集合
 
 **示例**
 
@@ -25,10 +31,10 @@ var poly = turf.polygon([
     [31, 11],
     [21, 15],
     [11, 11],
-    [11, 0],
-  ],
+    [11, 0]
+  ]
 ]);
-var triangles = turf.tesselate(poly);
+var triangles = turf.tesselate(poly); // 裁剪成四个三角形要素
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/tesselate.bdcde9ba.webp)

@@ -1,18 +1,18 @@
 # 判断是否不相交(booleanDisjoint)
 
-> Boolean-disjoint returns (TRUE) if the intersection of the two geometries is an empty set.
-> 如果两个几何图形的交点为空集，则返回(TRUE)。
-
-```text
+```
 > npm install @turf/boolean-disjoint
 ```
 
+> Boolean-disjoint returns (TRUE) if the intersection of the two geometries is an empty set.
+> 接收两个任意类型的要素，判断它们是否不相交，不相交返回 true
+
 **参数**
 
-| 参数     | 类型                | 描述                        |
-| :------- | :------------------ | :-------------------------- |
-| feature1 | (Geometry\|Feature) | GeoJSON Feature or Geometry |
-| feature2 | (Geometry\|Feature) | GeoJSON Feature or Geometry |
+| 参数     | 类型                | 描述    |
+| :------- | :------------------ | :------ |
+| feature1 | (Geometry\|Feature) | GeoJSON |
+| feature2 | (Geometry\|Feature) | GeoJSON |
 
 **返回**
 

@@ -1,18 +1,21 @@
 # 判断是否重叠(booleanOverlap)
 
-> Compares two geometries of the same dimension and returns true if their intersection set results in a geometry different from both but of the same dimension. It applies to Polygon/Polygon, LineString/LineString, Multipoint/Multipoint, MultiLineString/MultiLineString and MultiPolygon/MultiPolygon.
-> 比较相同维度的两个几何图形，如果它们的交集集产生的几何图形与两个几何图形不同，但维度相同，则返回true。适用于`Polygon/Polygon`、`LineString/LineString`、`Multipoint/Multipoint`、`MultiLineString/MultiLineString`、`MultiPolygon/MultiPolygon`。
-
-```text
+```
 > npm install @turf/boolean-overlap
 ```
 
+> Compares two geometries of the same dimension and returns true if their intersection set results in a geometry different from both but of the same dimension. It applies to Polygon/Polygon, LineString/LineString, Multipoint/Multipoint, MultiLineString/MultiLineString and MultiPolygon/MultiPolygon.
+>
+> 接收两个任意类型的要素，判断它们是否有交集重叠。
+>
+> 值得注意的是，判断的要素必须是同类型的：面要素和面要素、线和线、MultiPoint 和 MultiPoint、MultiLineString 和 MultiLineString、MultiPolygon 和 MultiPolygon
+
 **参数**
 
-| 参数     | 类型                                                         | 描述  |
-| :------- | :----------------------------------------------------------- | :---- |
-| feature1 | (`Geometry`|`Feature <(LineString\|MultiLineString\|Polygon\|MultiPolygon)>`) | input |
-| feature2 | (`Geometry`|`Feature <(LineString\|MultiLineString\|Polygon\|MultiPolygon)>`) | input |
+| 参数     | 类型                                                         | 描述    |
+| :------- | :----------------------------------------------------------- | :------ |
+| feature1 | `Geometry|Feature<LineString>|MultiLineString|Polygon|MultiPolygon` | GeoJSON |
+| feature2 | `Geometry|Feature<LineString>|MultiLineString|Polygon|MultiPolygon` | GeoJSON |
 
 **返回**
 

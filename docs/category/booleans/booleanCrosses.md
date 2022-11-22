@@ -1,18 +1,19 @@
 # 判断是否交叉(booleanCrosses)
 
-> Boolean-Crosses returns True if the intersection results in a geometry whose dimension is one less than the maximum dimension of the two source geometries and the intersection set is interior to both source geometries.
-> 如果交集产生的几何图形的维数比两个源几何图形的最大维数小1，并且交集集位于两个源几何图形的内部，则返回True。
-
-```text
+```
 > npm install @turf/boolean-crosses
 ```
 
+> Boolean-Crosses returns True if the intersection results in a geometry whose dimension is one less than the maximum dimension of the two source geometries and the intersection set is interior to both source geometries.
+>
+> 接收两个任意类型的要素，判断它们是否有相交点
+
 **参数**
 
-| 参数     | 类型                | 描述                        |
-| :------- | :------------------ | :-------------------------- |
-| feature1 | (Geometry\|Feature) | GeoJSON Feature or Geometry |
-| feature2 | (Geometry\|Feature) | GeoJSON Feature or Geometry |
+| 参数     | 类型              | 描述    |
+| :------- | :---------------- | :------ |
+| feature1 | Geometry\|Feature | GeoJSON |
+| feature2 | Geometry\|Feature | GeoJSON |
 
 **返回**
 

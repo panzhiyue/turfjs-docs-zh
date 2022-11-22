@@ -1,26 +1,32 @@
 # 多线段平滑(bezierSpline)
 
+```
+> npm install @turf/bezier-spline
+```
+
 > Takes a line and returns a curved version by applying a Bezier spline algorithm.
 >
-> 获取一条直线应用 [贝塞尔算法 (opens new window)](https://baike.baidu.com/item/贝塞尔曲线算法/4095155?fromtitle=贝塞尔算法&fromid=18248630&fr=aladdin)返回一个贝塞尔曲线。
+> 接收一条线段，通过 [贝塞尔算法 (opens new window)](https://baike.baidu.com/item/贝塞尔曲线算法/4095155?fromtitle=贝塞尔算法&fromid=18248630&fr=aladdin)返回一个贝塞尔曲线。
 
 **参数**
 
-| 参数    | 类型                   | 描述                           |
-| :------ | :--------------------- | :----------------------------- |
-| line    | `Feature <LineString>` | input LineString               |
-| options | Object                 | Optional parameters: see below |
+| 参数    | 类型                   | 描述                         |
+| :------ | :--------------------- | :--------------------------- |
+| line    | `Feature <LineString>` | 类型为 LineString 的 GeoJSON |
+| options | Object                 | 可配置项                     |
 
 **options 选项**
 
-| 属性       | 类型   | 默认值 | 描述                                                      |
-| :--------- | :----- | :----- | :-------------------------------------------------------- |
-| resolution | number | 10000  | time in milliseconds between points                       |
-| sharpness  | number | 0.85   | a measure of how curvy the path should be between splines |
+| 属性       | 类型   | 默认值 | 描述                                             |
+| :--------- | :----- | :----- | :----------------------------------------------- |
+| resolution | number | 10000  | 点与点之间的时间(单位为毫秒)                     |
+| sharpness  | number | 0.85   | 线段的弯曲程度，介于 0 和 1 之间，数值越大越平滑 |
 
 **返回**
 
 `Feature <LineString>` - curved line
+
+`Feature <LineString>` - 贝塞尔曲线
 
 **示例**
 

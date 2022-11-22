@@ -1,26 +1,34 @@
 # 多段线偏移(lineOffset)
 
+```
+npm install @turf/line-offset
+```
+
 > Takes a line and returns a line at offset by the specified distance.
 >
-> 获取一条线并返回具有指定距离偏移量的线。
+> 接收 type 为 lineString 的线段，返回偏移指定距离的线段
+
+> 值得注意的是，偏移的角度随要素的形状而改变
 
 **参数**
 
-| 参数     | 类型        | 描述                                                   |
-| :------- | :---------- | :----------------------------------------------------- | ------------- |
-| geojson  | (`Geometry` | `Feature <(LineString\|MultiLineString)>`)             | input GeoJSON |
-| distance | number      | distance to offset the line (can be of negative value) |
-| options  | Object      | Optional parameters: see below                         |
+| 参数     | 类型                                                     | 描述                   |
+| -------- | -------------------------------------------------------- | ---------------------- |
+| geojson  | (`Geometry` \|`Feature <(LineString\|MultiLineString)>`) | 接收的 GeoJSON         |
+| distance | Number                                                   | 偏移的距离，可以是负值 |
+| options  | Object                                                   | 可配置项               |
 
 **options 选项**
 
-| 属性  | 类型   | 默认值     | 描述                                                              |
-| :---- | :----- | :--------- | :---------------------------------------------------------------- |
-| units | string | kilometers | can be degrees, radians, miles, kilometers, inches, yards, meters |
+| 属性  | 类型   | 默认值     | 描述                                               |
+| :---- | :----- | :--------- | :------------------------------------------------- |
+| units | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
 
 **返回**
 
 `Feature <(LineString|MultiLineString)>` - Line offset from the input line
+
+`Feature <(LineString|MultiLineString)>` - 偏移后的线段
 
 **示例**
 
@@ -29,15 +37,29 @@ var line = turf.lineString(
   [
     [-83, 30],
     [-84, 36],
-    [-78, 41],
+    [-78, 41]
   ],
   { stroke: "#F00" }
 );
 
 var offsetLine = turf.lineOffset(line, 2, { units: "miles" });
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "LineString",
+    coordinates: [
+      [-82.97144752916007, 30.004758745139988],
+      [-83.96871903948426, 35.98838780708505],
+      [-77.98146901966652, 40.977762823599825]
+    ]
+  },
+  properties: {
+    stroke: "#F00"
+  }
+}
+*/
 ```
-
-![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/lineOffset.bbbd08ff.webp)
 
 **基础用法**
 ::: demo

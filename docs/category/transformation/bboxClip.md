@@ -1,19 +1,23 @@
 # 边界裁切(bboxClip)
 
+```
+> npm install @turf/bbox-clip
+```
+
 > Takes a Feature and a bbox and clips the feature to the bbox using lineclip. May result in degenerate edges when clipping Polygons.
 >
-> 获取一个`Feature`和一个`bbox`，并使用`lineclip`将该`Feature`裁切到`bbox`。在裁剪多边形时可能导致退化边缘。
+> 接收一个`Feature`和一个`bbox`，裁剪超出 bbox 的范围并返回新的要素。在裁剪多边形时可能导致退化边缘。
 
 **参数**
 
-| 参数    | 类型                  | 描述                                   |
-| :------ | :-------------------- | :------------------------------------- | ------- | --------------- | --------------------------- |
-| feature | `Feature <(LineString | MultiLineString                        | Polygon | MultiPolygon)>` | feature to clip to the bbox |
-| bbox    | BBox                  | extent in minX, minY, maxX, maxY order |
+| 入参    | 类型                                                         | 描述                   |
+| ------- | ------------------------------------------------------------ | ---------------------- |
+| feature | `Feature <(LineString |MultiLineString|Polygon |MultiPolygon)>` | 需要与 bbox 裁剪的要素 |
+| bbox    | BBox                                                         | [xmin,ymin,xmax,ymax]  |
 
 **返回**
 
-`Feature <(LineString|MultiLineString|Polygon|MultiPolygon)>` - clipped Feature
+`Feature <(LineString|MultiLineString|Polygon|MultiPolygon)>` - 裁剪后的feature
 
 **示例**
 
@@ -25,11 +29,30 @@ var poly = turf.polygon([
     [8, 4],
     [12, 8],
     [3, 7],
-    [2, 2],
-  ],
+    [2, 2]
+  ]
 ]);
 
 var clipped = turf.bboxClip(poly, bbox);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Polygon",
+    coordinates: [
+      [
+        [2, 2],
+        [8, 4],
+        [10,6],
+        [10, 7.777777777777778],
+        [3, 7],
+        [2, 2]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/bboxClip.f58ca074.webp)

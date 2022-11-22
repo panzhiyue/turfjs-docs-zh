@@ -1,18 +1,28 @@
 # 计算位于多边形表面的点(pointOnFeature)
 
+```
+> npm install @turf/point-on-feature
+```
+
+
+
 > Takes a Feature or FeatureCollection and returns a Point guaranteed to be on the surface of the feature.
 > 
 > 获取一个`Feature`或`FeatureCollection`，并返回一个点，保证在该`feature`的表面。
 
+> 值得注意的是，返回的点要素是固定的，并非随机
+
 **参数**
 
-| 参数    | 类型    | 描述                             |
-| :------ | :------ | :------------------------------- |
-| geojson | GeoJSON | any Feature or FeatureCollection |
+| 参数    | 类型    | 描述            |
+| :------ | :------ | :-------------- |
+| geojson | GeoJSON | 任意GeoJSON对象 |
 
 **返回**
 
-Feature `<Point>` - a point on the surface of input
+`Feature <Point>` - a point on the surface of input
+
+`Feature <Point>` - 在输入要素表面的一个点
 
 **示例**
 
@@ -25,11 +35,22 @@ var polygon = turf.polygon([
     [155, -25],
     [133, -9],
     [111, -22],
-    [116, -36],
-  ],
+    [116, -36]
+  ]
 ]);
 
 var pointOnPolygon = turf.pointOnFeature(polygon);
+
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Point",
+    coordinates: [133, -26]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/pointOnFeature.f9a83bd6.webp)

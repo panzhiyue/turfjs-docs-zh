@@ -8,7 +8,7 @@ module.exports = {
       children: ["start"],
     },
     {
-      title: "测量(measurement)",
+      title: "测量函数(measurement)",
       collapsable: false,
       children: [
         "measurement/along",
@@ -35,7 +35,7 @@ module.exports = {
       ],
     },
     {
-      title: "coordinate mutation",
+      title: "坐标变换(coordinate mutation)",
       collapsable: false,
       children: [
         "coordinate mutation/cleanCoords",
@@ -46,7 +46,7 @@ module.exports = {
       ],
     },
     {
-      title: "transformation",
+      title: "要素变换(transformation)",
       collapsable: false,
       children: [
         "transformation/bboxClip",
@@ -69,7 +69,7 @@ module.exports = {
       ],
     },
     {
-      title: "feature conversion",
+      title: "特征变换(feature conversion)",
       collapsable: false,
       children: [
         "feature conversion/combine",
@@ -101,7 +101,7 @@ module.exports = {
       ],
     },
     {
-      title: "helper",
+      title: "辅助函数(helper)",
       collapsable: false,
       children: [
         "helper/featureCollection",
@@ -116,7 +116,7 @@ module.exports = {
       ],
     },
     {
-      title: "random",
+      title: "随机函数(random)",
       collapsable: false,
       children: [
         "random/randomPosition",
@@ -126,12 +126,12 @@ module.exports = {
       ],
     },
     {
-      title: "data",
+      title: "数据函数(data)",
       collapsable: false,
       children: ["data/sample"],
     },
     {
-      title: "interpolation",
+      title: "插值函数(interpolation)",
       collapsable: false,
       children: [
         "interpolation/interpolate",
@@ -147,7 +147,7 @@ module.exports = {
       children: ["joins/pointsWithinPolygon", "joins/tag"],
     },
     {
-      title: "grids",
+      title: "网格辅助(grids)",
       collapsable: false,
       children: [
         "grids/hexGrid",
@@ -162,7 +162,7 @@ module.exports = {
       children: ["classification/nearestPoint"],
     },
     {
-      title: "aggregation",
+      title: "聚合函数(aggregation)",
       collapsable: false,
       children: [
         "aggregation/collect",
@@ -207,7 +207,7 @@ module.exports = {
       ],
     },
     {
-      title: "booleans",
+      title: "关系判断(booleans)",
       collapsable: false,
       children: [
         "booleans/booleanClockwise",
@@ -223,7 +223,7 @@ module.exports = {
       ],
     },
     {
-      title: "unit conversion",
+      title: "单位换算(unit conversion)",
       collapsable: false,
       children: [
         "unit conversion/bearingToAzimuth",

@@ -1,31 +1,34 @@
 # 等压线(isobands)
 
-> Takes a grid FeatureCollection of Point features with z-values and an array of value breaks and generates filled contour isobands.
-> 取带有z值和一组值断点的点`Feature`的网格`FeatureCollection`，并生成填充的等边线。
-
-```text
+```
 > npm install @turf/isobands
 ```
 
+> Takes a grid FeatureCollection of Point features with z-values and an array of value breaks and generates filled contour isobands.
+>
+> 接收点要素集(`FeatureCollection<Point>`)，根据参与分级的属性和分级的数组计算出等值面并返回。
+
 **参数**
 
-| 参数      | 类型                        | 描述                           |
-| :-------- | :-------------------------- | :----------------------------- |
-| pointGrid | `FeatureCollection <Point>` | input points                   |
-| breaks    | Array                       | where to draw contours         |
-| options   | Object                      | Optional parameters: see below |
+| 参数      | 类型                        | 描述           |
+| :-------- | :-------------------------- | :------------- |
+| pointGrid | `FeatureCollection <Point>` | 传入的点要素集 |
+| breaks    | Array                       | 分级的数组     |
+| options   | Object                      | 可配置项       |
 
 **options选项**
 
-| 属性             | 类型   | 默认值    | 描述                                                         |
-| :--------------- | :----- | :-------- | :----------------------------------------------------------- |
-| zProperty        | string | elevation | the property name in                                         |
-| commonProperties | Object | {}        | GeoJSON properties passed to ALL isobands                    |
-| breaksProperties | Array  | []        | GeoJSON properties passed, in order, to the correspondent isoband (order defined by breaks) |
+| 属性             | 类型   | 默认值      | 描述                                                         |
+| :--------------- | :----- | :---------- | :----------------------------------------------------------- |
+| zProperty        | string | "elevation" | 参与分级的属性                                               |
+| commonProperties | Object | {}          | 每个要素的属性                                               |
+| breaksProperties | Array  | []          | GeoJSON properties passed, in order, to the correspondent isoband (order defined by breaks) |
 
 **返回**
 
 `FeatureCollection <MultiPolygon>` - a FeatureCollection of MultiPolygon features representing isobands
+
+`FeatureCollection <MultiPolygon>` - 表示等压线的多面要素集合
 
 **示例**
 

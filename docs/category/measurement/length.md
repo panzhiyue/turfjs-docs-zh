@@ -1,25 +1,31 @@
 # 计算多段线长度(length)
 
+```
+> npm install @turf/length
+```
+
 > Takes a GeoJSON and measures its length in the specified units, (Multi)Point 's distance are ignored.
 >
-> 取一个 GeoJSON 并以指定的单位测量其长度，(Multi)Point 的距离被忽略。
+> 取一个 GeoJSON 并以指定的单位测量其长度，(Multi)Point 的返回值为0。
 
 **参数**
 
-| 参数    | 类型    | 描述                           |
-| :------ | :------ | :----------------------------- |
-| geojson | GeoJSON | GeoJSON to measure             |
-| options | Object  | Optional parameters: see below |
+| 参数    | 类型    | 描述               |
+| :------ | :------ | :----------------- |
+| geojson | GeoJSON | 需要测量的 GeoJSON |
+| options | Object  | 可配置项           |
 
 **options 选项**
 
-| 属性  | 类型   | 默认值     | 描述                                          |
-| :---- | :----- | :--------- | :-------------------------------------------- |
-| units | string | kilometers | can be degrees, radians, miles, or kilometers |
+| 属性  | 类型   | 默认值     | 描述                                               |
+| :---- | :----- | :--------- | :------------------------------------------------- |
+| units | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
 
 **返回**
 
 number - length of GeoJSON
+
+number - 长度
 
 **示例**
 
@@ -28,12 +34,10 @@ var line = turf.lineString([
   [115, -32],
   [131, -22],
   [143, -25],
-  [150, -34],
+  [150, -34]
 ]);
-var length = turf.length(line, { units: "miles" });
+var length = turf.length(line, { units: "miles" }); // 2738.9663893575207
 ```
-
-![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/length.c8974652.webp)
 
 **基础用法**
 ::: demo

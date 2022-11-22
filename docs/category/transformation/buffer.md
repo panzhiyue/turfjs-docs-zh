@@ -1,27 +1,33 @@
 # 计算缓冲区(buffer)
 
+```
+npm install @turf/buffer
+```
+
 > Calculates a buffer for input features for a given radius. Units supported are miles, kilometers, and degrees.
 >
 > 为给定半径的`Feature`计算一个缓冲区。支持的单位是英里、公里和度数。
 
 **参数**
 
-| 参数    | 类型                                    | 描述                                                      |
-| :------ | :-------------------------------------- | :-------------------------------------------------------- |
-| geojson | (FeatureCollection\|Geometry\|Feature ) | input to be buffered                                      |
-| radius  | number                                  | distance to draw the buffer (negative values are allowed) |
-| options | Object                                  | Optional parameters: see below                            |
+| 参数    | 类型                                    | 描述                       |
+| :------ | :-------------------------------------- | :------------------------- |
+| geojson | (FeatureCollection\|Geometry\|Feature ) | 任意类型 的 GeoJSON        |
+| radius  | number                                  | 绘制缓冲区的距离(允许负值) |
+| options | Object                                  | 可配置项                   |
 
 **options 选项**
 
-| 属性  | 类型   | 默认值     | 描述                                       |
-| :---- | :----- | :--------- | :----------------------------------------- |
-| units | string | kilometers | any of the options supported by turf units |
-| steps | number | 64         | number of steps                            |
+| 属性  | 类型   | 默认值     | 描述                                               |
+| :---- | :----- | :--------- | :------------------------------------------------- |
+| units | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
+| steps | number | 64         | 步数                                               |
 
 **返回**
 
 (`FeatureCollection`|`Feature <(Polygon|MultiPolygon)>`|`undefined`) - buffered features
+
+(`FeatureCollection`|`Feature <(Polygon|MultiPolygon)>`|`undefined`) - 缓冲要素
 
 **示例**
 

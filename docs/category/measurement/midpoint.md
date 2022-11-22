@@ -1,19 +1,27 @@
 # 计算两点中心点(midpoint)
 
+```
+> npm install @turf/midpoint
+```
+
+
+
 > Takes two points and returns a point midway between them. The midpoint is calculated geodesically, meaning the curvature of the earth is taken into account.
-> 
-> 获取两个点并返回中间的一个点。中点是测地线计算的，这意味着地球的 [曲率 (opens new window)](https://baike.baidu.com/item/曲率/9985286?fr=aladdin)被考虑在内。
+>
+> 接收两个点，通过地球的[曲率 (opens new window)](https://baike.baidu.com/item/曲率/9985286?fr=aladdin)计算并返回中点。
 
 **参数**
 
-| 参数   | 类型  | 描述         |
-| :----- | :---- | :----------- |
-| point1 | Coord | first point  |
-| point2 | Coord | second point |
+| 参数   | 类型  | 描述     |
+| :----- | :---- | :------- |
+| point1 | Coord | 第一个点 |
+| point2 | Coord | 第二个点 |
 
 **返回**
 
-Feature `<Point>` - a point midway between pt1 and pt2
+`Feature <Point>` - a point midway between pt1 and pt2
+
+`Feature <Point>` - 中点
 
 **示例**
 
@@ -22,6 +30,16 @@ var point1 = turf.point([144.834823, -37.771257]);
 var point2 = turf.point([145.14244, -37.830937]);
 
 var midpoint = turf.midpoint(point1, point2);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Point",
+    coordinates: [144.98856936202512, -37.801196981553204]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/midpoint.c2f5c5cb.webp)

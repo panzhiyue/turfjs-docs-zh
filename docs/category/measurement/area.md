@@ -1,40 +1,67 @@
 # 计算区域面积(area)
 
+```
+> npm install @turf/area
+```
+
 > Takes one or more features and returns their area in square meters.
 > 
 > 获取一个或多个`feature`，并返回其面积平方米。
 
+> 值得注意的是，该方法应该是传入 polygon 类型的 GeoJSON，即 Point 点类型和 LineString 线段类型均为 0
+
 **参数**
 
-| 参数    | 类型    | 描述                     |
-| :------ | :------ | :----------------------- |
-| geojson | GeoJSON | input GeoJSON feature(s) |
+| 参数    | 类型    | 描述                |
+| :------ | :------ | :------------------ |
+| geojson | GeoJSON | 一个或多个`feature` |
 
 **返回**
 
 number - area in square meters
+
+number - 面积（平方米）
 
 **示例**
 
 ```js
 var polygon = turf.polygon([
   [
-    [108.09876, 37.200787],
-    [106.398901, 33.648651],
-    [114.972103, 33.340483],
-    [113.715685, 37.845557],
-    [108.09876, 37.200787],
-  ],
+    [125, -15],
+    [113, -22],
+    [154, -27],
+    [144, -15],
+    [125, -15]
+  ]
 ]);
 
-var area = turf.area(polygon);
-```
+var area = turf.area(polygon); // 3339946239196.927
 
+// 多要素
+var area = turf.area({
+  type: "FeatureCollection",
+  features: [
+    turf.polygon([
+      [
+        [125, -15],
+        [113, -22],
+        [154, -27],
+        [144, -15],
+        [125, -15]
+      ]
+    ]),
+    turf.polygon([
+      [
+        [225, -15],
+        [213, -22],
+        [254, -27],
+        [244, -15],
+        [225, -15]
+      ]
+    ])
+  ]
+}); // 6679892478393.854
 ```
-npm install @turf/area
-```
-
-![image-20221108114449254](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/image-20221108114449254.webp)
 
 **基础用法**
 ::: demo

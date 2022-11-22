@@ -1,22 +1,32 @@
 # 坐标是否包含数字(containsNumber)
 
-> Checks if coordinates contains a number
-> 检查坐标是否包含数字
-
-```text
+```
 > npm install @turf/invariant
 ```
 
+> Checks if coordinates contains a number
+> 接收一组坐标，判断坐标是否是数字类型。如果是一维数组，判断经纬度是否是数字，如果是多维数组，递归判断第一个子数组是否是数字类型
+
 **参数**
 
-| 参数        | 类型  | 描述                |
-| :---------- | :---- | :------------------ |
-| coordinates | Array | GeoJSON Coordinates |
+| 参数        | 类型  | 描述 |
+| :---------- | :---- | :--- |
+| coordinates | Array | 坐标 |
 
 **返回**
 
-boolean - true if Array contains a number
+boolean - 如果数组包含数字，则为true
+
+**示例**
 
 ```js
-turf.containsNumber([106.315199, 36.426976]); // true
+var boolean = turf.containsNumber([1, 2]); // true 判断1、2是否是数字
+
+var boolean2 = turf.containsNumber([
+  [3, 4],
+  [5, 6]
+]); // true 相当于是turf.containsNumber([3,4])
 ```
+
+
+

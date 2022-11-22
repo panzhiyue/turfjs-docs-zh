@@ -1,28 +1,34 @@
 # 计算 2 点间的弧线(greatCircle)
 
+```
+npm install @turf/great-circle
+```
+
 > Calculate great circles routes as LineString
 >
-> 用`LineString`计算大圆路线
+> 接收两个点，计算并二者的大圆路线`Feature<LineString>`
 
 **参数**
 
-| 参数    | 类型   | 描述                           |
-| :------ | :----- | :----------------------------- |
-| start   | Coord  | source point feature           |
-| end     | Coord  | destination point feature      |
-| options | Object | Optional parameters: see below |
+| 参数    | 类型           | 描述     |
+| :------ | :------------- | :------- |
+| start   | Coord\|GeoJSON | 起始点   |
+| end     | Coord\|GeoJSON | 目标点   |
+| options | Object         | 可配置项 |
 
 **options 选项**
 
-| 属性       | 类型   | 默认值 | 描述                                                                                                                                                                                       |
-| :--------- | :----- | :----- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| properties | Object | {}     | line feature properties                                                                                                                                                                    |
-| npoints    | number | 100    | number of points                                                                                                                                                                           |
-| offset     | number | 10     | offset controls the likelyhood that lines will be split which cross the dateline. The higher the number the more likely.(偏移量控制跨越日期变更线的线被分割的可能性。数字越高，可能性越大) |
+| 属性       | 类型   | 默认值 | 描述                                           |
+| :--------- | :----- | :----- | :--------------------------------------------- |
+| properties | Object | {}     | 输出GeoJSON的properties 属性                   |
+| npoints    | number | 100    | 大圆弧的点的数量                               |
+| offset     | number | 10     | 控制行与日期线交叉的可能性，数值越高可能性越高 |
 
 **返回**
 
-Feature `<LineString>` - great circle line feature
+`Feature <LineString>` - great circle line feature
+
+`Feature <LineString>` - 大圆线
 
 **示例**
 

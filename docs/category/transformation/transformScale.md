@@ -2,34 +2,66 @@
 
 # 缩放(transformScale)
 
+```
+> npm install @turf/transform-scale
+```
+
 > Scale a GeoJSON from a given point by a factor of scaling (ex: factor=2 would make the GeoJSON 200% larger). If a FeatureCollection is provided, the origin point will be calculated based on each individual Feature.
-> 
-> 从一个给定的点缩放GeoJSON(例如:factor=2将使GeoJSON增大200%)。如果提供了`FeatureCollection`，则将根据每个单独的`Feature`计算原点。
+>
+> 接收一个要素或要素集，进行缩放并返回
+>
+> 根据一个给定的点缩放GeoJSON(例如:factor=2将使GeoJSON增大200%)。如果提供了`FeatureCollection`，则将根据每个单独的`Feature`计算原点。
 
 **参数**
 
-| 参数    | 类型    | 描述                                                   |
-| :------ | :------ | :----------------------------------------------------- |
-| geojson | GeoJSON | GeoJSON to be scaled                                   |
-| factor  | number  | of scaling, positive or negative values greater than 0 |
-| options | Object  | Optional parameters: see below                         |
+| 参数    | 类型    | 描述                   |
+| :------ | :------ | :--------------------- |
+| geojson | GeoJSON | 需要缩放的要素         |
+| factor  | number  | 缩放比例，只能为是正值 |
+| options | Object  | 可配置项               |
 
 **options选项**
 
-| 属性   | 类型             | 默认值                                                       | 描述     |
-| :----- | :--------------- | :----------------------------------------------------------- | :------- |
-| origin | (string          | Coord)                                                       | centroid |
-| mutate | boolean \| false | allows GeoJSON input to be mutated (significant performance increase if true) |          |
+| 属性   | 类型         | 默认值     | 描述                                                         |
+| :----- | :----------- | :--------- | :----------------------------------------------------------- |
+| origin | string\|Coor | "centroid" | 缩放的中心点，如果是 String 的话，选项有 sw/se/nw/ne/center/centroid |
+| mutate | boolean      | false      | 是否返回入参的 GeoJSON。如果为 true，则可显着提高性能        |
 
 **返回**
 
 GeoJSON - scaled GeoJSON
 
+GeoJSON - 缩放后的GeoJSON
+
 **示例**
 
 ```js
-var poly = turf.polygon([[[0,29],[3.5,29],[2.5,32],[0,29]]]);
+var poly = turf.polygon([
+  [
+    [0, 29],
+    [3.5, 29],
+    [2.5, 32],
+    [0, 29]
+  ]
+]);
 var scaledPoly = turf.transformScale(poly, 3);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "polygon",
+    coordinates: [
+      [
+        [-3.943186502488288, 27.000000000000014],
+        [6.457389876866159, 27.000000000000007],
+        [3.5342414612586026, 36.00000000000001],
+        [-3.943186502488288, 27.000000000000014]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/transformScale.3ae75920.webp)

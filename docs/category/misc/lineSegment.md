@@ -1,7 +1,11 @@
 # 多边形顶点连线(lineSegment)
 
+```
+> npm install @turf/line-segment
+```
+
 > Creates a FeatureCollection of 2-vertex LineString segments from a (Multi)LineString or (Multi)Polygon.
-> 从一个(多)`LineString`或(多)多`Polygon`创建一个`2-vertex`线段的`FeatureCollection`。
+> 接收一个(多)`LineString`或(多)多`Polygon`创建一个`2-vertex`线段的`FeatureCollection`。
 
 **参数**
 

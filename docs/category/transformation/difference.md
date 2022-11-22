@@ -1,19 +1,25 @@
 # 计算差异(difference)
 
+```
+> npm install @turf/difference
+```
+
 > Finds the difference between two polygons by clipping the second polygon from the first.
 >
-> 通过从第一个多边形剪裁第二个多边形来查找两个多边形之间的差异。
+> 接收两个 type 为 Polygon 的多边形要素，返回第一个多边形去掉与第二个多边形相交部分后的要素
 
 **参数**
 
-| 参数     | 类型               | 描述            |
-| :------- | :----------------- | :-------------- | ------------------------------------------- |
-| polygon1 | `Feature <(Polygon | MultiPolygon)>` | input Polygon feature                       |
-| polygon2 | `Feature <(Polygon | MultiPolygon)>` | Polygon feature to difference from polygon1 |
+| 参数     | 类型                                | 描述 |
+| -------- | ----------------------------------- | ---- |
+| polygon1 | `Feature <(Polygon |MultiPolygon)>` | 面1  |
+| polygon2 | `Feature <(Polygon |MultiPolygon)>` | 面2  |
 
 **返回**
 
 (`Feature <(Polygon|MultiPolygon)>`|`null`) - a Polygon or MultiPolygon feature showing the area of polygon1 excluding the area of polygon2 (if empty returns null )
+
+(`Feature <(Polygon|MultiPolygon)>`|`null`) - polygon1去掉与polygon2相交部分后的要素（如果为空，则返回null）
 
 **示例**
 
@@ -25,12 +31,12 @@ var polygon1 = turf.polygon(
       [141, -26],
       [141, -21],
       [128, -21],
-      [128, -26],
-    ],
+      [128, -26]
+    ]
   ],
   {
     fill: "#F00",
-    "fill-opacity": 0.1,
+    "fill-opacity": 0.1
   }
 );
 var polygon2 = turf.polygon(
@@ -40,16 +46,37 @@ var polygon2 = turf.polygon(
       [140, -28],
       [140, -20],
       [126, -20],
-      [126, -28],
-    ],
+      [126, -28]
+    ]
   ],
   {
     fill: "#00F",
-    "fill-opacity": 0.1,
+    "fill-opacity": 0.1
   }
 );
 
 var difference = turf.difference(polygon1, polygon2);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "polygon",
+    coordinates: [
+      [
+        [140, -21],
+        [141, -21],
+        [141, -26],
+        [140, -26],
+        [140, -21]
+      ]
+    ]
+  },
+  properties: {
+    "fill": "#F00", // 第一个多边形的属性
+    "fill-opacity": 0.1
+  }
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/difference.319b7a55.webp)

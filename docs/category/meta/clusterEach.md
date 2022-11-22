@@ -1,18 +1,20 @@
 # 聚类遍历(clusterEach)
 
-> clusterEach
-
-```text
+```
 > npm install @turf/clusters
 ```
 
+> clusterEach
+>
+> 接收要素集`FeatureCollection`，遍历通过指定属性过滤后的要素集集群
+
 **参数**
 
-| 参数     | 类型              | 描述                                                      |
-| :------- | :---------------- | :-------------------------------------------------------- |
-| geojson  | FeatureCollection | GeoJSON Features                                          |
-| property | (string\|number)  | GeoJSON property key/value used to create clusters        |
-| callback | Function          | a method that takes (cluster, clusterValue, currentIndex) |
+| 参数     | 类型              | 描述                                                         |
+| :------- | :---------------- | :----------------------------------------------------------- |
+| geojson  | FeatureCollection | GeoJSON 要素集                                               |
+| property | string\|number    | 用于过滤、区分要素集的属性值                                 |
+| callback | Function          | 回调，参数依次是 previousValue、currentProperties、featureIndex |
 
 **返回**
 

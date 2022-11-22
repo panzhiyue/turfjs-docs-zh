@@ -1,25 +1,31 @@
 # 生成凸多边形(convex)
 
+```
+> npm install @turf/convex
+```
+
 > Takes a Feature or a FeatureCollection and returns a convex hull Polygon.
 >
-> 获取一个`Feature`或`FeatureCollection`，并返回一个凸多边形。
+> 接收一个`Feature`或`FeatureCollection`，并返回一个凸多边形。
 
 **参数**
 
-| 参数    | 类型    | 描述                               |
-| :------ | :------ | :--------------------------------- |
-| geojson | GeoJSON | input Feature or FeatureCollection |
-| options | Object  | Optional parameters: see below     |
+| 参数    | 类型    | 描述           |
+| :------ | :------ | :------------- |
+| geojson | GeoJSON | 要素或要素集合 |
+| options | Object  | 可配置项       |
 
 **options 选项**
 
-| 属性      | 类型   | 默认值   | 描述                                    |
-| :-------- | :----- | :------- | :-------------------------------------- |
-| concavity | number | Infinity | 1 - thin shape. Infinity - convex hull. |
+| 属性      | 类型   | 默认值   | 描述                                        |
+| :-------- | :----- | :------- | :------------------------------------------ |
+| concavity | number | Infinity | 1 趋向为扁平型要素，Infinity 趋向为凸型要素 |
 
 **返回**
 
 `Feature <Polygon>` - a convex hull
+
+`Feature <Polygon>` - 凸状外壳
 
 **示例**
 
@@ -30,10 +36,29 @@ var points = turf.featureCollection([
   turf.point([10.579833, 43.659924]),
   turf.point([10.360107, 43.516688]),
   turf.point([10.14038, 43.588348]),
-  turf.point([10.195312, 43.755225]),
+  turf.point([10.195312, 43.755225])
 ]);
 
 var hull = turf.convex(points);
+/*
+{
+  type: "Feature",
+  geometry: {
+    coordinates: [
+      [
+        [10.360107, 43.516688],
+        [10.14038, 43.588348],
+        [10.195312, 43.755225],
+        [10.404052, 43.8424511],
+        [10.579833, 43.659924],
+        [10.360107, 43.516688]
+      ]
+    ],
+    type: "Polygon"
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/convex.e13d31f8.webp)

@@ -1,42 +1,58 @@
 # 计算延长点(along)
 
+```
+> npm install @turf/along
+```
+
 > Takes a LineString and returns a Point at a specified distance along the line.
 >
-> 获取一个`LineString`并返回沿该线指定距离的点。
+> 接收入参的线段上指定距离的点。
+
+> 注意:距离是从起点开始计算的，如果距离超过线段的长度，会返回终点的 GeoJSON
+
+
 
 **参数**
 
-| 参数     | 类型                   | 描述                           |
-| :------- | :--------------------- | :----------------------------- |
-| line     | `Feature <LineString>` | input line                     |
-| distance | number                 | distance along the line        |
-| options  | Object                 | Optional parameters: see below |
+| 参数     | 类型                   | 描述     |
+| :------- | :--------------------- | :------- |
+| line     | `Feature <LineString>` | 输入线段 |
+| distance | number                 | 沿线距离 |
+| options  | Object                 | 可配置项 |
 
 **options 选项**
 
-| 属性  | 类型   | 默认值     | 描述                                          |
-| :---- | :----- | :--------- | :-------------------------------------------- |
-| units | string | kilometers | can be degrees, radians, miles, or kilometers |
+| 属性  | 类型   | 默认值     | 描述                                                         |
+| :---- | :----- | :--------- | :----------------------------------------------------------- |
+| units | string | kilometers | 沿线距离的单位，可选的有 degrees、radians、miles、kilometers |
 
 **返回**
 
-Feature `<Point>` - Point distance units along the line
+`Feature <Point>` - Point distance units along the line
+
+`Feature <Point>` - 沿线指定距离点
 
 **示例**
 
 ```js
 var line = turf.lineString([
-  [109.502991, 29.68718],
-  [108.837829, 32.969237],
-  [113.567871, 37.200787],
+  [-83, 30],
+  [-84, 36],
+  [-78, 41]
 ]);
 var options = { units: "miles" };
 
-var along = turf.along(line, 300, options);
-```
-
-```
-npm install @turf/along
+var along = turf.along(line, 200, options);
+/*
+{
+  type: "Feature",
+  geometry: {
+    coordinates: [-83.4608648621918, 32.8678095806294],
+    type: "Point"
+  },
+  properties: {}
+}
+*/
 ```
 
 **基础用法**
@@ -162,3 +178,4 @@ export default {
 ```
 
 :::
+

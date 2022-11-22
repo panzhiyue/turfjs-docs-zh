@@ -1,18 +1,18 @@
 # 几何对象遍历(geomEach)
 
-> Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
-> 迭代任何GeoJSON对象中的每个几何图形，类似于`Array.forEach()`
-
-```text
+```
 > npm install @turf/meta
 ```
 
+> Iterate over each geometry in any GeoJSON object, similar to Array.forEach()
+> 接收任意类型的 GeoJSON，遍历它的每个 Geometry。功能类似 Array.forEach()
+
 **参数**
 
-| 参数     | 类型                                   | 描述                                                         |
-| :------- | :------------------------------------- | :----------------------------------------------------------- |
-| geojson  | (FeatureCollection\|Feature\|Geometry) | any GeoJSON object                                           |
-| callback | Function                               | a method that takes (currentGeometry, featureIndex, featureProperties, featureBBox, featureId) |
+| 参数     | 类型                                 | 描述                                                         |
+| :------- | :----------------------------------- | :----------------------------------------------------------- |
+| geojson  | FeatureCollection\|Feature\|Geometry | 任意 GeoJSON 对象                                            |
+| callback | Function                             | 回调，参数依次是 currentGeometry、featureIndex、featureProperties、featureBBox、featureId |
 
 **返回**
 

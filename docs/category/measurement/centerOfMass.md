@@ -1,26 +1,57 @@
 # 计算多点中心(centerOfMass)
 
+```
+> npm install @turf/center-of-mass
+```
+
+
+
 > Takes any Feature or a FeatureCollection and returns its center of mass using this formula: Centroid of Polygon.
 > 
-> 获取任何`Feature`或`FeatureCollection`，并调用`centerOfMass`方法返回其中心。
+> 接收入参要素`Feature`或要素集`FeatureCollection`，并使用以下公式返回其质心：多边形的质心。
 
 **参数**
 
-| 参数       | 类型    | 描述                                                |
-| :--------- | :------ | :-------------------------------------------------- |
-| geojson    | GeoJSON | GeoJSON to be centered                              |
-| properties | Object  | an Object that is used as the Feature 's properties |
+| 参数       | 类型    | 描述                        |
+| :--------- | :------ | :-------------------------- |
+| geojson    | GeoJSON | 任意geojson对象             |
+| properties | Object  | 输出geojson的properties属性 |
 
 **返回**
 
 Feature `<Point>` - the center of mass
 
+Feature `<Point>` - 质心
+
 **示例**
 
 ```js
-var polygon = turf.polygon([[[-81, 41], [-88, 36], [-84, 31], [-80, 33], [-77, 39], [-81, 41]]]);
+var polygon = turf.polygon([
+  [
+    [-81, 41],
+    [-88, 36],
+    [-84, 31],
+    [-80, 33],
+    [-77, 39],
+    [-81, 41]
+  ]
+]);
 
-var center = turf.centerOfMass(polygon);
+var center = turf.centerOfMass(polygon, {
+  desc: "center of mass"
+});
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Point",
+    coordinates: [-82.3109243697479, 36.134453781512605]
+  },
+  properties: {
+    desc: "center of mass"
+  }
+}
+*/
 ```
 
 

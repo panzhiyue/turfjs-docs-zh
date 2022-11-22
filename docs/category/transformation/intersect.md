@@ -1,19 +1,25 @@
 # 计算交集(intersect)
 
+```
+> npm install @turf/intersect
+```
+
 > Takes two polygons and finds their intersection. If they share a border, returns the border; if they don't intersect, returns undefined.
 >
-> 取两个多边形并找到它们的交点。如果它们共享一个边界，返回边界;如果它们不相交，返回 undefined。
+> 接收两个 type 为 polygon 的多边形找到他们的交集，如果共享边界则返回边界，如果不相交则返回 null
 
 **参数**
 
-| 参数  | 类型                | 描述               |
-| :---- | :------------------ | :----------------- |
-| poly1 | `Feature <Polygon>` | the first polygon  |
-| poly2 | `Feature <Polygon>` | the second polygon |
+| 参数  | 类型                | 描述 |
+| :---- | :------------------ | :--- |
+| poly1 | `Feature <Polygon>` | 面1  |
+| poly2 | `Feature <Polygon>` | 面2  |
 
 **返回**
 
 (Feature|null) - returns a feature representing the point(s) they share (in case of a Point or MultiPoint ), the borders they share (in case of a LineString or a MultiLineString ), the area they share (in case of Polygon or MultiPolygon ). If they do not share any point, returns null.
+
+(Feature|null) - 没有交集或接收不是 type 为 polygon 的多边形都会返回 null
 
 **示例**
 
@@ -24,8 +30,8 @@ var poly1 = turf.polygon([
     [-122.801742, 45.60491],
     [-122.584762, 45.60491],
     [-122.584762, 45.48565],
-    [-122.801742, 45.48565],
-  ],
+    [-122.801742, 45.48565]
+  ]
 ]);
 
 var poly2 = turf.polygon([
@@ -37,11 +43,31 @@ var poly2 = turf.polygon([
     [-122.723464, 45.446643],
     [-122.532577, 45.408574],
     [-122.487258, 45.477466],
-    [-122.520217, 45.535693],
-  ],
+    [-122.520217, 45.535693]
+  ]
 ]);
 
 var intersection = turf.intersect(poly1, poly2);
+/*
+{
+  type: "Feature",
+  geometry: {
+    type: "Polygon",
+    coordinates: [
+      [
+        [-122.584762, 45.545508794628965],
+        [-122.584762, 45.48565],
+        [-122.68902729894835, 45.48565],
+        [-122.669906, 45.507309],
+        [-122.720031, 45.526554],
+        [-122.64038, 45.553967],
+        [-122.584762, 45.545508794628965]
+      ]
+    ]
+  },
+  properties: {}
+}
+*/
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/intersect.fcad2571.webp)

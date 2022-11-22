@@ -1,19 +1,22 @@
 # flatten累加(flattenReduce)
 
-> Reduce flattened features in any GeoJSON object, similar to Array.reduce().
-> 在GeoJSON对象中减少扁平`feature`，类似于`Array.reduce()`。
-
-```text
+```
 > npm install @turf/meta
 ```
 
+> Reduce flattened features in any GeoJSON object, similar to Array.reduce().
+>
+> 接收任意 GeoJSON 对象(包括要素集)，遍历累加操作。功能类似 `Array.reduce()`
+>
+> 值得注意的是，如果是多要素集，做扁平处理再遍历，功能类似 `Array.flat()`
+
 **参数**
 
-| 参数         | 类型                                   | 描述                                                         |
-| :----------- | :------------------------------------- | :----------------------------------------------------------- |
-| geojson      | (FeatureCollection\|Feature\|Geometry) | any GeoJSON object                                           |
-| callback     | Function                               | a method that takes (previousValue, currentFeature, featureIndex, multiFeatureIndex) |
-| initialValue | (*)                                    | Value to use as the first argument to the first call of the callback. |
+| 参数         | 类型                                 | 描述                                                         |
+| :----------- | :----------------------------------- | :----------------------------------------------------------- |
+| geojson      | FeatureCollection\|Feature\|Geometry | 任意 GeoJSON 对象                                            |
+| callback     | Function                             | 回调，参数依次是 previousValue、currentFeature、featureIndex、multiFeatureIndex |
+| initialValue | (*)                                  | 初始值                                                       |
 
 **返回**
 

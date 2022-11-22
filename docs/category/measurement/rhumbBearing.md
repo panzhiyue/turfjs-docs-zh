@@ -1,26 +1,34 @@
 # 计算两点恒向线夹角(rhumbBearing)
 
+```
+> npm install @turf/rhumb-bearing
+```
+
+
+
 > Takes two points and finds the bearing angle between them along a Rhumb line i.e. the angle measured in degrees start the north line (0 degrees)
 >
 > 取两个点，找出它们之间沿[恒向线 (opens new window)](https://baike.baidu.com/item/恒向线/61737?fr=aladdin)的夹角，即从北线开始(0 度)测量的角度。
 
 **参数**
 
-| 参数    | 类型   | 描述                           |
-| :------ | :----- | :----------------------------- |
-| start   | Coord  | starting Point                 |
-| end     | Coord  | ending Point                   |
-| options | Object | Optional parameters: see below |
+| 参数    | 类型           | 描述     |
+| :------ | :------------- | :------- |
+| start   | Coord\|GeoJSON | 起始点   |
+| end     | Coord\|GeoJSON | 终止点   |
+| options | Object         | 可配置项 |
 
 **options 选项**
 
-| 属性  | 类型    | 默认值 | 描述                                 |
-| :---- | :------ | :----- | :----------------------------------- |
-| final | boolean | false  | calculates the final bearing if true |
+| 属性  | 类型    | 默认值 | 描述                                                   |
+| :---- | :------ | :----- | :----------------------------------------------------- |
+| final | boolean | false  | 为 true 只计算最终轴承，即返回的数值介于 0 至 360 之间 |
 
 **返回**
 
 number - bearing from north in decimal degrees, between -180 and 180 degrees (positive clockwise)
+
+number - 返回的数值介于 -180 至 180 之间，顺时针为正值
 
 **示例**
 
@@ -28,10 +36,9 @@ number - bearing from north in decimal degrees, between -180 and 180 degrees (po
 var point1 = turf.point([-75.343, 39.984], { "marker-color": "#F00" });
 var point2 = turf.point([-75.534, 39.123], { "marker-color": "#00F" });
 
-var bearing = turf.rhumbBearing(point1, point2);
+var bearing = turf.rhumbBearing(point1, point2); // -170.29417535572546
+var bearing = turf.rhumbBearing(point1, point2, { final: true }); // 9.705824644274514
 ```
-
-![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/rhumbBearing.814edb3e.webp)
 
 **基础用法**
 ::: demo

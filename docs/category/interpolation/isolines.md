@@ -1,27 +1,35 @@
 # 等值线(isolines)
 
+```
+> npm install @turf/isolines
+```
+
 > Takes a grid FeatureCollection of Point features with z-values and an array of value breaks and generates isolines.
-> 采用带有z值的点特征的网格`FeatureCollection`和一组断点值并生成等值线。
+>
+> 接收一组正方形或矩形网格带有z值的点要素集(`FeatureCollection<Point>`)，生成并返回等高线。
+>
 
 **参数**
 
-| 参数      | 类型                      | 描述                                       |
-| :-------- | :------------------------ | :----------------------------------------- |
-| pointGrid | FeatureCollection <Point> | input points                               |
-| breaks    | Array                     | values of zProperty where to draw isolines |
-| options   | Object                    | Optional parameters: see below             |
+| 参数      | 类型                        | 描述                          |
+| :-------- | :-------------------------- | :---------------------------- |
+| pointGrid | `FeatureCollection <Point>` | 输入点要素集-必须是方形或矩形 |
+| breaks    | Array                       | 分级的数组                    |
+| options   | Object                      | 可配置项                      |
 
 **options选项**
 
-| 属性             | 类型   | 默认值    | 描述                                                         |
-| :--------------- | :----- | :-------- | :----------------------------------------------------------- |
-| zProperty        | string | elevation | the property name in                                         |
-| commonProperties | Object | {}        | GeoJSON properties passed to ALL isolines                    |
-| breaksProperties | Array  | []        | GeoJSON properties passed, in order, to the correspondent isoline; the breaks array will define the order in which the isolines are created |
+| 属性             | 类型   | 默认值      | 描述                                                         |
+| :--------------- | :----- | :---------- | :----------------------------------------------------------- |
+| zProperty        | string | "elevation" | 绘制等值线的z属性名                                          |
+| commonProperties | Object | {}          | 每个要素的属性                                               |
+| breaksProperties | Array  | []          | GeoJSON properties passed, in order, to the correspondent isoline; the breaks array will define the order in which the isolines are created |
 
 **返回**
 
 `FeatureCollection <MultiLineString>` - a FeatureCollection of MultiLineString features representing isolines
+
+`FeatureCollection <MultiLineString>` - 表示等值线的线要素集
 
 **示例**
 
