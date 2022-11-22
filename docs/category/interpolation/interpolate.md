@@ -44,3 +44,4 @@ var grid = turf.interpolate(points, 100, options);
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/interpolate.566a42c7.webp)
+

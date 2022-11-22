@@ -35,7 +35,44 @@
 var lineStrings = turf.randomLineString(25, { bbox: [-180, -90, 180, 90] }); // 25个线要素集合
 ```
 
-**基础用法**
+**动态设置**
+::: demo
+
+```vue
+<template>
+  <base-map :zoom="1">
+    <vue2ol-layer-vector :zIndex="20" v-if="features">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+export default {
+  data() {
+    return {
+      coordinate: null,
+      features:null
+    };
+  },
+  mounted() {
+    this.result = turf.randomLineString(25, {
+      bbox: [-180, -90, 180, 90],
+      num_vertices: 10,
+      max_length: 10,
+      max_rotation: 0.39269908169872414,
+    });
+    this.features = new GeoJSON().readFeatures(this.result);
+  },
+  methods: {},
+};
+</script>
+```
+
+:::
+
+**动态设置**
 ::: demo
 
 ```vue
@@ -53,15 +90,21 @@ var lineStrings = turf.randomLineString(25, { bbox: [-180, -90, 180, 90] }); // 
     <drawer :visible.sync="visible">
       <a-row>
         <a-space
-          >数量：<a-input-number v-model="count" :min="1"></a-input-number
+          >数量(count)：<a-input-number v-model="count" :min="1"></a-input-number
         ></a-space>
       </a-row>
       <a-row>
         <a-space><bbox :value.sync="bbox"></bbox></a-space
       ></a-row>
-      <a-row>坐标数量：<a-input-number v-model="num_vertices"></a-input-number></a-row>
-      <a-row>最大度数：<a-input-number v-model="max_length"></a-input-number></a-row>
-      <a-row>最大弧度：<a-input-number v-model="max_rotation"></a-input-number></a-row>
+      <a-row
+        >坐标数量(num_vertices)：<a-input-number v-model="num_vertices"></a-input-number
+      ></a-row>
+      <a-row
+        >最大度数(max_length)：<a-input-number v-model="max_length"></a-input-number
+      ></a-row>
+      <a-row
+        >最大弧度(max_rotation	)：<a-input-number v-model="max_rotation"></a-input-number
+      ></a-row>
       <a-row>
         <a-button type="primary" @click="handleSure">确定</a-button>
       </a-row>

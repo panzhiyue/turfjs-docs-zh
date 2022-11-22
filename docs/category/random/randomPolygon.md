@@ -34,7 +34,45 @@
 var polygons = turf.randomPolygon(25, { bbox: [-180, -90, 180, 90] }); // 25个面要素集合
 ```
 
-**基础用法**
+**基本用法**
+::: demo
+
+```vue
+<template>
+  <base-map :zoom="1">
+    <vue2ol-layer-vector :zIndex="20" v-if="features">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+export default {
+  data() {
+    return {
+      coordinate: null,
+
+      features: null,
+    };
+  },
+  mounted() {
+    this.result = turf.randomPolygon(25, {
+      bbox: [-180, -90, 180, 90],
+      num_vertices: 10,
+      max_radial_length: 10,
+    });
+    this.features = new GeoJSON().readFeatures(this.result);
+    console.log(this.features);
+  },
+  methods: {},
+};
+</script>
+```
+
+:::
+
+**动态设置**
 ::: demo
 
 ```vue
@@ -52,14 +90,14 @@ var polygons = turf.randomPolygon(25, { bbox: [-180, -90, 180, 90] }); // 25个�
     <drawer :visible.sync="visible">
       <a-row>
         <a-space
-          >数量：<a-input-number v-model="count" :min="1"></a-input-number
+          >数量(count)：<a-input-number v-model="count" :min="1"></a-input-number
         ></a-space>
       </a-row>
       <a-row>
         <a-space><bbox :value.sync="bbox"></bbox></a-space
       ></a-row>
-      <a-row>坐标数量：<a-input-number v-model="num_vertices"></a-input-number></a-row>
-      <a-row>相对于中心点的最大经度或纬度：<a-input-number v-model="max_radial_length"></a-input-number></a-row>
+      <a-row>坐标数量(num_vertices)：<a-input-number v-model="num_vertices"></a-input-number></a-row>
+      <a-row>相对于中心点的最大经度或纬度(max_radial_length)：<a-input-number v-model="max_radial_length"></a-input-number></a-row>
     </a-row>
       <a-row>
         <a-button type="primary" @click="handleSure">确定</a-button>
