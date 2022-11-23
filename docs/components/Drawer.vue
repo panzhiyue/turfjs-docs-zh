@@ -11,7 +11,7 @@
     <!-- <slot></slot> -->
     <a-tabs type="card">
       <a-tab-pane key="1" tab="参数设置"> <slot></slot></a-tab-pane>
-      <a-tab-pane key="2" tab="代码">
+      <a-tab-pane key="2" tab="代码" v-if="code">
         <prism language="javascript" :code="code"></prism>
       </a-tab-pane>
     </a-tabs>

@@ -51,6 +51,20 @@ var grid = turf.interpolate(points, 100, options);
 ```vue
 <template>
   <base-map :zoom="1">
+  <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-space><json :data="result" /></a-space>
+      </a-row>
+    </drawer>
     <vue2ol-layer-vector :zIndex="20" v-if="features">
       <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
@@ -65,7 +79,19 @@ export default {
       coordinate: null,
       features: null,
       result: null,
+      visible:true
     };
+  },
+    computed:{
+    code(){
+        return `var points = turf.randomPoint(30, { bbox: [50, 30, 70, 50] });
+// add a random property to each point
+turf.featureEach(points, function (point) {
+  point.properties.solRad = Math.random() * 50;
+});
+var options = { gridType: "points", property: "solRad", units:"miles" };
+var grid = turf.interpolate(points, 100, options);`
+    }
   },
   mounted() {
     var points = turf.randomPoint(30, { bbox: [50, 30, 70, 50] });
@@ -100,38 +126,46 @@ export default {
       "
       >打开</a-button
     >
-    <drawer :visible.sync="visible">
+    <drawer :visible.sync="visible" :code="code">
       <a-row>
         <a-space
           ><a-button type="primary" @click="handleDrawPoint"
-            >绘制点</a-button
+            >绘制点({{ isDrawPoint ? "激活" : "未激活" }})</a-button
           ></a-space
         >
       </a-row>
       <a-row>
         <a-space
-          >每个网格点之间的距离：<a-input-number
+          >每个网格点之间的距离(cellSize)：<a-input-number
             v-model="cellSize"
           ></a-input-number
         ></a-space>
       </a-row>
       <a-row>
         <a-space
-          >出参要素集的要素类型：<grid-type :value.sync="gridType"></grid-type
+          >出参要素集的要素类型(gridType)：<grid-type
+            :value.sync="gridType"
+          ></grid-type
         ></a-space>
       </a-row>
       <a-row>
         <a-space
-          >单位：<length-units :value.sync="units"></length-units
+          >参与计算的属性(property)：<a-input v-model="property"></a-input
         ></a-space>
       </a-row>
       <a-row>
         <a-space
-          >调节距离衰减权重的指数：<a-input-number
+          >单位(units)：<length-units :value.sync="units"></length-units
+        ></a-space>
+      </a-row>
+      <a-row>
+        <a-space
+          >调节距离衰减权重的指数(weight)：<a-input-number
             v-model="weight"
           ></a-input-number
         ></a-space>
       </a-row>
+
       <a-row>
         <a-button type="primary" @click="handleSure">确定</a-button>
       </a-row>
@@ -139,6 +173,15 @@ export default {
         <a-space><json :data="result" /></a-space>
       </a-row>
     </drawer>
+    <vue2ol-layer-vector @ready="handleReadyDrawLayer">
+      <vue2ol-source-vector>
+        <vue2ol-interaction-draw
+          :active="isDrawPoint"
+          type="Point"
+          @drawend="handleDrawEnd"
+        ></vue2ol-interaction-draw>
+      </vue2ol-source-vector>
+    </vue2ol-layer-vector>
     <vue2ol-layer-vector :zIndex="20" v-if="features">
       <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
@@ -150,29 +193,63 @@ import { GeoJSON } from "ol/format";
 export default {
   data() {
     return {
-      coordinate: null,
-      visible: true,
-      features: null,
-      result: null,
-      cellSize: 1,
+      isDrawPoint: false,
+      drawLayer: null,
+      cellSize: 100,
       gridType: "square",
       units: "kilometers",
       weight: 1,
+      property: "elevation",
+
+      visible: true,
+      features: null,
+      result: null,
+      drawFeatures: null,
     };
+  },
+  computed: {
+    code() {
+      if (!this.drawFeatures) {
+        return "";
+      }
+      return `let grid = turf.interpolate(
+  ${new GeoJSON().writeFeatures(this.drawFeatures)},
+  ${this.cellSize},
+  {
+    gridType: '${this.gridType}',
+    property: '${this.property}',
+    units: '${this.units}',
+    weight: ${this.weight},
+  }
+);`;
+    },
   },
   mounted() {},
   methods: {
     handleSure() {
-      this.result = turf.randomLineString(this.count, {
-        bbox: this.bbox,
-        num_vertices: this.num_vertices,
-        max_length: this.max_length,
-        max_rotation: this.max_rotation,
-      });
+      this.result = turf.interpolate(
+        JSON.parse(new GeoJSON().writeFeatures(this.drawFeatures)),
+        this.cellSize,
+        {
+          gridType: this.gridType,
+          property: this.property,
+          units: this.units,
+          weight: this.weight,
+        }
+      );
       this.features = new GeoJSON().readFeatures(this.result);
       console.log(this.features);
     },
-    handleDrawPoint() {},
+    handleDrawPoint() {
+      this.isDrawPoint = true;
+    },
+    handleReadyDrawLayer(mapObject) {
+      this.drawLayer = mapObject;
+    },
+    handleDrawEnd(e) {
+      e.feature.set(this.property, Math.random() * 50);
+      this.drawFeatures = this.drawLayer.getSource().getFeatures();
+    },
   },
 };
 </script>
