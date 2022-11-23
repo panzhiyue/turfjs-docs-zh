@@ -116,5 +116,6 @@ module.exports = {
       },
     ],
     [require("@panzhiyue/vuepress-plugin-demo-container-v2")],
+    ['code-switcher']
   ],
 };

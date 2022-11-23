@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js add @vueuse/core
+  C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\yarn\bin\yarn.js add @highlight/vue-plugin
 
 PATH: 
-  C:\Program Files\Common Files\Oracle\Java\javapath;D:\SoftWareInstall\VMware\bin\;D:\SoftWareInstall\Microsoft MPI\Bin\;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;D:\SoftWareInstall\Git\cmd;D:\SoftWareInstall\TortoiseGit\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;D:\SoftWareInstall\HBuilderX\plugins\launcher\tools\adbs;D:\SoftWareInstall\FlutterSDK\bin;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;D:\SoftWareInstall\Redis\;C:\Users\Admin\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Python27\ArcGIS10.6;D:\SoftWareInstall\TortoiseSVN\bin;D:\SoftWareInstall\MapGIS 10\program;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\.dotnet\tools;D:\SoftWareInstall\Microsoft VS Code\bin;C:\Users\Admin\AppData\Local\Pandoc\;C:\Program Files\Azure Data Studio\bin;D:\SoftWareInstall\IntelliJ IDEA 2020.2.3\bin;;D:\SoftWareInstall\swigwin-4.0.2\swig.exe;C:\Users\Admin\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Admin\AppData\Local\GitHubDesktop\bin;C:\Python27\ArcGIS10.6;
+  C:\Program Files\Common Files\Oracle\Java\javapath;D:\SoftWareInstall\VMware\bin\;D:\SoftWareInstall\Microsoft MPI\Bin\;C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;D:\SoftWareInstall\Git\cmd;D:\SoftWareInstall\TortoiseGit\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\130\DTS\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;D:\SoftWareInstall\HBuilderX\plugins\launcher\tools\adbs;D:\SoftWareInstall\FlutterSDK\bin;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;D:\SoftWareInstall\Redis\;C:\Users\Admin\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Python27\ArcGIS10.6;D:\SoftWareInstall\TortoiseSVN\bin;D:\SoftWareInstall\MapGIS 10\program;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\Admin\AppData\Local\Microsoft\WindowsApps;C:\Users\Admin\.dotnet\tools;D:\SoftWareInstall\Microsoft VS Code\bin;C:\Users\Admin\AppData\Local\Pandoc\;C:\Program Files\Azure Data Studio\bin;D:\SoftWareInstall\IntelliJ IDEA 2020.2.3\bin;D:\SoftWareInstall\swigwin-4.0.2\swig.exe;C:\Users\Admin\AppData\Local\GitHubDesktop\bin
 
 Yarn version: 
   1.22.19
@@ -14,8 +14,17 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: connect ETIMEDOUT 104.16.21.35:443
-      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1187:16)
+  Error: https://registry.npmjs.org/@highlight%2fvue-plugin: Not found
+      at Request.params.callback [as _callback] (C:\Users\Admin\AppData\Roaming\nvm\v16.15.0\node_modules\yarn\lib\cli.js:66145:18)
+      at Request.self.callback (C:\Users\Admin\AppData\Roaming\nvm\v16.15.0\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:527:28)
+      at Request.<anonymous> (C:\Users\Admin\AppData\Roaming\nvm\v16.15.0\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:527:28)
+      at IncomingMessage.<anonymous> (C:\Users\Admin\AppData\Roaming\nvm\v16.15.0\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:641:28)
+      at IncomingMessage.emit (node:events:539:35)
+      at endReadableNT (node:internal/streams/readable:1345:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
@@ -32,12 +41,15 @@ npm manifest:
       "@panzhiyue/vuepress-plugin-demo-container-v2": "^1.0.3",
       "@turf/turf": "^6.5.0",
       "ant-design-vue": "^1.7.8",
+      "highlight.js": "^11.6.0",
       "ol": "6.14.1",
       "ol-echarts": "^3.0.0",
+      "vue-json-viewer": "2",
       "vuepress": "^1.9.7",
       "vuepress-plugin-one-click-copy": "^1.0.6"
     },
     "devDependencies": {
+      "@vueuse/core": "^9.5.0",
       "shelljs": "^0.8.5"
     }
   }
@@ -2439,6 +2451,11 @@ Lockfile:
     dependencies:
       source-map "^0.6.1"
   
+  "@types/web-bluetooth@^0.0.16":
+    version "0.0.16"
+    resolved "https://registry.yarnpkg.com/@types/web-bluetooth/-/web-bluetooth-0.0.16.tgz#1d12873a8e49567371f2a75fe3e7f7edca6662d8"
+    integrity sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==
+  
   "@types/webpack-dev-server@^3":
     version "3.11.6"
     resolved "https://registry.yarnpkg.com/@types/webpack-dev-server/-/webpack-dev-server-3.11.6.tgz#d8888cfd2f0630203e13d3ed7833a4d11b8a34dc"
@@ -2765,6 +2782,28 @@ Lockfile:
       "@types/markdown-it" "^10.0.0"
       "@types/webpack-dev-server" "^3"
       webpack-chain "^6.0.0"
+  
+  "@vueuse/core@^9.5.0":
+    version "9.5.0"
+    resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-9.5.0.tgz#6726e952e8f92b465457d3bc95deb385aacd9a41"
+    integrity sha512-6GsWBsJHEb3sYw15mbLrcbslAVY45pkzjJYTKYKCXv88z7srAF0VEW0q+oXKsl58tCbqooplInahXFg8Yo1m4w==
+    dependencies:
+      "@types/web-bluetooth" "^0.0.16"
+      "@vueuse/metadata" "9.5.0"
+      "@vueuse/shared" "9.5.0"
+      vue-demi "*"
+  
+  "@vueuse/metadata@9.5.0":
+    version "9.5.0"
+    resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-9.5.0.tgz#b01c84230261ddee4d439ae5d9c21343dc5ae565"
+    integrity sha512-4M1AyPZmIv41pym+K5+4wup3bKuYebbH8w8BROY1hmT7rIwcyS4tEL+UsGz0Hiu1FCOxcoBrwtAizc0YmBJjyQ==
+  
+  "@vueuse/shared@9.5.0":
+    version "9.5.0"
+    resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-9.5.0.tgz#f5306548af0dc9f2b3a0d4da74e62bfdd6211241"
+    integrity sha512-HnnCWU1Vg9CVWRCcI8ohDKDRB2Sc4bTgT1XAIaoLSfVHHn+TKbrox6pd3klCSw4UDxkhDfOk8cAdcK+Z5KleCA==
+    dependencies:
+      vue-demi "*"
   
   "@webassemblyjs/ast@1.9.0":
     version "1.9.0"
@@ -3860,6 +3899,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/cli-boxes/-/cli-boxes-2.2.1.tgz#ddd5035d25094fce220e9cab40a45840a440318f"
     integrity sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==
   
+  clipboard@^2.0.4:
+    version "2.0.11"
+    resolved "https://registry.npmjs.org/clipboard/-/clipboard-2.0.11.tgz#62180360b97dd668b6b3a84ec226975762a70be5"
+    integrity sha512-C+0bbOqkezLIsmWSvlsXS0Q0bmkugu7jcfMIACB+RDEntIzQIkdr148we28AfSloQLRdZlYL/QYyrq05j/3Faw==
+    dependencies:
+      good-listener "^1.2.2"
+      select "^1.1.2"
+      tiny-emitter "^2.0.0"
+  
   cliui@^5.0.0:
     version "5.0.0"
     resolved "https://registry.yarnpkg.com/cliui/-/cliui-5.0.0.tgz#deefcfdb2e800784aa34f46fa08e06851c7bbbc5"
@@ -4574,6 +4622,11 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
     integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
+  
+  delegate@^3.1.2:
+    version "3.2.0"
+    resolved "https://registry.npmjs.org/delegate/-/delegate-3.2.0.tgz#b66b71c3158522e8ab5744f720d8ca0c2af59166"
+    integrity sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw==
   
   density-clustering@1.3.0:
     version "1.3.0"
@@ -5692,6 +5745,13 @@ Lockfile:
       pify "^4.0.1"
       slash "^2.0.0"
   
+  good-listener@^1.2.2:
+    version "1.2.2"
+    resolved "https://registry.npmjs.org/good-listener/-/good-listener-1.2.2.tgz#d53b30cdf9313dffb7dc9a0d477096aa6d145c50"
+    integrity sha512-goW1b+d9q/HIwbVYZzZ6SsTr4IgE+WA44A0GmPIQstuOrgsFcT7VEJ48nmr9GaRtNu0XTKacFLGnBPAM6Afouw==
+    dependencies:
+      delegate "^3.1.2"
+  
   got@^9.6.0:
     version "9.6.0"
     resolved "https://registry.yarnpkg.com/got/-/got-9.6.0.tgz#edf45e7d67f99545705de1f7bbeeeb121765ed85"
@@ -5855,6 +5915,11 @@ Lockfile:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
     integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
+  
+  highlight.js@^11.6.0:
+    version "11.6.0"
+    resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-11.6.0.tgz#a50e9da05763f1bb0c1322c8f4f755242cff3f5a"
+    integrity sha512-ig1eqDzJaB0pqEvlPVIpSSyMaO92bH1N2rJpLMN/nX396wTpDA4Eq0uK+7I/2XG17pFaaKE0kjV/XPeGt7Evjw==
   
   highlight.js@^9.7.0:
     version "9.18.5"
@@ -8858,6 +8923,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
     integrity sha512-mEugaLK+YfkijB4fx0e6kImuJdCIt2LxCRcbEYPqRGCs4F2ogyfZU5IAZRdjCP8JPq2AtdNoC/Dux63d9Kiryg==
   
+  select@^1.1.2:
+    version "1.1.2"
+    resolved "https://registry.npmjs.org/select/-/select-1.1.2.tgz#0e7350acdec80b1108528786ec1d4418d11b396d"
+    integrity sha512-OwpTSOfy6xSs1+pwcNrv0RBMOzI39Lp3qQKUTPVVPRjCdNa5JH/oPRiqsesIskK8TVgmRiHwO4KXlV2Li9dANA==
+  
   selfsigned@^1.10.8:
     version "1.10.14"
     resolved "https://registry.yarnpkg.com/selfsigned/-/selfsigned-1.10.14.tgz#ee51d84d9dcecc61e07e4aba34f229ab525c1574"
@@ -9582,6 +9652,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
     integrity sha512-qsdtZH+vMoCARQtyod4imc2nIJwg9Cc7lPRrw9CzF8ZKR0khdr8+2nX80PBhET3tcyTtJDxAffGh2rXH4tyU8A==
   
+  tiny-emitter@^2.0.0:
+    version "2.1.0"
+    resolved "https://registry.npmjs.org/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+    integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
+  
   tinycolor2@^1.4.1:
     version "1.4.2"
     resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.4.2.tgz#3f6a4d1071ad07676d7fa472e1fac40a719d8803"
@@ -10015,10 +10090,22 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
     integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
   
+  vue-demi@*:
+    version "0.13.11"
+    resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
+    integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
+  
   vue-hot-reload-api@^2.3.0:
     version "2.3.4"
     resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
     integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
+  
+  vue-json-viewer@2:
+    version "2.2.22"
+    resolved "https://registry.npmjs.org/vue-json-viewer/-/vue-json-viewer-2.2.22.tgz#7ea7454b8aac3701245b88acf39de876cc54221e"
+    integrity sha512-3oPH5BxoUWva/qp7wNJj+15FBXyi9Yu5VDW4mCWivjHR1pUpMv34fjqqxML7jh2uOqm1S/3Xks5nQ5JjC5+OWw==
+    dependencies:
+      clipboard "^2.0.4"
   
   vue-loader@^15.7.1:
     version "15.10.0"

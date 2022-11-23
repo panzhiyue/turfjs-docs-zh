@@ -995,6 +995,13 @@
   dependencies:
     ol "^6.14.1"
 
+"@highlightjs/vue-plugin@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/@highlightjs/vue-plugin/-/vue-plugin-1.0.2.tgz#b63cc02b9f89803698166335e2c62028b52b3c26"
+  integrity sha512-4VVPeUZL6/NZ7J6/23RQIYLm9HR9rnOdz+cxx7/ISgtMVaf0vHAAwgHKmB54GNs5VvJlWMnKOuiLVcy30elz8g==
+  dependencies:
+    highlight.js "^10.7.2"
+
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.1.1.tgz#e5d2e450306a9491e3bd77e323e38d7aff315996"
@@ -2668,7 +2675,7 @@
     "@vuepress/types" "1.9.7"
     nprogress "^0.2.0"
 
-"@vuepress/plugin-register-components@1.9.7":
+"@vuepress/plugin-register-components@1.9.7", "@vuepress/plugin-register-components@^1.8.0":
   version "1.9.7"
   resolved "https://registry.yarnpkg.com/@vuepress/plugin-register-components/-/plugin-register-components-1.9.7.tgz#0234f887b32c1d836fa68cdd06d7e851397fd268"
   integrity sha512-l/w1nE7Dpl+LPMb8+AHSGGFYSP/t5j6H4/Wltwc2QcdzO7yqwC1YkwwhtTXvLvHOV8O7+rDg2nzvq355SFkfKA==
@@ -5855,6 +5862,11 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
+
+highlight.js@^10.7.2:
+  version "10.7.3"
+  resolved "https://registry.npmjs.org/highlight.js/-/highlight.js-10.7.3.tgz#697272e3991356e40c3cac566a74eef681756531"
+  integrity sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==
 
 highlight.js@^9.7.0:
   version "9.18.5"
@@ -10035,11 +10047,6 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
-vue-json-pretty@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.npmjs.org/vue-json-pretty/-/vue-json-pretty-1.9.3.tgz#aa140406adb28b2c91563fb7f29d530a3be0425d"
-  integrity sha512-b13DP1WGQ+ACUU2K5hmwFfHrHnydCFSTerE7fppeYMojSWN/5EOPODQECfIIRaJ7zzHtPW9OifkThFGPyY0xRg==
-
 vue-json-viewer@2:
   version "2.2.22"
   resolved "https://registry.npmjs.org/vue-json-viewer/-/vue-json-viewer-2.2.22.tgz#7ea7454b8aac3701245b88acf39de876cc54221e"
@@ -10123,6 +10130,13 @@ vuepress-html-webpack-plugin@^3.2.0:
     tapable "^1.0.0"
     toposort "^1.0.0"
     util.promisify "1.0.0"
+
+vuepress-plugin-code-switcher@~1.0:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/vuepress-plugin-code-switcher/-/vuepress-plugin-code-switcher-1.0.5.tgz#6c7143e3640abfcbb93a1adddf7637c5e00fe512"
+  integrity sha512-vFq5Nmud+96vKRyBq9FoKq9nNRhs4BhfrZfeZW1RvPtSVnQIAq5Pfs6I/wMZmeXxBvvcIDTnhoVuz3tUQ9glrA==
+  dependencies:
+    "@vuepress/plugin-register-components" "^1.8.0"
 
 vuepress-plugin-container@^2.0.2:
   version "2.1.5"

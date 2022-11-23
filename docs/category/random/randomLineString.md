@@ -35,7 +35,7 @@
 var lineStrings = turf.randomLineString(25, { bbox: [-180, -90, 180, 90] }); // 25个线要素集合
 ```
 
-**动态设置**
+**基础用法**
 ::: demo
 
 ```vue

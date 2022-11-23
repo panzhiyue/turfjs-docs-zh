@@ -15,14 +15,14 @@
 | cellSize | number                      | 每个网格点之间的距离 |
 | options  | Object                      | 可配置项             |
 
-**options选项**
+**options 选项**
 
-| 属性     | 类型   | 默认值       | 描述                                                         |
-| :------- | :----- | :----------- | :----------------------------------------------------------- |
+| 属性     | 类型   | 默认值       | 描述                                                                                           |
+| :------- | :----- | :----------- | :--------------------------------------------------------------------------------------------- |
 | gridType | string | "square"     | 出参要素集的要素类型，可选值有："square"(矩形)、"point"(点)、"hex"(六边形)、"triangle"(三角形) |
-| property | string | "elevation"  | 参与计算的属性                                               |
-| units    | string | "kilometers" | 单位，可选的有 degrees、radians、miles、kilometers           |
-| weight   | number | 1            | 调节距离衰减权重的指数                                       |
+| property | string | "elevation"  | 参与计算的属性                                                                                 |
+| units    | string | "kilometers" | 单位，可选的有 degrees、radians、miles、kilometers                                             |
+| weight   | number | 1            | 调节距离衰减权重的指数                                                                         |
 
 **返回**
 
@@ -33,15 +33,149 @@
 **示例**
 
 ```js
-var points = turf.randomPoint(30, {bbox: [50, 30, 70, 50]});
+var points = turf.randomPoint(30, { bbox: [50, 30, 70, 50] });
 
 // add a random property to each point
-turf.featureEach(points, function(point) {
-    point.properties.solRad = Math.random() * 50;
+turf.featureEach(points, function (point) {
+  point.properties.solRad = Math.random() * 50;
 });
-var options = {gridType: 'points', property: 'solRad', units: 'miles'};
+var options = { gridType: "points", property: "solRad", units: "miles" };
 var grid = turf.interpolate(points, 100, options);
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/interpolate.566a42c7.webp)
 
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <base-map :zoom="1">
+    <vue2ol-layer-vector :zIndex="20" v-if="features">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+export default {
+  data() {
+    return {
+      coordinate: null,
+      features: null,
+      result: null,
+    };
+  },
+  mounted() {
+    var points = turf.randomPoint(30, { bbox: [50, 30, 70, 50] });
+    // add a random property to each point
+    turf.featureEach(points, function (point) {
+      point.properties.solRad = Math.random() * 50;
+    });
+    var options = { gridType: "points", property: "solRad", units: "miles" };
+    this.result = turf.interpolate(points, 100, options);
+
+    this.features = new GeoJSON().readFeatures(this.result);
+  },
+  methods: {},
+};
+</script>
+```
+
+:::
+
+**动态设置**
+::: demo
+
+```vue
+<template>
+  <base-map :zoom="1">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible">
+      <a-row>
+        <a-space
+          ><a-button type="primary" @click="handleDrawPoint"
+            >绘制点</a-button
+          ></a-space
+        >
+      </a-row>
+      <a-row>
+        <a-space
+          >每个网格点之间的距离：<a-input-number
+            v-model="cellSize"
+          ></a-input-number
+        ></a-space>
+      </a-row>
+      <a-row>
+        <a-space
+          >出参要素集的要素类型：<grid-type :value.sync="gridType"></grid-type
+        ></a-space>
+      </a-row>
+      <a-row>
+        <a-space
+          >单位：<length-units :value.sync="units"></length-units
+        ></a-space>
+      </a-row>
+      <a-row>
+        <a-space
+          >调节距离衰减权重的指数：<a-input-number
+            v-model="weight"
+          ></a-input-number
+        ></a-space>
+      </a-row>
+      <a-row>
+        <a-button type="primary" @click="handleSure">确定</a-button>
+      </a-row>
+      <a-row>
+        <a-space><json :data="result" /></a-space>
+      </a-row>
+    </drawer>
+    <vue2ol-layer-vector :zIndex="20" v-if="features">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+export default {
+  data() {
+    return {
+      coordinate: null,
+      visible: true,
+      features: null,
+      result: null,
+      cellSize: 1,
+      gridType: "square",
+      units: "kilometers",
+      weight: 1,
+    };
+  },
+  mounted() {},
+  methods: {
+    handleSure() {
+      this.result = turf.randomLineString(this.count, {
+        bbox: this.bbox,
+        num_vertices: this.num_vertices,
+        max_length: this.max_length,
+        max_rotation: this.max_rotation,
+      });
+      this.features = new GeoJSON().readFeatures(this.result);
+      console.log(this.features);
+    },
+    handleDrawPoint() {},
+  },
+};
+</script>
+```
+
+:::

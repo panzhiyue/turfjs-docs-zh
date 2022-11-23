@@ -2,6 +2,8 @@
 // import Vue2ol from "@gis-js/vue2ol"
 import "ol/ol.css";
 import "ant-design-vue/dist/antd.css";
+import "highlight.js/styles/default.css";
+
 // import a from "ant-design-vue"
 // console.log(a);
 
@@ -42,6 +44,12 @@ export default async ({
         Vue.component("VueJsonViewer", module.default);
       }
     );
+    await import(
+      "@highlightjs/vue-plugin" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      // console.log(module);
+      Vue.use(module.default);
+    });
 
     await import(
       "../components/BaseMap.vue" /* webpackChunkName: "notification" */
@@ -68,6 +76,11 @@ export default async ({
       "../components/Bbox.vue" /* webpackChunkName: "notification" */
     ).then((module) => {
       Vue.component("Bbox", module.default);
+    });
+    await import(
+      "../components/GridType.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("GridType", module.default);
     });
   }
 };

@@ -9,14 +9,15 @@
     "@gis-js/utilsol": "^1.0.0-beta.5",
     "@gis-js/vue2ol": "^1.0.0-alpha.40",
     "@gis-js/vue2ol-extend": "^1.0.0-alpha.44",
+    "@highlightjs/vue-plugin": "^1.0.2",
     "@panzhiyue/vuepress-plugin-demo-container-v2": "^1.0.3",
     "@turf/turf": "^6.5.0",
     "ant-design-vue": "^1.7.8",
     "ol": "6.14.1",
     "ol-echarts": "^3.0.0",
-    "vue-json-pretty": "^1.9.3",
     "vue-json-viewer": "2",
     "vuepress": "^1.9.7",
+    "vuepress-plugin-code-switcher": "~1.0",
     "vuepress-plugin-one-click-copy": "^1.0.6"
   },
   "devDependencies": {

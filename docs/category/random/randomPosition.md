@@ -51,9 +51,7 @@ export default {
   mounted() {
     this.coordinate = turf.randomPosition([-180, -90, 180, 90]);
   },
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 ```
@@ -75,16 +73,18 @@ export default {
       "
       >打开</a-button
     >
-    <drawer :visible.sync="visible">
-      <a-row>
-        <a-space><bbox :value.sync="bbox"></bbox></a-space
-      ></a-row>
-      <a-row>
-        <a-button type="primary" @click="handleSure">确定</a-button>
-      </a-row>
-      <a-row>
-        <a-space>{{ coordinate }}</a-space>
-      </a-row>
+    <drawer :visible.sync="visible" :code="code">
+      <template>
+        <a-row>
+          <a-space><bbox :value.sync="bbox"></bbox></a-space
+        ></a-row>
+        <a-row>
+          <a-button type="primary" @click="handleSure">确定</a-button>
+        </a-row>
+        <a-row>
+          <a-space>{{ coordinate }}</a-space>
+        </a-row>
+      </template>
     </drawer>
     <vue2ol-layer-vector :zIndex="20">
       <vue2ol-source-vector>
@@ -107,6 +107,13 @@ export default {
       result: null,
       bbox: [-180, -90, 180, 90],
     };
+  },
+  computed: {
+    code() {
+      return `
+      let position = turf.randomPosition(${this.bbox});
+      `;
+    },
   },
   mounted() {},
   methods: {
