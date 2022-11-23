@@ -110,9 +110,7 @@ export default {
   },
   computed: {
     code() {
-      return `
-      let position = turf.randomPosition(${this.bbox});
-      `;
+      return `let position = turf.randomPosition(${this.bbox});`;
     },
   },
   mounted() {},

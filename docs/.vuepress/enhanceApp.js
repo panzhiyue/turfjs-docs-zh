@@ -2,7 +2,7 @@
 // import Vue2ol from "@gis-js/vue2ol"
 import "ol/ol.css";
 import "ant-design-vue/dist/antd.css";
-import "highlight.js/styles/default.css";
+import "highlight.js/styles/lightfair.css";
 
 // import a from "ant-design-vue"
 // console.log(a);
