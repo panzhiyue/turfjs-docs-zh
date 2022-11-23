@@ -8,24 +8,44 @@
     :width="500"
     @close="onClose"
   >
-    <slot></slot>
+    <!-- <slot></slot> -->
+    <a-tabs type="card">
+      <a-tab-pane key="1" tab="参数设置"> <slot></slot></a-tab-pane>
+      <a-tab-pane key="2" tab="代码">
+        <pre>
+        <code v-html="hljs.highlightAuto(code).value"></code>
+      </pre>
+      </a-tab-pane>
+    </a-tabs>
   </a-drawer>
 </template>
 <script>
+import hljs from "highlight.js";
 export default {
   data() {
-    return {};
+    return {
+      codeOptions: {
+        mode: "text/javascript",
+      },
+      hljs,
+    };
   },
   props: {
     visible: {
       type: Boolean,
       default: true,
     },
+    code: {
+      type: String,
+    },
   },
   methods: {
     onClose() {
       this.$emit("update:visible", false);
     },
+  },
+  mounted() {
+    console.log(hljs.highlightAuto(this.code).value);
   },
 };
 </script>
@@ -34,8 +54,7 @@ export default {
   padding: 0px;
 }
 
-.ant-row{
-  margin-top:4px;
-
+.ant-row {
+  margin-top: 4px;
 }
 </style>
