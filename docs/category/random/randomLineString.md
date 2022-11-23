@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       coordinate: null,
-      features:null
+      features: null,
     };
   },
   mounted() {
@@ -87,23 +87,32 @@ export default {
       "
       >打开</a-button
     >
-    <drawer :visible.sync="visible">
+    <drawer :visible.sync="visible" :code="code">
       <a-row>
         <a-space
-          >数量(count)：<a-input-number v-model="count" :min="1"></a-input-number
+          >数量(count)：<a-input-number
+            v-model="count"
+            :min="1"
+          ></a-input-number
         ></a-space>
       </a-row>
       <a-row>
         <a-space><bbox :value.sync="bbox"></bbox></a-space
       ></a-row>
       <a-row
-        >坐标数量(num_vertices)：<a-input-number v-model="num_vertices"></a-input-number
+        >坐标数量(num_vertices)：<a-input-number
+          v-model="num_vertices"
+        ></a-input-number
       ></a-row>
       <a-row
-        >最大度数(max_length)：<a-input-number v-model="max_length"></a-input-number
+        >最大度数(max_length)：<a-input-number
+          v-model="max_length"
+        ></a-input-number
       ></a-row>
       <a-row
-        >最大弧度(max_rotation	)：<a-input-number v-model="max_rotation"></a-input-number
+        >最大弧度(max_rotation )：<a-input-number
+          v-model="max_rotation"
+        ></a-input-number
       ></a-row>
       <a-row>
         <a-button type="primary" @click="handleSure">确定</a-button>
@@ -133,6 +142,16 @@ export default {
       max_length: 10,
       max_rotation: Math.PI / 8,
     };
+  },
+  computed: {
+    code() {
+      return `let lineStrings  = turf.randomLineString(${this.count}, {
+  bbox:${this.bbox},
+  num_vertices: ${this.num_vertices},
+  max_length: ${this.max_length},
+  max_rotation: ${this.max_rotation},
+});`;
+    },
   },
   mounted() {},
   methods: {

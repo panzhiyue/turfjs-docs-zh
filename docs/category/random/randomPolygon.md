@@ -87,18 +87,27 @@ export default {
       "
       >打开</a-button
     >
-    <drawer :visible.sync="visible">
+    <drawer :visible.sync="visible" :code="code">
       <a-row>
         <a-space
-          >数量(count)：<a-input-number v-model="count" :min="1"></a-input-number
+          >数量(count)：
+          <a-input-number v-model="count" :min="1"></a-input-number
         ></a-space>
       </a-row>
       <a-row>
         <a-space><bbox :value.sync="bbox"></bbox></a-space
       ></a-row>
-      <a-row>坐标数量(num_vertices)：<a-input-number v-model="num_vertices"></a-input-number></a-row>
-      <a-row>相对于中心点的最大经度或纬度(max_radial_length)：<a-input-number v-model="max_radial_length"></a-input-number></a-row>
-    </a-row>
+      <a-row
+        >坐标数量(num_vertices)：<a-input-number
+          v-model="num_vertices"
+        ></a-input-number
+      ></a-row>
+      <a-row
+        >相对于中心点的最大经度或纬度(max_radial_length)：<a-input-number
+          v-model="max_radial_length"
+        ></a-input-number
+      ></a-row>
+
       <a-row>
         <a-button type="primary" @click="handleSure">确定</a-button>
       </a-row>
@@ -127,10 +136,19 @@ export default {
       max_radial_length: 10,
     };
   },
+  computed: {
+    code() {
+      return `let polygons  = turf.randomPolygon(${this.count}, {
+  bbox:${this.bbox},
+  num_vertices: ${this.num_vertices},
+  max_radial_length: ${this.max_radial_length},
+});`;
+    },
+  },
   mounted() {},
   methods: {
     handleSure() {
-        console.log({
+      console.log({
         bbox: this.bbox,
         num_vertices: this.num_vertices,
         max_radial_length: this.max_radial_length,

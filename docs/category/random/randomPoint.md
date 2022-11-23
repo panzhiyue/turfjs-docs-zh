@@ -81,7 +81,7 @@ export default {
       "
       >打开</a-button
     >
-    <drawer :visible.sync="visible">
+    <drawer :visible.sync="visible" :code="code">
       <a-row>
         <a-space
           >数量(count)：<a-input-number
@@ -118,6 +118,13 @@ export default {
       result: null,
       bbox: [-180, -90, 180, 90],
     };
+  },
+  computed: {
+    code() {
+      return `let points = turf.randomPoint(${this.count}, {
+  bbox:${this.bbox}
+});`;
+    },
   },
   mounted() {},
   methods: {
