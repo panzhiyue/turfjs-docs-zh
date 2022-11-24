@@ -4,18 +4,16 @@
 > npm install @turf/centroid
 ```
 
-
-
 > Takes one or more features and calculates the centroid using the mean of all vertices. This lessens the effect of small islands and artifacts when calculating the centroid of a set of polygons.
-> 
+>
 > 接收入参要素`Feature`或要素集`FeatureCollection`，计算并返回它们的质心。
 
 **参数**
 
-| 参数       | 类型    | 描述                        |
-| :--------- | :------ | :-------------------------- |
-| geojson    | GeoJSON | 任意geojson对象             |
-| properties | Object  | 输出geojson的properties属性 |
+| 参数       | 类型    | 描述                            |
+| :--------- | :------ | :------------------------------ |
+| geojson    | GeoJSON | 任意 geojson 对象               |
+| properties | Object  | 输出 geojson 的 properties 属性 |
 
 **返回**
 
@@ -33,12 +31,12 @@ var polygon = turf.polygon([
     [-84, 31],
     [-80, 33],
     [-77, 39],
-    [-81, 41]
-  ]
+    [-81, 41],
+  ],
 ]);
 
 var centroid = turf.centroid(polygon, {
-  desc: "centroid"
+  desc: "centroid",
 });
 /*
 {
@@ -54,10 +52,7 @@ var centroid = turf.centroid(polygon, {
 */
 ```
 
-
-
 ![](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/centroid.a4b90a58.webp)
-
 
 **基础用法**
 ::: demo
@@ -65,6 +60,18 @@ var centroid = turf.centroid(polygon, {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature v-for="coordinate in coordinates">
@@ -91,7 +98,19 @@ export default {
       ],
       center: null,
       centerStyle: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.point(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.centroid(features);`;
+    },
   },
   mounted() {
     let ps = this.coordinates.map((item) => {
@@ -99,8 +118,8 @@ export default {
     });
     let features = turf.featureCollection(ps);
 
-    let center = turf.centroid(features);
-    this.center = center.geometry.coordinates;
+    this.result = turf.centroid(features);
+    this.center = this.result.geometry.coordinates;
 
     this.centerStyle = new Style({
       image: new Circle({
@@ -126,6 +145,18 @@ export default {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -154,7 +185,19 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.point(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.centroid(features);`;
+    },
   },
   mounted() {
     this.centerStyle = new Style({
@@ -179,8 +222,8 @@ export default {
         return turf.point(item);
       });
       let features = turf.featureCollection(ps);
-      let center = turf.centroid(features);
-      this.center = center.geometry.coordinates;
+      this.result = turf.centroid(features);
+      this.center = this.result.geometry.coordinates;
     },
   },
 };
@@ -189,14 +232,24 @@ export default {
 
 :::
 
-
-
 **动态绘制线**
 ::: demo
 
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -225,6 +278,8 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      visible: true,
+      result: null,
     };
   },
   mounted() {
@@ -240,6 +295,16 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.lineString(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.centroid(features);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.coordinates.push(e.feature.getGeometry().getCoordinates());
@@ -250,8 +315,8 @@ export default {
         return turf.lineString(item);
       });
       let features = turf.featureCollection(ps);
-      let center = turf.centroid(features);
-      this.center = center.geometry.coordinates;
+      this.result = turf.centroid(features);
+      this.center = this.result.geometry.coordinates;
     },
   },
 };
@@ -260,14 +325,24 @@ export default {
 
 :::
 
-
-
 **动态绘制面**
 ::: demo
 
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -296,7 +371,19 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.polygon(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.centroid(features);`;
+    },
   },
   mounted() {
     this.centerStyle = new Style({
@@ -321,8 +408,8 @@ export default {
         return turf.polygon(item);
       });
       let features = turf.featureCollection(ps);
-      let center = turf.centroid(features);
-      this.center = center.geometry.coordinates;
+      this.result = turf.centroid(features);
+      this.center = this.result.geometry.coordinates;
     },
   },
 };

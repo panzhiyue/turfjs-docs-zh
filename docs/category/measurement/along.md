@@ -10,8 +10,6 @@
 
 > 注意:距离是从起点开始计算的，如果距离超过线段的长度，会返回终点的 GeoJSON
 
-
-
 **参数**
 
 | 参数     | 类型                   | 描述     |
@@ -38,7 +36,7 @@
 var line = turf.lineString([
   [-83, 30],
   [-84, 36],
-  [-78, 41]
+  [-78, 41],
 ]);
 var options = { units: "miles" };
 
@@ -61,6 +59,20 @@ var along = turf.along(line, 200, options);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-space><json :data="result"></json></a-space>
+      </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -89,14 +101,22 @@ export default {
         [120.13926029205324, 27.989206790924072],
       ],
       marker: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      return `let options = { units: "miles" };
+var along = turf.along(turf.lineString(${JSON.stringify(this.coordinates)}), 10, options);`;
+    },
   },
   mounted() {
     let options = { units: "miles" };
 
-    let value = turf.along(turf.lineString(this.coordinates), 10, options);
+    this.result = turf.along(turf.lineString(this.coordinates), 10, options);
 
-    this.marker = value.geometry.coordinates;
+    this.marker = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -110,8 +130,32 @@ export default {
 ```vue
 <template>
   <base-map>
-    距离：<input type="number" v-model="length" />
-    单位：<length-units :value.sync="units"></length-units>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-space
+          >距离：<a-input-number type="number" v-model="length"
+        /></a-space>
+      </a-row>
+      <a-row>
+        <a-space>
+          单位：<length-units :value.sync="units"></length-units
+        ></a-space>
+      </a-row>
+      <a-row>
+        <a-button type="primary" @click="handleSure">确定</a-button>
+      </a-row>
+      <a-row><json :data="result"></json></a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -142,35 +186,40 @@ export default {
       marker: null,
       length: 10,
       units: "kilometers",
+      visible: true,
+      result: "",
     };
   },
-  mounted() {},
-  watch: {
-    geometry() {
-      this.initMarker();
-    },
-    length() {
-      this.initMarker();
-    },
-    units() {
-      this.initMarker();
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return "";
+      }
+      return `let options = { units: '${this.units}' };
+var along = turf.along(
+  turf.lineString(${JSON.stringify(this.geometry.getCoordinates())}),
+  ${this.length},
+  options
+);`;
     },
   },
+  mounted() {},
+  watch: {},
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
     },
-    initMarker() {
+    handleSure() {
       if (!this.geometry) {
         return;
       }
       let options = { units: this.units };
-      let value = turf.along(
+      this.result = turf.along(
         turf.lineString(this.geometry.getCoordinates()),
         this.length,
         options
       );
-      this.marker = value.geometry.coordinates;
+      this.marker = this.result.geometry.coordinates;
     },
   },
 };
@@ -178,4 +227,3 @@ export default {
 ```
 
 :::
-

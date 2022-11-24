@@ -8,8 +8,6 @@
 >
 > 接收一个点和一条线段，获取二者之间的最小距离
 
-
-
 **参数**
 
 | 参数    | 类型                   | 描述           |
@@ -50,7 +48,18 @@ var distance = turf.pointToLineDistance(pt, line, { units: "miles" });
 ```vue
 <template>
   <base-map>
-    {{ value }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ result }}</a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -77,11 +86,21 @@ export default {
         [120.13926029205324, 27.989206790924072],
       ],
       coordinates2: [120.32465457916261, 28.229897499084473],
-      value: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.pointToLineDistance(
+  turf.point(${JSON.stringify(this.coordinates2)}),
+  turf.lineString(${JSON.stringify(this.coordinates)}),
+  { units: "miles" }
+);`;
+    },
+  },
   mounted() {
-    this.value = turf.pointToLineDistance(
+    this.result = turf.pointToLineDistance(
       turf.point(this.coordinates2),
       turf.lineString(this.coordinates),
       { units: "miles" }
@@ -100,11 +119,24 @@ export default {
 ```vue
 <template>
   <base-map>
-    单位：<length-units :value.sync="units"></length-units>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handlePoint">点</a-button
+        ><a-button type="primary" @click="handleLine">线</a-button></a-row
+      >
+      <a-row> 单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> {{result}}</a-row>
+    </drawer>
 
-    <input type="button" value="点" @click="handlePoint" />
-    <input type="button" value="线" @click="handleLine" />
-    {{ value }}
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadyPointSource">
         <vue2ol-interaction-draw
@@ -134,7 +166,8 @@ export default {
     return {
       isDrawLine: false,
       isDrawPoint: false,
-      value: null,
+      result: null,
+      visible: true,
       pointGeometry: null,
       lineGeometry: null,
       pointSource: null,
@@ -154,14 +187,26 @@ export default {
     },
   },
   mounted() {},
+  computed: {
+    code() {
+      if (!this.pointGeometry || !this.lineGeometry) {
+        return;
+      }
+      return `var options = { units: '${this.units}'' };
+let result = turf.pointToLineDistance(
+  turf.point(${JSON.stringify(this.pointGeometry.getCoordinates())}),
+  turf.lineString(${JSON.stringify(this.lineGeometry.getCoordinates())}),
+  options
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.pointGeometry || !this.lineGeometry) {
         return;
       }
-      console.log(this.lineGeometry.getCoordinates(),this.pointGeometry.getCoordinates());
       var options = { units: this.units };
-      this.value = turf.pointToLineDistance(
+      this.result = turf.pointToLineDistance(
         turf.point(this.pointGeometry.getCoordinates()),
         turf.lineString(this.lineGeometry.getCoordinates()),
         options

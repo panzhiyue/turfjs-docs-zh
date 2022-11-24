@@ -5,21 +5,21 @@
 ```
 
 > Takes a Feature or FeatureCollection and returns the absolute center point of all features.
-> 
+>
 > 接收入参要素`Feature`或要素集`FeatureCollection`，计算并返回它们的绝对中心点。
 
 **参数**
 
-| 参数    | 类型    | 描述            |
-| :------ | :------ | :-------------- |
-| geojson | GeoJSON | 任意geojson对象 |
-| options | Object  | 可配置项        |
+| 参数    | 类型    | 描述              |
+| :------ | :------ | :---------------- |
+| geojson | GeoJSON | 任意 geojson 对象 |
+| options | Object  | 可配置项          |
 
 **options 选项**
 
-| 属性       | 类型   | 默认值 | 描述                        |
-| :--------- | :----- | :----- | :-------------------------- |
-| properties | Object | {}     | 输出geojson的properties属性 |
+| 属性       | 类型   | 默认值 | 描述                            |
+| :--------- | :----- | :----- | :------------------------------ |
+| properties | Object | {}     | 输出 geojson 的 properties 属性 |
 
 **返回**
 
@@ -33,7 +33,7 @@
 var features = turf.featureCollection([
   turf.point([-97.522259, 35.4691]),
   turf.point([-97.502754, 35.463455]),
-  turf.point([-97.508269, 35.463245])
+  turf.point([-97.508269, 35.463245]),
 ]);
 
 var center = turf.center(features);
@@ -55,13 +55,13 @@ var center = turf.center(
       [-97.522259, 35.4691],
       [-97.502754, 35.463455],
       [-97.508269, 35.463245],
-      [-97.522259, 35.4691]
-    ]
+      [-97.522259, 35.4691],
+    ],
   ]),
   {
     properties: {
-      desc: "center point"
-    }
+      desc: "center point",
+    },
   }
 );
 /*
@@ -86,6 +86,18 @@ var center = turf.center(
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature v-for="coordinate in coordinates">
@@ -112,7 +124,19 @@ export default {
       ],
       center: null,
       centerStyle: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.point(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let points = ${JSON.stringify(features)};
+let result = turf.center(points);`;
+    },
   },
   mounted() {
     let ps = this.coordinates.map((item) => {
@@ -120,8 +144,8 @@ export default {
     });
     let features = turf.featureCollection(ps);
 
-    let center = turf.center(features);
-    this.center = center.geometry.coordinates;
+    this.result = turf.center(features);
+    this.center = this.result.geometry.coordinates;
 
     this.centerStyle = new Style({
       image: new Circle({
@@ -147,6 +171,18 @@ export default {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -175,7 +211,19 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.point(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let points = ${JSON.stringify(features)};
+let result = turf.center(points);`;
+    },
   },
   mounted() {
     this.centerStyle = new Style({
@@ -200,8 +248,8 @@ export default {
         return turf.point(item);
       });
       let features = turf.featureCollection(ps);
-      let center = turf.center(features);
-      this.center = center.geometry.coordinates;
+      this.result = turf.center(features);
+      this.center = this.result.geometry.coordinates;
     },
   },
 };

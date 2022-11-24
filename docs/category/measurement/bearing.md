@@ -5,7 +5,7 @@
 ```
 
 > Takes two points and finds the geographic bearing between them, i.e. the angle measured in degrees from the north line (0 degrees)
-> 
+>
 > 接收两个点类型的 GeoJSON，计算获取二者之间的地理方位，并与正北方向所形成的角度(0 度)
 
 > 即以起始点为参照物，终止点的偏移角度
@@ -28,7 +28,7 @@
 
 number - bearing in decimal degrees, between -180 and 180 degrees (positive clockwise)
 
-number - 如果final为false,返回的数值介于 -180 至 180 之间，顺时针为正值,否则返回的数值介于 0 至 360 之间
+number - 如果 final 为 false,返回的数值介于 -180 至 180 之间，顺时针为正值,否则返回的数值介于 0 至 360 之间
 
 **示例**
 
@@ -43,8 +43,6 @@ var bearing = turf.bearing(point1, point2, { final: true }); // 189.645318861169
 var bearing = turf.bearing([-75.343, 39.984], [-75.534, 39.123]); // -170.2330491349224
 ```
 
-
-
 ![image-20221108114651670](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/image-20221108114651670.webp)
 
 **基础用法**
@@ -53,7 +51,18 @@ var bearing = turf.bearing([-75.343, 39.984], [-75.534, 39.123]); // -170.233049
 ```vue
 <template>
   <base-map>
-    {{ value }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ value }}</a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature :style-obj="startStyle">
@@ -80,7 +89,16 @@ export default {
       value: null,
       startStyle: null,
       endStyle: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      return `let result = turf.bearing(
+  turf.point(${JSON.stringify(this.startCoordinates)}),
+  turf.point(${JSON.stringify(this.endCoordinates)})
+);`;
+    },
   },
   mounted() {
     this.startStyle = new Style({
@@ -135,9 +153,26 @@ export default {
 ```vue
 <template>
   <base-map>
-    {{ value }}
-    <input type="button" value="起点" @click="handleStart" />
-    <input type="button" value="终点" @click="handleEnd" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handleStart"
+          >绘制起点</a-button
+        ></a-row
+      >
+      <a-row
+        ><a-button type="primary" @click="handleEnd">绘制终点</a-button></a-row
+      >
+      <a-row> {{ value }}</a-row>
+    </drawer>
     <vue2ol-layer-vector :style-obj="startStyle">
       <vue2ol-source-vector @ready="handleReadyStartSource">
         <vue2ol-interaction-draw
@@ -175,6 +210,7 @@ export default {
       endGeometry: null,
       startSource: null,
       endSource: null,
+      visible: true,
     };
   },
   watch: {
@@ -183,6 +219,18 @@ export default {
     },
     endGeometry() {
       this.init();
+    },
+  },
+  computed: {
+    code() {
+      if (!this.startGeometry || !this.endGeometry) {
+        return;
+      }
+      return `let result = turf.bearing(
+  turf.point(${JSON.stringify(this.startGeometry.getCoordinates())}),
+  turf.point(${JSON.stringify(this.endGeometry.getCoordinates())}),
+  { final: true }
+);`;
     },
   },
   mounted() {
@@ -229,7 +277,7 @@ export default {
       this.value = turf.bearing(
         turf.point(this.startGeometry.getCoordinates()),
         turf.point(this.endGeometry.getCoordinates()),
-          {final:true}
+        { final: true }
       );
     },
     handleStart() {

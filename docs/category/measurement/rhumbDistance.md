@@ -44,7 +44,18 @@ var distance = turf.rhumbDistance(from, to, options); // 60.35331130430885
 ```vue
 <template>
   <base-map>
-    {{ value }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ result }}</a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature :style-obj="startStyle">
@@ -68,10 +79,21 @@ export default {
     return {
       startCoordinates: [119.76160526275636, 27.91434097290039],
       endCoordinates: [120.11316776275636, 28.11209487915039],
-      value: null,
+      result: null,
+      visible: true,
       startStyle: null,
       endStyle: null,
     };
+  },
+  computed: {
+    code() {
+      return `var options = { units: "miles" };
+let result = turf.rhumbDistance(
+  turf.point(${JSON.stringify(this.startCoordinates)}),
+  turf.point(${JSON.stringify(this.endCoordinates)}),
+  options
+);`;
+    },
   },
   mounted() {
     this.startStyle = new Style({
@@ -109,7 +131,7 @@ export default {
       }),
     });
     var options = { units: "miles" };
-    this.value = turf.rhumbDistance(
+    this.result = turf.rhumbDistance(
       turf.point(this.startCoordinates),
       turf.point(this.endCoordinates),
       options
@@ -128,11 +150,23 @@ export default {
 ```vue
 <template>
   <base-map>
-    单位：<length-units :value.sync="units"></length-units>
-
-    <input type="button" value="起点" @click="handleStart" />
-    <input type="button" value="终点" @click="handleEnd" />
-    {{ value }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handleStart">绘制起点</a-button>
+        <a-button type="primary" @click="handleEnd">绘制终点</a-button></a-row
+      >
+      <a-row> 单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> {{ result }}</a-row>
+    </drawer>
     <vue2ol-layer-vector :style-obj="startStyle">
       <vue2ol-source-vector @ready="handleReadyStartSource">
         <vue2ol-interaction-draw
@@ -163,7 +197,8 @@ export default {
     return {
       isDrawEnd: false,
       isDrawStart: false,
-      value: null,
+      result: null,
+      visible: true,
       startStyle: null,
       endStyle: null,
       startGeometry: null,
@@ -220,13 +255,26 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.startGeometry || !this.endGeometry) {
+        return;
+      }
+      return `var options = { units: '${this.units}'' };
+let result = turf.rhumbDistance(
+  turf.point(${JSON.stringify(this.startGeometry.getCoordinates())}),
+  turf.point(${JSON.stringify(this.endGeometry.getCoordinates())}),
+  options
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.startGeometry || !this.endGeometry) {
         return;
       }
       var options = { units: this.units };
-      this.value = turf.rhumbDistance(
+      this.result = turf.rhumbDistance(
         turf.point(this.startGeometry.getCoordinates()),
         turf.point(this.endGeometry.getCoordinates()),
         options

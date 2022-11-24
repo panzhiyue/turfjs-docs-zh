@@ -6,14 +6,14 @@
 
 > Finds the tangents of a (Multi)Polygon from a Point.
 >
-> 接收一个点和一个(Multi)Polygon，计算二者的切线，返回切线在(Multi)Polygon上的点
+> 接收一个点和一个(Multi)Polygon，计算二者的切线，返回切线在(Multi)Polygon 上的点
 
 **参数**
 
-| 参数    | 类型                            | 描述             |
-| ------- | ------------------------------- | ---------------- |
-| pt      | Coord \| GeoJSON                | 参与计算的点     |
-| polygon | `Feature<Polygon|MultiPolygon>` | 参与计算的多边形 |
+| 参数    | 类型             | 描述           |
+| ------- | ---------------- | -------------- | ---------------- |
+| pt      | Coord \| GeoJSON | 参与计算的点   |
+| polygon | `Feature<Polygon | MultiPolygon>` | 参与计算的多边形 |
 
 **返回**
 
@@ -32,8 +32,8 @@ var polygon = turf.polygon([
     [31, 11],
     [21, 15],
     [11, 11],
-    [11, 0]
-  ]
+    [11, 0],
+  ],
 ]);
 var point = turf.point([61, 5]);
 
@@ -71,6 +71,18 @@ var tangents = turf.polygonTangents(point, polygon);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -106,15 +118,27 @@ export default {
       coordinates2: [120.32465457916261, 28.229897499084473],
       tangentsFeatures: null,
       tangentsStyle: null,
+      result: null,
+      visible: true,
     };
   },
+  computed:{
+    code(){
+      return `let result = turf.polygonTangents(
+  turf.point(${JSON.stringify(this.coordinates2)}),
+  turf.polygon(${JSON.stringify(this.coordinates)})
+);`
+    }
+  },
   mounted() {
-    let value = turf.polygonTangents(
+    this.result = turf.polygonTangents(
       turf.point(this.coordinates2),
       turf.polygon(this.coordinates)
     );
 
-    this.tangentsFeatures = new GeoJSON().readFeatures(JSON.stringify(value));
+    this.tangentsFeatures = new GeoJSON().readFeatures(
+      JSON.stringify(this.result)
+    );
 
     this.tangentsStyle = new Style({
       image: new Circle({
@@ -142,8 +166,22 @@ export default {
 ```vue
 <template>
   <base-map>
-    <input type="button" value="点" @click="handlePoint" />
-    <input type="button" value="面" @click="handlePolygon" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handlePoint">点</a-button
+        ><a-button type="primary" @click="handlePolygon">面</a-button></a-row
+      >
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadyPointSource">
         <vue2ol-interaction-draw
@@ -179,7 +217,8 @@ export default {
     return {
       isDrawPolygon: false,
       isDrawPoint: false,
-      value: null,
+      result: null,
+      visible: true,
       pointGeometry: null,
       polygonGeometry: null,
       pointSource: null,
@@ -210,17 +249,30 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.pointGeometry || !this.polygonGeometry) {
+        return;
+      }
+      return `let result = turf.polygonTangents(
+  turf.point(${JSON.stringify(this.pointGeometry.getCoordinates())}),
+  turf.polygon(${JSON.stringify(this.polygonGeometry.getCoordinates())})
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.pointGeometry || !this.polygonGeometry) {
         return;
       }
-      let value = turf.polygonTangents(
+      this.result = turf.polygonTangents(
         turf.point(this.pointGeometry.getCoordinates()),
         turf.polygon(this.polygonGeometry.getCoordinates())
       );
 
-      this.tangentsFeatures = new GeoJSON().readFeatures(JSON.stringify(value));
+      this.tangentsFeatures = new GeoJSON().readFeatures(
+        JSON.stringify(this.result)
+      );
     },
     handlePoint() {
       this.isDrawPoint = !this.isDrawPoint;

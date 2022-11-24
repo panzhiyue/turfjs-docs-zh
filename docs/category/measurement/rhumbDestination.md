@@ -4,27 +4,25 @@
 > npm install @turf/rhumb-destination
 ```
 
-
-
 > Returns the destination Point having travelled the given distance along a Rhumb line from the origin Point with the (varant) given bearing.
 >
 > 获取以入参的点为参照物，通过指定单位的距离计算出沿[恒向线 (opens new window)](https://baike.baidu.com/item/恒向线/61737?fr=aladdin) 的目标点的位置
 
 **参数**
 
-| 参数     | 类型           | 描述                            |
-| :------- | :------------- | :------------------------------ |
-| origin   | Coord\|GeoJSON | 参与计算的点                    |
-| distance | number         | 参与计算的线段                  |
-| bearing  | number         | 与正北的角度，范围从-180到180度 |
-| options  | Object         | 可配置项                        |
+| 参数     | 类型           | 描述                               |
+| :------- | :------------- | :--------------------------------- |
+| origin   | Coord\|GeoJSON | 参与计算的点                       |
+| distance | number         | 参与计算的线段                     |
+| bearing  | number         | 与正北的角度，范围从-180 到 180 度 |
+| options  | Object         | 可配置项                           |
 
 **options 选项**
 
 | 属性       | 类型   | 默认值     | 描述                                               |
 | :--------- | :----- | :--------- | :------------------------------------------------- |
 | units      | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
-| properties | Object | {}         | 输出GeoJSON的properties 属性                       |
+| properties | Object | {}         | 输出 GeoJSON 的 properties 属性                    |
 
 **返回**
 
@@ -59,6 +57,18 @@ var destination = turf.rhumbDestination(pt, distance, bearing, options);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature :style-obj="startStyle">
@@ -81,7 +91,18 @@ export default {
       endPoint: null,
       startStyle: null,
       endStyle: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      return `var point = turf.point(${JSON.stringify(this.startPoint)});
+var distance = 10;
+var bearing = 90;
+var options = { units: "miles" };
+var value = turf.rhumbDestination(point, distance, bearing,options);`;
+    },
   },
   mounted() {
     this.startStyle = new Style({
@@ -125,6 +146,7 @@ export default {
     var options = { units: "miles" };
 
     var value = turf.rhumbDestination(point, distance, bearing, options);
+    this.result = value;
 
     this.endPoint = value.geometry.coordinates;
   },
@@ -140,11 +162,24 @@ export default {
 ```vue
 <template>
   <base-map>
-    距离：<input type="number" v-model="length" />经度：<input
-      type="number"
-      v-model="angle"
-    />
-    单位：<length-units :value.sync="units"></length-units>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        距离：<a-input-number type="number" v-model="length" />经度：<input
+          type="number"
+          v-model="angle"
+      /></a-row>
+      <a-row> 单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadDrawSource">
         <vue2ol-interaction-draw
@@ -177,9 +212,26 @@ export default {
       angle: 90,
       units: "kilometers",
       source: null,
+      result: null,
+      visible: true,
     };
   },
   mounted() {},
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let options = { units: '${this.units}'' };
+let point = turf.point(${JSON.stringify(this.geometry.getCoordinates())});
+let result = turf.rhumbDestination(
+  point,
+  ${this.length},
+  ${this.angle},
+  options
+);`;
+    },
+  },
   watch: {
     geometry() {
       this.init();
@@ -205,14 +257,14 @@ export default {
       }
       let options = { units: this.units };
       let point = turf.point(this.geometry.getCoordinates());
-      var value = turf.rhumbDestination(
+      this.result = turf.rhumbDestination(
         point,
         this.length,
         this.angle,
         options
       );
 
-      this.endPoint = value.geometry.coordinates;
+      this.endPoint = this.result.geometry.coordinates;
     },
     handleReadDrawSource(mapObject) {
       this.source = mapObject;

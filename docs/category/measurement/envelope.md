@@ -5,16 +5,16 @@
 ```
 
 > Takes any number of features and returns a rectangular Polygon that encompasses all vertices.
-> 
+>
 > 接受任意数量的`feature`并返回包含所有顶点的矩形多边形。
 
 > 值得注意的是，矩形是正四边形，所以会去包含更靠外的要素顶点，从而保证所有的要素都在矩形内
 
 **参数**
 
-| 参数    | 类型    | 描述        |
-| :------ | :------ | :---------- |
-| geojson | GeoJSON | 任意GeoJSON |
+| 参数    | 类型    | 描述         |
+| :------ | :------ | :----------- |
+| geojson | GeoJSON | 任意 GeoJSON |
 
 **返回**
 
@@ -28,7 +28,7 @@
 var features = turf.featureCollection([
   turf.point([-75.343, 39.984], { name: "Location A" }),
   turf.point([-75.833, 39.284], { name: "Location B" }),
-  turf.point([-75.534, 39.123], { name: "Location C" })
+  turf.point([-75.534, 39.123], { name: "Location C" }),
 ]);
 
 var enveloped = turf.envelope(features);
@@ -56,7 +56,7 @@ var features = turf.featureCollection([
   turf.point([-75.343, 39.984], { name: "Location A" }),
   turf.point([-75.833, 39.284], { name: "Location B" }),
   turf.point([-75.534, 39.123], { name: "Location C" }),
-  turf.point([-75.12, 38.4], { name: "Location D" })
+  turf.point([-75.12, 38.4], { name: "Location D" }),
 ]);
 var enveloped = turf.envelope(features);
 ```
@@ -69,6 +69,18 @@ var enveloped = turf.envelope(features);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -101,18 +113,29 @@ export default {
       ],
       coordinates2: [120.32465457916261, 28.229897499084473],
       envelopeGeometry: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.envelope(
+  turf.featureCollection([
+    turf.lineString(${JSON.stringify(this.coordinates)}),
+    turf.point(${JSON.stringify(this.coordinates2)}),
+  ])
+);`;
+    },
+  },
   mounted() {
-    let value = turf.envelope(
+    this.result = turf.envelope(
       turf.featureCollection([
         turf.lineString(this.coordinates),
         turf.point(this.coordinates2),
       ])
     );
-
     this.envelopeGeometry = new GeoJSON().readGeometry(
-      JSON.stringify(value.geometry)
+      JSON.stringify(this.result.geometry)
     );
   },
 };
@@ -127,12 +150,25 @@ export default {
 ```vue
 <template>
   <base-map>
-    {{ extent
-    }}<select v-model="type">
-      <option value="Point">点</option>
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><select v-model="type">
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -160,10 +196,18 @@ export default {
       features: [],
       type: "LineString",
       envelopeGeometry: null,
+      result: null,
+      visible: true,
     };
   },
   watch: {},
   mounted() {},
+  computed: {
+    code() {
+      return `let features = ${new GeoJSON().writeFeatures(this.features)};
+let result = turf.envelope(features);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.features.push(e.feature);
@@ -173,12 +217,12 @@ export default {
       if (!this.features) {
         return;
       }
-      let value = turf.envelope(
+      this.result = turf.envelope(
         JSON.parse(new GeoJSON().writeFeatures(this.features))
       );
 
       this.envelopeGeometry = new GeoJSON().readGeometry(
-        JSON.stringify(value.geometry)
+        JSON.stringify(this.result.geometry)
       );
     },
   },

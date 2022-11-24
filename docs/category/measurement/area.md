@@ -5,7 +5,7 @@
 ```
 
 > Takes one or more features and returns their area in square meters.
-> 
+>
 > 获取一个或多个`feature`，并返回其面积平方米。
 
 > 值得注意的是，该方法应该是传入 polygon 类型的 GeoJSON，即 Point 点类型和 LineString 线段类型均为 0
@@ -31,8 +31,8 @@ var polygon = turf.polygon([
     [113, -22],
     [154, -27],
     [144, -15],
-    [125, -15]
-  ]
+    [125, -15],
+  ],
 ]);
 
 var area = turf.area(polygon); // 3339946239196.927
@@ -47,8 +47,8 @@ var area = turf.area({
         [113, -22],
         [154, -27],
         [144, -15],
-        [125, -15]
-      ]
+        [125, -15],
+      ],
     ]),
     turf.polygon([
       [
@@ -56,10 +56,10 @@ var area = turf.area({
         [213, -22],
         [254, -27],
         [244, -15],
-        [225, -15]
-      ]
-    ])
-  ]
+        [225, -15],
+      ],
+    ]),
+  ],
 }); // 6679892478393.854
 ```
 
@@ -69,7 +69,18 @@ var area = turf.area({
 ```vue
 <template>
   <base-map>
-    <div>{{ area }}平方米</div>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ result }}平方米 </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -94,12 +105,18 @@ export default {
           [119.82697608925122, 28.20411200111616],
         ],
       ],
-      area: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      return `let value = turf.area(turf.polygon(${JSON.stringify(this.coordinates)}));`;
+    },
   },
   mounted() {
     let value = turf.area(turf.polygon(this.coordinates));
-    this.area = value;
+    this.result = value;
   },
 };
 </script>
@@ -113,7 +130,18 @@ export default {
 ```vue
 <template>
   <base-map>
-    <div>{{ area }}平方米</div>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ result }}平方米 </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -133,7 +161,8 @@ export default {
   data() {
     return {
       geometry: null,
-      area: null,
+      result: null,
+      visible: true,
     };
   },
   mounted() {},
@@ -142,16 +171,25 @@ export default {
       this.init();
     },
   },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let value = turf.area(turf.polygon(${JSON.stringify(this.geometry.getCoordinates())}));`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
     },
+
     init() {
       if (!this.geometry) {
         return;
       }
       let value = turf.area(turf.polygon(this.geometry.getCoordinates()));
-      this.area = value;
+      this.result = value;
     },
   },
 };

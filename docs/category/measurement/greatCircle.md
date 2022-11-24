@@ -20,7 +20,7 @@ npm install @turf/great-circle
 
 | 属性       | 类型   | 默认值 | 描述                                           |
 | :--------- | :----- | :----- | :--------------------------------------------- |
-| properties | Object | {}     | 输出GeoJSON的properties 属性                   |
+| properties | Object | {}     | 输出 GeoJSON 的 properties 属性                |
 | npoints    | number | 100    | 大圆弧的点的数量                               |
 | offset     | number | 10     | 控制行与日期线交叉的可能性，数值越高可能性越高 |
 
@@ -47,6 +47,18 @@ var greatCircle = turf.greatCircle(start, end, { name: "Seattle to DC" });
 ```vue
 <template>
   <base-map :center="[-100, 44]" :zoom="1">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -71,15 +83,27 @@ export default {
       startCoordinates: [-122, 48],
       endCoordinates: [-77, 39],
       geometry: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.greatCircle(
+  turf.point(${JSON.stringify(this.startCoordinates)}),
+  turf.point(${JSON.stringify(this.endCoordinates)})
+);`;
+    },
+  },
   mounted() {
-    let value = turf.greatCircle(
+    this.result = turf.greatCircle(
       turf.point(this.startCoordinates),
       turf.point(this.endCoordinates)
     );
 
-    this.geometry = new GeoJSON().readGeometry(JSON.stringify(value.geometry));
+    this.geometry = new GeoJSON().readGeometry(
+      JSON.stringify(this.result.geometry)
+    );
   },
 };
 </script>
@@ -94,9 +118,22 @@ export default {
 ```vue
 <template>
   <base-map>
-    {{ value }}
-    <input type="button" value="起点" @click="handleStart" />
-    <input type="button" value="终点" @click="handleEnd" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handleStart">绘制起点</a-button>
+        <a-button type="primary" @click="handleEnd">绘制终点</a-button></a-row
+      >
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector :style-obj="startStyle">
       <vue2ol-source-vector @ready="handleReadyStartSource">
         <vue2ol-interaction-draw
@@ -132,7 +169,7 @@ export default {
     return {
       isDrawEnd: false,
       isDrawStart: false,
-      value: null,
+      result: null,
       startStyle: null,
       endStyle: null,
       startGeometry: null,
@@ -140,6 +177,7 @@ export default {
       startSource: null,
       endSource: null,
       geometry: null,
+      visible: true,
     };
   },
   watch: {
@@ -186,18 +224,29 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.startGeometry || !this.endGeometry) {
+        return;
+      }
+      return `let result = turf.greatCircle(
+  turf.point(${JSON.stringify(this.startGeometry.getCoordinates())}),
+  turf.point(${JSON.stringify(this.endGeometry.getCoordinates())})
+);`
+    },
+  },
   methods: {
     init() {
       if (!this.startGeometry || !this.endGeometry) {
         return;
       }
-      let value = turf.greatCircle(
+      this.result = turf.greatCircle(
         turf.point(this.startGeometry.getCoordinates()),
         turf.point(this.endGeometry.getCoordinates())
       );
 
       this.geometry = new GeoJSON().readGeometry(
-        JSON.stringify(value.geometry)
+        JSON.stringify(this.result.geometry)
       );
     },
     handleStart() {

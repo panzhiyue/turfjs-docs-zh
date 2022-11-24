@@ -4,8 +4,6 @@
 > npm install @turf/midpoint
 ```
 
-
-
 > Takes two points and returns a point midway between them. The midpoint is calculated geodesically, meaning the curvature of the earth is taken into account.
 >
 > 接收两个点，通过地球的[曲率 (opens new window)](https://baike.baidu.com/item/曲率/9985286?fr=aladdin)计算并返回中点。
@@ -50,6 +48,18 @@ var midpoint = turf.midpoint(point1, point2);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature :style-obj="startStyle">
@@ -79,7 +89,17 @@ export default {
       startStyle: null,
       endStyle: null,
       midPoint: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      return `let result = turf.midpoint(
+  turf.point(${JSON.stringify(this.startCoordinates)}),
+  turf.point(${JSON.stringify(this.endCoordinates)})
+);`;
+    },
   },
   mounted() {
     this.startStyle = new Style({
@@ -116,12 +136,12 @@ export default {
         font: "20px sans-serif",
       }),
     });
-    var options = { units: "miles" };
-    let value = turf.midpoint(
+    this.result = turf.midpoint(
       turf.point(this.startCoordinates),
       turf.point(this.endCoordinates)
     );
-    this.midPoint = value.geometry.coordinates;
+
+    this.midPoint = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -136,8 +156,22 @@ export default {
 ```vue
 <template>
   <base-map>
-    <input type="button" value="起点" @click="handleStart" />
-    <input type="button" value="终点" @click="handleEnd" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handleStart">绘制起点</a-button>
+        <a-button type="primary" @click="handleEnd">绘制终点</a-button></a-row
+      >
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector :style-obj="startStyle">
       <vue2ol-source-vector @ready="handleReadyStartSource">
         <vue2ol-interaction-draw
@@ -183,6 +217,8 @@ export default {
       startSource: null,
       endSource: null,
       midPoint: null,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -232,16 +268,27 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.startGeometry || !this.endGeometry) {
+        return;
+      }
+      return `let result = turf.midpoint(
+  turf.point(${JSON.stringify(this.startGeometry.getCoordinates())}),
+  turf.point(${JSON.stringify(this.endGeometry.getCoordinates())})
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.startGeometry || !this.endGeometry) {
         return;
       }
-      let value = turf.midpoint(
+      this.result = turf.midpoint(
         turf.point(this.startGeometry.getCoordinates()),
         turf.point(this.endGeometry.getCoordinates())
       );
-      this.midPoint = value.geometry.coordinates;
+      this.midPoint = this.result.geometry.coordinates;
     },
     handleStart() {
       this.isDrawStart = !this.isDrawStart;

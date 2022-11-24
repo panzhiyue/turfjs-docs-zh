@@ -20,7 +20,7 @@
 
 BBox - bbox extent in minX, minY, maxX, maxY order
 
-BBox - bbox范围，按minX、minY、maxX、maxY顺序排列
+BBox - bbox 范围，按 minX、minY、maxX、maxY 顺序排列
 
 **示例**
 
@@ -28,13 +28,11 @@ BBox - bbox范围，按minX、minY、maxX、maxY顺序排列
 var line = turf.lineString([
   [-74, 40],
   [-78, 42],
-  [-82, 35]
+  [-82, 35],
 ]);
 var bbox = turf.bbox(line); // [-82, 35, -74, 42]
 var bboxPolygon = turf.bboxPolygon(bbox);
 ```
-
-
 
 **基础用法**
 ::: demo
@@ -42,7 +40,18 @@ var bboxPolygon = turf.bboxPolygon(bbox);
 ```vue
 <template>
   <base-map>
-    {{ extent }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ extent }} </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -82,7 +91,16 @@ export default {
       ],
       coordinates2: [120.32465457916261, 28.229897499084473],
       extent: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      return `let value = turf.bbox(
+  turf.lineString(${JSON.stringify(this.coordinates)}),
+  turf.point(${JSON.stringify(this.coordinates2)})
+);`;
+    },
   },
   mounted() {
     let value = turf.bbox(
@@ -103,12 +121,25 @@ export default {
 ```vue
 <template>
   <base-map>
-    {{ extent
-    }}<select v-model="type">
-      <option value="Point">点</option>
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><select v-model="type">
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row> {{ extent }} </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -145,11 +176,22 @@ export default {
       extent: null,
       geometry: null,
       type: "LineString",
+      visible:true
     };
   },
   watch: {
     geometry() {
       this.init();
+    },
+  },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let value = turf.bbox(
+  ${new GeoJSON().writeGeometry(this.geometry)}
+);`;
     },
   },
   mounted() {},

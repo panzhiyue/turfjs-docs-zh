@@ -4,8 +4,6 @@
 > npm install @turf/rhumb-bearing
 ```
 
-
-
 > Takes two points and finds the bearing angle between them along a Rhumb line i.e. the angle measured in degrees start the north line (0 degrees)
 >
 > 取两个点，找出它们之间沿[恒向线 (opens new window)](https://baike.baidu.com/item/恒向线/61737?fr=aladdin)的夹角，即从北线开始(0 度)测量的角度。
@@ -46,7 +44,18 @@ var bearing = turf.rhumbBearing(point1, point2, { final: true }); // 9.705824644
 ```vue
 <template>
   <base-map>
-    {{ value }}
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> {{ result }}</a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature :style-obj="startStyle">
@@ -70,10 +79,19 @@ export default {
     return {
       startCoordinates: [119.76160526275636, 27.91434097290039],
       endCoordinates: [120.11316776275636, 28.11209487915039],
-      value: null,
+      result: null,
       startStyle: null,
       endStyle: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      return `let result = turf.rhumbBearing(
+  turf.point(${JSON.stringify(this.startCoordinates)}),
+  turf.point(${JSON.stringify(this.endCoordinates)})
+);`;
+    },
   },
   mounted() {
     this.startStyle = new Style({
@@ -110,7 +128,7 @@ export default {
         font: "20px sans-serif",
       }),
     });
-    this.value = turf.rhumbBearing(
+    this.result = turf.rhumbBearing(
       turf.point(this.startCoordinates),
       turf.point(this.endCoordinates)
     );
@@ -128,9 +146,26 @@ export default {
 ```vue
 <template>
   <base-map>
-    {{ value }}
-    <input type="button" value="起点" @click="handleStart" />
-    <input type="button" value="终点" @click="handleEnd" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-button type="primary" @click="handleStart"
+          >绘制起点</a-button
+        ></a-row
+      >
+      <a-row
+        ><a-button type="primary" @click="handleEnd">绘制终点</a-button></a-row
+      >
+      <a-row> {{ result }}</a-row>
+    </drawer>
     <vue2ol-layer-vector :style-obj="startStyle">
       <vue2ol-source-vector @ready="handleReadyStartSource">
         <vue2ol-interaction-draw
@@ -161,7 +196,8 @@ export default {
     return {
       isDrawEnd: false,
       isDrawStart: false,
-      value: null,
+      result: null,
+      visible: true,
       startStyle: null,
       endStyle: null,
       startGeometry: null,
@@ -176,6 +212,17 @@ export default {
     },
     endGeometry() {
       this.init();
+    },
+  },
+  computed: {
+    code() {
+      if (!this.startGeometry || !this.endGeometry) {
+        return;
+      }
+      return `let result = turf.rhumbBearing(
+        turf.point(${JSON.stringify(this.startGeometry.getCoordinates())}),
+        turf.point(${JSON.stringify(this.endGeometry.getCoordinates())})
+      );`;
     },
   },
   mounted() {
@@ -219,7 +266,7 @@ export default {
       if (!this.startGeometry || !this.endGeometry) {
         return;
       }
-      this.value = turf.rhumbBearing(
+      this.result = turf.rhumbBearing(
         turf.point(this.startGeometry.getCoordinates()),
         turf.point(this.endGeometry.getCoordinates())
       );

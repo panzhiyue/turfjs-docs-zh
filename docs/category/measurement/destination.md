@@ -4,8 +4,6 @@
 > npm install @turf/destination
 ```
 
-
-
 > Takes a Point and calculates the location of a destination point given a distance in degrees, radians, miles, or kilometers; and bearing in degrees. This uses the Haversine formula to account for global curvature.
 >
 > 接收入参的点作为参照物，通过指定距离(以度、弧度、英里或公里为单位)计算出目标点的位置。
@@ -24,7 +22,7 @@
 | 属性       | 类型   | 默认值     | 描述                                               |
 | :--------- | :----- | :--------- | :------------------------------------------------- |
 | units      | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
-| properties | Object | {}         | 输出geojson对象的properties 属性                   |
+| properties | Object | {}         | 输出 geojson 对象的 properties 属性                |
 
 **返回**
 
@@ -61,6 +59,18 @@ var destination = turf.destination(point, distance, bearing, options);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature :style-obj="startStyle">
@@ -83,7 +93,18 @@ export default {
       endPoint: null,
       startStyle: null,
       endStyle: null,
+      visible: true,
+      result: null,
     };
+  },
+  computed: {
+    code() {
+      return `var point = turf.point(${JSON.stringify(this.startPoint)});
+var distance = 10;
+var bearing = 90;
+var options = { units: "miles" };
+this.result = turf.destination(point, distance, bearing, options);`;
+    },
   },
   mounted() {
     this.startStyle = new Style({
@@ -126,9 +147,9 @@ export default {
     var bearing = 90;
     var options = { units: "miles" };
 
-    var value = turf.destination(point, distance, bearing, options);
+    this.result = turf.destination(point, distance, bearing, options);
 
-    this.endPoint = value.geometry.coordinates;
+    this.endPoint = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -142,12 +163,25 @@ export default {
 ```vue
 <template>
   <base-map>
-    距离：<input type="number" v-model="length" />经度：<input
-      type="number"
-      v-model="angle"
-    />
-    单位：<length-units :value.sync="units"></length-units>
-    <vue2ol-layer-vector>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        距离：<a-input-number type="number" v-model="length" />经度：<input
+          type="number"
+          v-model="angle"
+      /></a-row>
+      <a-row> 单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
+    <vue2ol-layer-vector :style-obj="startStyle" @ready="handleReadyDrawLayer">
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
           :active="true"
@@ -157,7 +191,7 @@ export default {
       </vue2ol-source-vector>
     </vue2ol-layer-vector>
 
-    <vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="endStyle">
       <vue2ol-source-vector>
         <vue2ol-feature v-if="endPoint">
           <vue2ol-geom-point :coordinates="endPoint"></vue2ol-geom-point>
@@ -170,6 +204,7 @@ export default {
 import { Feature } from "ol";
 import { LineString } from "ol/geom";
 import * as turf from "@turf/turf";
+import { Style, Circle, Stroke, Fill, Text } from "ol/style";
 export default {
   data() {
     return {
@@ -178,9 +213,49 @@ export default {
       length: 10,
       angle: 90,
       units: "kilometers",
+      result: null,
+      visible: true,
+      drawLayer: null,
+      startStyle:null,
+      endStyle:null
     };
   },
-  mounted() {},
+  mounted() {
+    this.startStyle = new Style({
+      image: new Circle({
+        stroke: new Stroke({
+          color: "#ff0000",
+          width: 2,
+        }),
+        radius: 4,
+      }),
+      text: new Text({
+        text: "起点",
+        overflow: true,
+        fill: new Fill({
+          color: "#ffffff",
+        }),
+        font: "20px sans-serif",
+      }),
+    });
+    this.endStyle = new Style({
+      image: new Circle({
+        stroke: new Stroke({
+          color: "#ff0000",
+          width: 2,
+        }),
+        radius: 4,
+      }),
+      text: new Text({
+        text: "终点",
+        overflow: true,
+        fill: new Fill({
+          color: "#ffffff",
+        }),
+        font: "20px sans-serif",
+      }),
+    });
+  },
   watch: {
     geometry() {
       this.init();
@@ -195,8 +270,19 @@ export default {
       this.init();
     },
   },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let options = { units: '${this.units}' };
+let point = turf.point(${JSON.stringify(this.geometry.getCoordinates())});
+let result = turf.destination(point, ${this.length}, ${this.angle},options);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
+      this.drawLayer.getSource().clear();
       this.geometry = e.feature.getGeometry();
     },
     init() {
@@ -205,9 +291,12 @@ export default {
       }
       let options = { units: this.units };
       let point = turf.point(this.geometry.getCoordinates());
-      var value = turf.destination(point, this.length, this.angle, options);
+      this.result = turf.destination(point, this.length, this.angle, options);
 
-      this.endPoint = value.geometry.coordinates;
+      this.endPoint = this.result.geometry.coordinates;
+    },
+    handleReadyDrawLayer(mapObject) {
+      this.drawLayer = mapObject;
     },
   },
 };

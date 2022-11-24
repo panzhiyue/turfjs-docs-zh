@@ -1,22 +1,20 @@
-# 计算位于多边形表面的点(pointOnFeature)
+# 计算位于要素或要素集表面的点(pointOnFeature)
 
 ```
 > npm install @turf/point-on-feature
 ```
 
-
-
 > Takes a Feature or FeatureCollection and returns a Point guaranteed to be on the surface of the feature.
-> 
+>
 > 获取一个`Feature`或`FeatureCollection`，并返回一个点，保证在该`feature`的表面。
 
 > 值得注意的是，返回的点要素是固定的，并非随机
 
 **参数**
 
-| 参数    | 类型    | 描述            |
-| :------ | :------ | :-------------- |
-| geojson | GeoJSON | 任意GeoJSON对象 |
+| 参数    | 类型    | 描述              |
+| :------ | :------ | :---------------- |
+| geojson | GeoJSON | 任意 GeoJSON 对象 |
 
 **返回**
 
@@ -35,8 +33,8 @@ var polygon = turf.polygon([
     [155, -25],
     [133, -9],
     [111, -22],
-    [116, -36]
-  ]
+    [116, -36],
+  ],
 ]);
 
 var pointOnPolygon = turf.pointOnFeature(polygon);
@@ -61,6 +59,18 @@ var pointOnPolygon = turf.pointOnFeature(polygon);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature v-for="coordinate in coordinates">
@@ -81,13 +91,25 @@ export default {
   data() {
     return {
       coordinates: [
-        [119.72040653228761, 28.17103910446167],
         [119.72727298736574, 27.908740520477295],
+        [119.72040653228761, 28.17103910446167],
         [120.22852420806886, 28.13808012008667],
       ],
       center: null,
       centerStyle: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.point(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.pointOnFeature(features);`;
+    },
   },
   mounted() {
     let ps = this.coordinates.map((item) => {
@@ -96,6 +118,7 @@ export default {
     let features = turf.featureCollection(ps);
 
     let center = turf.pointOnFeature(features);
+    this.result = center;
     this.center = center.geometry.coordinates;
 
     this.centerStyle = new Style({
@@ -122,6 +145,18 @@ export default {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -150,6 +185,8 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      result: null,
+      visible: true,
     };
   },
   mounted() {
@@ -165,6 +202,16 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.point(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.pointOnFeature(features);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.coordinates.push(e.feature.getGeometry().getCoordinates());
@@ -176,6 +223,7 @@ export default {
       });
       let features = turf.featureCollection(ps);
       let center = turf.pointOnFeature(features);
+      this.result = center;
       this.center = center.geometry.coordinates;
     },
   },
@@ -191,6 +239,18 @@ export default {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -219,7 +279,19 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.lineString(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.pointOnFeature(features);`;
+    },
   },
   mounted() {
     this.centerStyle = new Style({
@@ -245,6 +317,7 @@ export default {
       });
       let features = turf.featureCollection(ps);
       let center = turf.pointOnFeature(features);
+      this.result = center;
       this.center = center.geometry.coordinates;
     },
   },
@@ -260,6 +333,18 @@ export default {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -288,7 +373,19 @@ export default {
       coordinates: [],
       center: null,
       centerStyle: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      let ps = this.coordinates.map((item) => {
+        return turf.polygon(item);
+      });
+      let features = turf.featureCollection(ps);
+      return `let features = ${JSON.stringify(features)};
+let result = turf.pointOnFeature(features);`;
+    },
   },
   mounted() {
     this.centerStyle = new Style({
@@ -314,6 +411,7 @@ export default {
       });
       let features = turf.featureCollection(ps);
       let center = turf.pointOnFeature(features);
+      this.result = center;
       this.center = center.geometry.coordinates;
     },
   },
