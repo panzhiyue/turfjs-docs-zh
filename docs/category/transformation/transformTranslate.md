@@ -6,7 +6,7 @@
 
 > Moves any geojson Feature or Geometry of a specified distance along a Rhumb Line on the provided direction angle.
 >
-> 接收一个GeoJSON，返回沿指定角度与距离移动后的GeoJSON。
+> 接收一个 GeoJSON，返回沿指定角度与距离移动后的 GeoJSON。
 >
 > 在给定的方向角上沿沿恒向线移动指定距离。
 
@@ -31,7 +31,7 @@
 
 GeoJSON - the translated GeoJSON object
 
-GeoJSON - 移动后的GeoJSON对象
+GeoJSON - 移动后的 GeoJSON 对象
 
 **示例**
 
@@ -41,8 +41,8 @@ var poly = turf.polygon([
     [0, 29],
     [3.5, 29],
     [2.5, 32],
-    [0, 29]
-  ]
+    [0, 29],
+  ],
 ]);
 var translatedPoly = turf.transformTranslate(poly, 100, 35);
 /*
@@ -72,6 +72,18 @@ var translatedPoly = turf.transformTranslate(poly, 100, 35);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -103,14 +115,27 @@ export default {
       ],
       translateCoordinates: null,
       style: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+let result = turf.transformTranslate(
+  line,
+  10,
+  35
+);`;
+    },
+  },
   mounted() {
-    this.translateCoordinates = turf.transformTranslate(
+    this.result = turf.transformTranslate(
       turf.lineString(this.coordinates),
       10,
       35
-    ).geometry.coordinates;
+    );
+    this.translateCoordinates = this.result.geometry.coordinates;
 
     this.style = new Style({
       stroke: new Stroke({
@@ -131,16 +156,29 @@ export default {
 ```vue
 <template>
   <base-map>
-    <select v-model="type">
-      <option value=""></option>
-      <option value="Point">点</option>
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
-    distance：<input type="number" v-model="distance" /> direction<input
-      type="number"
-      v-model="direction"
-    />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <select v-model="type">
+          <option value=""></option>
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row>distance：<a-input-number v-model="distance" /></a-row>
+      <a-row>direction<a-input-number v-model="direction" /></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -172,6 +210,8 @@ export default {
       style: null,
       distance: 10,
       direction: 35,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -193,6 +233,19 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.feature1) {
+        return;
+      }
+      return `let f = ${new GeoJSON().writeFeature(this.feature1)};
+let result = turf.transformTranslate(
+  f,
+  ${this.distance},
+  ${this.direction}
+);`;
+    },
+  },
   methods: {
     handleDrawEnd1(e) {
       this.feature1 = e.feature;
@@ -201,13 +254,14 @@ export default {
       if (!this.feature1) {
         return;
       }
-      let f = turf.transformTranslate(
+
+      this.result = turf.transformTranslate(
         JSON.parse(new GeoJSON().writeFeature(this.feature1)),
         parseFloat(this.distance),
         parseFloat(this.direction)
       );
       this.translateGeometry = new GeoJSON().readGeometry(
-        JSON.stringify(f.geometry)
+        JSON.stringify(this.result.geometry)
       );
     },
   },

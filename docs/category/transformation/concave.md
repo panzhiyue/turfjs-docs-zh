@@ -39,7 +39,7 @@ var points = turf.featureCollection([
   turf.point([-63.580799, 44.648749]),
   turf.point([-63.573589, 44.641788]),
   turf.point([-63.587665, 44.64533]),
-  turf.point([-63.595218, 44.64765])
+  turf.point([-63.595218, 44.64765]),
 ]);
 var options = { units: "miles", maxEdge: 1 };
 
@@ -73,6 +73,18 @@ var hull = turf.concave(points, options);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature v-for="coordinate in coordinates">
@@ -102,7 +114,23 @@ export default {
       ],
 
       concaveCoordinates: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      let points = turf.featureCollection(
+        this.coordinates.map((coordinate) => {
+          return turf.point(coordinate);
+        })
+      );
+      return `let points = ${JSON.stringify(points)};
+let result = turf.concave(points, {
+  units: "miles",
+  maxEdge: 20,
+});`;
+    },
   },
   mounted() {
     let points = turf.featureCollection(
@@ -110,11 +138,11 @@ export default {
         return turf.point(coordinate);
       })
     );
-
-    this.concaveCoordinates = turf.concave(points, {
+    this.result = turf.concave(points, {
       units: "miles",
       maxEdge: 20,
-    }).geometry.coordinates;
+    });
+    this.concaveCoordinates = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -128,9 +156,20 @@ export default {
 ```vue
 <template>
   <base-map>
-    距离：<input type="number" v-model="length" /> 单位：<length-units
-      :value.sync="units"
-    ></length-units>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>距离：<a-input-number v-model="length" /></a-row>
+      <a-row>单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -161,6 +200,8 @@ export default {
       concaveCoordinates: null,
       length: 20,
       units: "miles",
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -172,6 +213,23 @@ export default {
     },
   },
   mounted() {},
+  computed: {
+    code() {
+      if (this.coordinates.length < 3) {
+        return;
+      }
+      let points = turf.featureCollection(
+        this.coordinates.map((coordinate) => {
+          return turf.point(coordinate);
+        })
+      );
+      return `let points = ${JSON.stringify(points)};
+let result = turf.concave(points, {
+  units: '${this.units}'',
+  maxEdge: ${this.length},
+});`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.coordinates = this.coordinates.concat([
@@ -189,12 +247,14 @@ export default {
         })
       );
 
-      let result = turf.concave(points, {
+      this.result = turf.concave(points, {
         units: this.units,
         maxEdge: this.length,
       });
 
-      this.concaveCoordinates = result ? result.geometry.coordinates : null;
+      this.concaveCoordinates = this.result
+        ? this.result.geometry.coordinates
+        : null;
     },
   },
 };

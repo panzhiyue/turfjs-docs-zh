@@ -17,9 +17,10 @@
 
 **options 选项**
 
-| 属性      | 类型   | 默认值   | 描述                                        |
-| :-------- | :----- | :------- | :------------------------------------------ |
-| concavity | number | Infinity | 1 趋向为扁平型要素，Infinity 趋向为凸型要素 |
+| 属性       | 类型   | 默认值   | 描述                                        |
+| :--------- | :----- | :------- | :------------------------------------------ |
+| concavity  | number | Infinity | 1 趋向为扁平型要素，Infinity 趋向为凸型要素 |
+| properties | Object | {}       | Translate Properties to Feature             |
 
 **返回**
 
@@ -36,7 +37,7 @@ var points = turf.featureCollection([
   turf.point([10.579833, 43.659924]),
   turf.point([10.360107, 43.516688]),
   turf.point([10.14038, 43.588348]),
-  turf.point([10.195312, 43.755225])
+  turf.point([10.195312, 43.755225]),
 ]);
 
 var hull = turf.convex(points);
@@ -69,6 +70,18 @@ var hull = turf.convex(points);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature v-for="coordinate in coordinates">
@@ -98,7 +111,23 @@ export default {
       ],
 
       concaveCoordinates: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      let points = turf.featureCollection(
+        this.coordinates.map((coordinate) => {
+          return turf.point(coordinate);
+        })
+      );
+      return `let points = ${JSON.stringify(points)};
+let result = turf.convex(points, {
+  units: "miles",
+  maxEdge: 20,
+});`;
+    },
   },
   mounted() {
     let points = turf.featureCollection(
@@ -106,11 +135,11 @@ export default {
         return turf.point(coordinate);
       })
     );
-
-    this.concaveCoordinates = turf.convex(points, {
+    this.result = turf.convex(points, {
       units: "miles",
       maxEdge: 20,
-    }).geometry.coordinates;
+    });
+    this.concaveCoordinates = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -124,7 +153,20 @@ export default {
 ```vue
 <template>
   <base-map>
-    concavity<input type="number" v-model="concavity" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> concavity：<a-input-number v-model="concavity" /></a-row>
+
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -154,6 +196,8 @@ export default {
 
       concaveCoordinates: null,
       concavity: 20,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -162,6 +206,22 @@ export default {
     },
   },
   mounted() {},
+  computed: {
+    code() {
+      if (this.coordinates.length < 3) {
+        return;
+      }
+      let points = turf.featureCollection(
+        this.coordinates.map((coordinate) => {
+          return turf.point(coordinate);
+        })
+      );
+      return `let points = ${JSON.stringify(points)};
+let result = turf.convex(points, {
+  concavity: ${this.concavity},
+});`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.coordinates = this.coordinates.concat([
@@ -179,11 +239,13 @@ export default {
         })
       );
 
-      let result = turf.convex(points, {
+      this.result = turf.convex(points, {
         concavity: this.concavity,
       });
 
-      this.concaveCoordinates = result ? result.geometry.coordinates : null;
+      this.concaveCoordinates = this.result
+        ? this.result.geometry.coordinates
+        : null;
     },
   },
 };

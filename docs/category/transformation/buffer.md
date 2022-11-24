@@ -44,6 +44,18 @@ var buffered = turf.buffer(point, 500, { units: "miles" });
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -73,12 +85,23 @@ export default {
         [120.13926029205324, 27.989206790924072],
       ],
       bufferCoordinates: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+let result = turf.buffer(line, 2, {
+  units: "miles",
+});`;
+    },
+  },
   mounted() {
-    this.bufferCoordinates = turf.buffer(turf.lineString(this.coordinates), 2, {
+    this.result = turf.buffer(turf.lineString(this.coordinates), 2, {
       units: "miles",
-    }).geometry.coordinates;
+    });
+    this.bufferCoordinates = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -92,14 +115,28 @@ export default {
 ```vue
 <template>
   <base-map>
-    距离：<input type="number" v-model="length" /> 单位：<length-units
-      :value.sync="units"
-    ></length-units>
-    <select v-model="type">
-      <option value="Point">点</option>
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>距离：<a-input-number v-model="length" /></a-row>
+      <a-row>单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row>
+        <select v-model="type">
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row><json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -131,6 +168,8 @@ export default {
       bufferCoordinates: null,
       length: 2,
       units: "kilometers",
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -145,6 +184,21 @@ export default {
     },
   },
   mounted() {},
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let geometry = ${new GeoJSON().writeGeometry(this.geometry)};
+let result = turf.buffer(
+  geometry,
+  ${this.length},
+  {
+    units: '${this.units}'',
+  }
+);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
@@ -153,13 +207,14 @@ export default {
       if (!this.geometry) {
         return;
       }
-      this.bufferCoordinates = turf.buffer(
+      this.result = turf.buffer(
         JSON.parse(new GeoJSON().writeGeometry(this.geometry)),
         this.length,
         {
           units: this.units,
         }
-      ).geometry.coordinates;
+      );
+      this.bufferCoordinates = this.result.geometry.coordinates;
     },
   },
 };

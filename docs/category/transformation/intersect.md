@@ -12,8 +12,8 @@
 
 | 参数  | 类型                | 描述 |
 | :---- | :------------------ | :--- |
-| poly1 | `Feature <Polygon>` | 面1  |
-| poly2 | `Feature <Polygon>` | 面2  |
+| poly1 | `Feature <Polygon>` | 面 1 |
+| poly2 | `Feature <Polygon>` | 面 2 |
 
 **返回**
 
@@ -30,8 +30,8 @@ var poly1 = turf.polygon([
     [-122.801742, 45.60491],
     [-122.584762, 45.60491],
     [-122.584762, 45.48565],
-    [-122.801742, 45.48565]
-  ]
+    [-122.801742, 45.48565],
+  ],
 ]);
 
 var poly2 = turf.polygon([
@@ -43,8 +43,8 @@ var poly2 = turf.polygon([
     [-122.723464, 45.446643],
     [-122.532577, 45.408574],
     [-122.487258, 45.477466],
-    [-122.520217, 45.535693]
-  ]
+    [-122.520217, 45.535693],
+  ],
 ]);
 
 var intersection = turf.intersect(poly1, poly2);
@@ -78,6 +78,18 @@ var intersection = turf.intersect(poly1, poly2);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -90,9 +102,9 @@ var intersection = turf.intersect(poly1, poly2);
             :coordinates="coordinates2"
           ></vue2ol-geom-polygon>
         </vue2ol-feature>
-        <vue2ol-feature :style-obj="differenceStyle">
+        <vue2ol-feature :style-obj="intersectStyle">
           <vue2ol-geom-polygon
-            :coordinates="differenceCoordinates"
+            :coordinates="intersectCoordinates"
           ></vue2ol-geom-polygon>
         </vue2ol-feature>
       </vue2ol-source-vector>
@@ -128,17 +140,28 @@ export default {
         ],
       ],
 
-      differenceCoordinates: null,
-      differenceStyle: null,
+      intersectCoordinates: null,
+      intersectStyle: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.intersect(
+  turf.polygon(${JSON.stringify(this.coordinates1)}),
+  turf.polygon(${JSON.stringify(this.coordinates2)})
+);`;
+    },
+  },
   mounted() {
-    this.differenceCoordinates = turf.intersect(
+    this.result = turf.intersect(
       turf.polygon(this.coordinates1),
       turf.polygon(this.coordinates2)
-    ).geometry.coordinates;
+    );
+    this.intersectCoordinates = this.result.geometry.coordinates;
 
-    this.differenceStyle = new Style({
+    this.intersectStyle = new Style({
       stroke: new Stroke({
         width: 2,
         color: "#f00",
@@ -161,8 +184,22 @@ export default {
 ```vue
 <template>
   <base-map>
-    <input type="button" value="面1" @click="handlePolygon1" />
-    <input type="button" value="面2" @click="handlePolygon2" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-button type="primary" @click="handlePolygon1">面1</a-button>
+        <a-button type="primary" @click="handlePolygon2">面2</a-button>
+      </a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadySource1">
         <vue2ol-interaction-draw
@@ -186,9 +223,9 @@ export default {
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature
-          :style-obj="differenceStyle"
-          v-if="differenceGeometry"
-          :geometry="differenceGeometry"
+          :style-obj="intersectStyle"
+          v-if="intersectGeometry"
+          :geometry="intersectGeometry"
         >
         </vue2ol-feature>
       </vue2ol-source-vector>
@@ -206,10 +243,12 @@ export default {
       isDrawPolygon1: false,
       polygon1: null,
       polygon2: null,
-      differenceGeometry: null,
+      intersectGeometry: null,
       source1: null,
       source2: null,
-      differenceStyle: null,
+      intersectStyle: null,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -221,7 +260,7 @@ export default {
     },
   },
   mounted() {
-    this.differenceStyle = new Style({
+    this.intersectStyle = new Style({
       stroke: new Stroke({
         width: 2,
         color: "#f00",
@@ -231,20 +270,28 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.polygon1 || !this.polygon2) {
+        return;
+      }
+      return `let result = turf.intersect(
+  turf.polygon(${JSON.stringify(this.polygon1.getCoordinates())}),
+  turf.polygon(${JSON.stringify(this.polygon2.getCoordinates())})
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.polygon1 || !this.polygon2) {
         return;
       }
-      this.differenceGeometry = new GeoJSON()
-        .readFeature(
-          JSON.stringify(
-            turf.intersect(
-              turf.polygon(this.polygon1.getCoordinates()),
-              turf.polygon(this.polygon2.getCoordinates())
-            )
-          )
-        )
+      this.result = turf.intersect(
+        turf.polygon(this.polygon1.getCoordinates()),
+        turf.polygon(this.polygon2.getCoordinates())
+      );
+      this.intersectGeometry = new GeoJSON()
+        .readFeature(JSON.stringify(this.result))
         .getGeometry();
     },
     handlePolygon1() {

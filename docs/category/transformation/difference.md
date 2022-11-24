@@ -10,16 +10,16 @@
 
 **参数**
 
-| 参数     | 类型                                | 描述 |
-| -------- | ----------------------------------- | ---- |
-| polygon1 | `Feature <(Polygon |MultiPolygon)>` | 面1  |
-| polygon2 | `Feature <(Polygon |MultiPolygon)>` | 面2  |
+| 参数     | 类型               | 描述            |
+| -------- | ------------------ | --------------- | ---- |
+| polygon1 | `Feature <(Polygon | MultiPolygon)>` | 面 1 |
+| polygon2 | `Feature <(Polygon | MultiPolygon)>` | 面 2 |
 
 **返回**
 
 (`Feature <(Polygon|MultiPolygon)>`|`null`) - a Polygon or MultiPolygon feature showing the area of polygon1 excluding the area of polygon2 (if empty returns null )
 
-(`Feature <(Polygon|MultiPolygon)>`|`null`) - polygon1去掉与polygon2相交部分后的要素（如果为空，则返回null）
+(`Feature <(Polygon|MultiPolygon)>`|`null`) - polygon1 去掉与 polygon2 相交部分后的要素（如果为空，则返回 null）
 
 **示例**
 
@@ -31,12 +31,12 @@ var polygon1 = turf.polygon(
       [141, -26],
       [141, -21],
       [128, -21],
-      [128, -26]
-    ]
+      [128, -26],
+    ],
   ],
   {
     fill: "#F00",
-    "fill-opacity": 0.1
+    "fill-opacity": 0.1,
   }
 );
 var polygon2 = turf.polygon(
@@ -46,12 +46,12 @@ var polygon2 = turf.polygon(
       [140, -28],
       [140, -20],
       [126, -20],
-      [126, -28]
-    ]
+      [126, -28],
+    ],
   ],
   {
     fill: "#00F",
-    "fill-opacity": 0.1
+    "fill-opacity": 0.1,
   }
 );
 
@@ -87,6 +87,18 @@ var difference = turf.difference(polygon1, polygon2);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -139,13 +151,24 @@ export default {
 
       differenceCoordinates: null,
       differenceStyle: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.difference(
+  turf.polygon(${JSON.stringify(this.coordinates1)}),
+  turf.polygon(${JSON.stringify(this.coordinates2)})
+);`;
+    },
+  },
   mounted() {
-    this.differenceCoordinates = turf.difference(
+    this.result = turf.difference(
       turf.polygon(this.coordinates1),
       turf.polygon(this.coordinates2)
-    ).geometry.coordinates;
+    );
+    this.differenceCoordinates = this.result.geometry.coordinates;
 
     this.differenceStyle = new Style({
       stroke: new Stroke({
@@ -170,8 +193,23 @@ export default {
 ```vue
 <template>
   <base-map>
-    <input type="button" value="面1" @click="handlePolygon1" />
-    <input type="button" value="面2" @click="handlePolygon2" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-button type="primary" @click="handlePolygon1">面1</a-button>
+        <a-button type="primary" @click="handlePolygon2">面2</a-button>
+      </a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadySource1">
         <vue2ol-interaction-draw
@@ -219,6 +257,8 @@ export default {
       source1: null,
       source2: null,
       differenceStyle: null,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -240,20 +280,28 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.polygon1 || !this.polygon2) {
+        return;
+      }
+      return `let result = turf.difference(
+  turf.polygon(${JSON.stringify(this.polygon1.getCoordinates())}),
+  turf.polygon(${JSON.stringify(this.polygon2.getCoordinates())})
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.polygon1 || !this.polygon2) {
         return;
       }
+      this.result = turf.difference(
+        turf.polygon(this.polygon1.getCoordinates()),
+        turf.polygon(this.polygon2.getCoordinates())
+      );
       this.differenceGeometry = new GeoJSON()
-        .readFeature(
-          JSON.stringify(
-            turf.difference(
-              turf.polygon(this.polygon1.getCoordinates()),
-              turf.polygon(this.polygon2.getCoordinates())
-            )
-          )
-        )
+        .readFeature(JSON.stringify(this.result))
         .getGeometry();
     },
     handlePolygon1() {

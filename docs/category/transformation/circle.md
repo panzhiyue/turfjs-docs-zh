@@ -22,7 +22,7 @@
 | :--------- | :----- | :--------- | :------------------------------------------------- |
 | units      | string | kilometers | 单位，可选的有 degrees、radians、miles、kilometers |
 | steps      | number | 64         | 圆弧的平滑度，数值越高越平滑                       |
-| properties | Object | {}         | 返回GeoJSON的圆弧的平滑度，数值越高越平滑          |
+| properties | Object | {}         | 返回 GeoJSON 的圆弧的平滑度，数值越高越平滑        |
 
 **返回**
 
@@ -69,6 +69,18 @@ var circle = turf.circle(center, radius, options);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -92,14 +104,26 @@ export default {
       coordinates: [119.74649906158449, 28.134775638580322],
 
       circleCoordinates: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.circle(${JSON.stringify(this.coordinates)}, 5, {
+  steps: 10,
+  units: "kilometers",
+  properties: { foo: "bar" },
+});`;
+    },
+  },
   mounted() {
-    this.circleCoordinates = turf.circle(this.coordinates, 5, {
+    this.result = turf.circle(this.coordinates, 5, {
       steps: 10,
       units: "kilometers",
       properties: { foo: "bar" },
-    }).geometry.coordinates;
+    });
+    this.circleCoordinates = this.result.geometry.coordinates;
   },
 };
 </script>
@@ -113,11 +137,21 @@ export default {
 ```vue
 <template>
   <base-map>
-    半径<input type="number" v-model="radius" />点数<input
-      type="number"
-      v-model="steps"
-    />
-    单位：<length-units :value.sync="units"></length-units>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>半径<input type="number" v-model="radius" /></a-row>
+      <a-row>点数<input type="number" v-model="steps" /></a-row>
+      <a-row>单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -149,6 +183,8 @@ export default {
       radius: 2,
       units: "kilometers",
       steps: 10,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -166,6 +202,20 @@ export default {
     },
   },
   mounted() {},
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let result = turf.circle(${JSON.stringify(
+        this.geometry.getCoordinates()
+      )}, ${this.radius}, {
+  steps: ${this.steps},
+  units: '${this.units}',
+  properties: { foo: "bar" },
+});`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
@@ -174,15 +224,12 @@ export default {
       if (!this.geometry) {
         return;
       }
-      this.circleCoordinates = turf.circle(
-        this.geometry.getCoordinates(),
-        this.radius,
-        {
-          steps: this.steps,
-          units: this.units,
-          properties: { foo: "bar" },
-        }
-      ).geometry.coordinates;
+      this.result = turf.circle(this.geometry.getCoordinates(), this.radius, {
+        steps: this.steps,
+        units: this.units,
+        properties: { foo: "bar" },
+      });
+      this.circleCoordinates = this.result.geometry.coordinates;
     },
   },
 };

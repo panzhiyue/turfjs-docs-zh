@@ -51,6 +51,18 @@ var curved = turf.bezierSpline(line);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row><json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -82,12 +94,19 @@ export default {
         [120.13926029205324, 27.989206790924072],
       ],
       bezierSpline: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+let result = turf.bezierSpline(line);`;
+    },
+  },
   mounted() {
-    this.bezierSpline = turf.bezierSpline(
-      turf.lineString(this.coordinates)
-    ).geometry.coordinates;
+    this.result = turf.bezierSpline(turf.lineString(this.coordinates));
+    this.bezierSpline = this.result.geometry.coordinates;
 
     this.highlightStyle = new Style({
       stroke: new Stroke({
@@ -108,6 +127,18 @@ export default {
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -138,6 +169,8 @@ export default {
     return {
       geometry: null,
       bezierSpline: null,
+      result: null,
+      visible: true,
     };
   },
   mounted() {
@@ -153,6 +186,17 @@ export default {
       this.init();
     },
   },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let line = turf.lineString(${JSON.stringify(
+        this.geometry.getCoordinates()
+      )});
+let result = turf.bezierSpline(line);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
@@ -161,9 +205,10 @@ export default {
       if (!this.geometry) {
         return;
       }
-      this.bezierSpline = turf.bezierSpline(
+      this.result = turf.bezierSpline(
         turf.lineString(this.geometry.getCoordinates())
-      ).geometry.coordinates;
+      );
+      this.bezierSpline = this.result.geometry.coordinates;
     },
   },
 };

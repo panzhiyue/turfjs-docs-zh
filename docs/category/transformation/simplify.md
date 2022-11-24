@@ -27,7 +27,7 @@
 
 GeoJSON - a simplified GeoJSON
 
-GeoJSON - 简化后的GeoJSON
+GeoJSON - 简化后的 GeoJSON
 
 **示例**
 
@@ -53,8 +53,8 @@ var geojson = turf.polygon([
     [-70.587158, -33.426283],
     [-70.590591, -33.414248],
     [-70.594711, -33.406224],
-    [-70.603637, -33.399918]
-  ]
+    [-70.603637, -33.399918],
+  ],
 ]);
 var options = { tolerance: 0.01, highQuality: false };
 var simplified = turf.simplify(geojson, options);
@@ -89,6 +89,18 @@ var simplified = turf.simplify(geojson, options);
 ```vue
 <template>
   <base-map :center="[-70.603637, -33.399918]">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -135,13 +147,25 @@ export default {
         ],
       ],
       simpleCoordinates: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let polygon = turf.polygon(${JSON.stringify(this.coordinates)});
+let result = turf.simplify(polygon, {
+  tolerance: 0.01,
+  highQuality: false,
+});`;
+    },
+  },
   mounted() {
-    this.simpleCoordinates = turf.simplify(turf.polygon(this.coordinates), {
+    this.result = turf.simplify(turf.polygon(this.coordinates), {
       tolerance: 0.01,
       highQuality: false,
-    }).geometry.coordinates;
+    });
+    this.simpleCoordinates = this.result.geometry.coordinates;
 
     this.simpleStyle = new Style({
       stroke: new Stroke({
@@ -162,10 +186,24 @@ export default {
 ```vue
 <template>
   <base-map>
-    tolerance：<input type="number" v-model="tolerance" /> highQuality：<input
-      type="checkbox"
-      v-model="highQuality"
-    />mutate<input type="checkbox" v-model="mutate" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>tolerance：<a-input-number v-model="tolerance" /></a-row>
+      <a-row
+        >highQuality：<input type="checkbox" v-model="highQuality"
+      /></a-row>
+      <a-row>mutate<input type="checkbox" v-model="mutate" /></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -198,6 +236,8 @@ export default {
       tolerance: 1,
       highQuality: false,
       mutate: false,
+      result: null,
+      visible: true,
     };
   },
   mounted() {
@@ -222,6 +262,24 @@ export default {
       this.init();
     },
   },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let polygon = turf.polygon(${JSON.stringify(
+        this.geometry.getCoordinates()
+      )});
+let result = turf.simplify(
+  polygon,
+  {
+    tolerance: ${this.tolerance},
+    highQuality: ${this.highQuality},
+    mutate: ${this.mutate},
+  }
+);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
@@ -230,14 +288,15 @@ export default {
       if (!this.geometry) {
         return;
       }
-      this.simpleCoordinates = turf.simplify(
+      this.result = turf.simplify(
         turf.polygon(this.geometry.getCoordinates()),
         {
           tolerance: this.tolerance,
           highQuality: this.highQuality,
           mutate: this.mutate,
         }
-      ).geometry.coordinates;
+      );
+      this.simpleCoordinates = this.result.geometry.coordinates;
     },
   },
 };

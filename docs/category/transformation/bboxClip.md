@@ -10,14 +10,14 @@
 
 **参数**
 
-| 入参    | 类型                                                         | 描述                   |
-| ------- | ------------------------------------------------------------ | ---------------------- |
-| feature | `Feature <(LineString |MultiLineString|Polygon |MultiPolygon)>` | 需要与 bbox 裁剪的要素 |
-| bbox    | BBox                                                         | [xmin,ymin,xmax,ymax]  |
+| 入参    | 类型                  | 描述                  |
+| ------- | --------------------- | --------------------- | ------- | --------------- | ---------------------- |
+| feature | `Feature <(LineString | MultiLineString       | Polygon | MultiPolygon)>` | 需要与 bbox 裁剪的要素 |
+| bbox    | BBox                  | [xmin,ymin,xmax,ymax] |
 
 **返回**
 
-`Feature <(LineString|MultiLineString|Polygon|MultiPolygon)>` - 裁剪后的feature
+`Feature <(LineString|MultiLineString|Polygon|MultiPolygon)>` - 裁剪后的 feature
 
 **示例**
 
@@ -29,8 +29,8 @@ var poly = turf.polygon([
     [8, 4],
     [12, 8],
     [3, 7],
-    [2, 2]
-  ]
+    [2, 2],
+  ],
 ]);
 
 var clipped = turf.bboxClip(poly, bbox);
@@ -63,6 +63,18 @@ var clipped = turf.bboxClip(poly, bbox);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json></a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature key="1">
@@ -100,7 +112,16 @@ export default {
       bboxGeometry: null,
       clipGeometry: null,
       clipStyle: null,
+      result: null,
+      visible: true,
     };
+  },
+  computed: {
+    code() {
+      return `let polygon=turf.polygon(${JSON.stringify(this.coordinates)});
+let extent = ${JSON.stringify(this.extent)};
+let result = turf.bboxClip(polygon, extent);`;
+    },
   },
   mounted() {
     let bboxPolygon = turf.bboxPolygon(this.extent);
@@ -108,9 +129,9 @@ export default {
     this.bboxGeometry = new GeoJSON().readGeometry(
       JSON.stringify(bboxPolygon.geometry)
     );
-    var clipped = turf.bboxClip(turf.polygon(this.coordinates), this.extent);
+    this.result = turf.bboxClip(turf.polygon(this.coordinates), this.extent);
     this.clipGeometry = new GeoJSON().readGeometry(
-      JSON.stringify(clipped.geometry)
+      JSON.stringify(this.result.geometry)
     );
 
     this.clipStyle = new Style({
@@ -132,10 +153,25 @@ export default {
 ```vue
 <template>
   <base-map>
-    <select v-model="type">
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <select v-model="type">
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row><json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadyDrawSource">
         <vue2ol-interaction-draw
@@ -177,11 +213,23 @@ export default {
       clipStyle: null,
       type: "LineString",
       source: null,
+      result: null,
+      visible: true,
     };
   },
   watch: {
     drawGeometry() {
       this.init();
+    },
+  },
+  computed: {
+    code() {
+      if (!this.drawGeometry) {
+        return;
+      }
+      return `let polygon=${new GeoJSON().writeGeometry(this.drawGeometry)};
+let extent = ${JSON.stringify(this.extent)}
+let result = turf.bboxClip(polygon,extent);`;
     },
   },
   mounted() {
@@ -204,12 +252,12 @@ export default {
       this.drawGeometry = e.feature.getGeometry();
     },
     init() {
-      var clipped = turf.bboxClip(
+      this.result = turf.bboxClip(
         JSON.parse(new GeoJSON().writeGeometry(this.drawGeometry)),
         this.extent
       );
       this.clipGeometry = new GeoJSON().readGeometry(
-        JSON.stringify(clipped.geometry)
+        JSON.stringify(this.result.geometry)
       );
     },
     handleReadyDrawSource(mapObject) {

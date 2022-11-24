@@ -5,7 +5,7 @@
 ```
 
 > Takes two or more polygons and returns a combined polygon. If the input polygons are not contiguous, this function returns a MultiPolygon feature.
-> 
+>
 > 获取两个或多个多边形，并返回一个组合多边形。如果输入的多边形不是连续的，这个函数将返回一个`MultiPolygon`。
 
 **参数**
@@ -30,8 +30,8 @@ var poly1 = turf.polygon(
       [-82.574787, 35.615581],
       [-82.545261, 35.615581],
       [-82.545261, 35.594087],
-      [-82.574787, 35.594087]
-    ]
+      [-82.574787, 35.594087],
+    ],
   ],
   { fill: "#0f0" }
 );
@@ -42,8 +42,8 @@ var poly2 = turf.polygon(
       [-82.560024, 35.602602],
       [-82.52964, 35.602602],
       [-82.52964, 35.585153],
-      [-82.560024, 35.585153]
-    ]
+      [-82.560024, 35.585153],
+    ],
   ],
   { fill: "#00f" }
 );
@@ -75,13 +75,24 @@ var union = turf.union(poly1, poly2);
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/union.f2707727.webp)
 
-
 **基础用法**
 ::: demo
 
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -134,13 +145,24 @@ export default {
 
       unionCoordinates: null,
       unionStyle: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let result = turf.union(
+  turf.polygon(${JSON.stringify(this.coordinates1)}),
+  turf.polygon(${JSON.stringify(this.coordinates2)})
+);`;
+    },
+  },
   mounted() {
-    this.unionCoordinates = turf.union(
+    this.result = turf.union(
       turf.polygon(this.coordinates1),
       turf.polygon(this.coordinates2)
-    ).geometry.coordinates;
+    );
+    this.unionCoordinates = this.result.geometry.coordinates;
 
     this.unionStyle = new Style({
       stroke: new Stroke({
@@ -165,8 +187,23 @@ export default {
 ```vue
 <template>
   <base-map>
-    <input type="button" value="面1" @click="handlePolygon1" />
-    <input type="button" value="面2" @click="handlePolygon2" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-button type="primary" @click="handlePolygon1">面1</a-button>
+        <a-button type="primary" @click="handlePolygon2">面2</a-button></a-row
+      >
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector @ready="handleReadySource1">
         <vue2ol-interaction-draw
@@ -214,6 +251,8 @@ export default {
       source1: null,
       source2: null,
       unionStyle: null,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -235,20 +274,28 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.polygon1 || !this.polygon2) {
+        return;
+      }
+      return `let result = turf.union(
+  turf.polygon(${JSON.stringify(this.polygon1.getCoordinates())}),
+  turf.polygon(${JSON.stringify(this.polygon2.getCoordinates())})
+);`;
+    },
+  },
   methods: {
     init() {
       if (!this.polygon1 || !this.polygon2) {
         return;
       }
+      this.result = turf.union(
+        turf.polygon(this.polygon1.getCoordinates()),
+        turf.polygon(this.polygon2.getCoordinates())
+      );
       this.unionGeometry = new GeoJSON()
-        .readFeature(
-          JSON.stringify(
-            turf.union(
-              turf.polygon(this.polygon1.getCoordinates()),
-              turf.polygon(this.polygon2.getCoordinates())
-            )
-          )
-        )
+        .readFeature(JSON.stringify(this.result))
         .getGeometry();
     },
     handlePolygon1() {

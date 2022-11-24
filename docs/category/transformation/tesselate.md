@@ -31,8 +31,8 @@ var poly = turf.polygon([
     [31, 11],
     [21, 15],
     [11, 11],
-    [11, 0]
-  ]
+    [11, 0],
+  ],
 ]);
 var triangles = turf.tesselate(poly); // 裁剪成四个三角形要素
 ```
@@ -45,8 +45,24 @@ var triangles = turf.tesselate(poly); // 裁剪成四个三角形要素
 ```vue
 <template>
   <base-map :center="[-70.603637, -33.399918]">
-    <input type="checkbox" v-model="origin" />源
-    <input type="checkbox" v-model="dest" />三角形
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space>源： <input type="checkbox" v-model="origin" /></a-space
+      ></a-row>
+      <a-row
+        ><a-space>三角形： <input type="checkbox" v-model="dest" /></a-space
+      ></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector :visible="origin" key="1">
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -94,12 +110,20 @@ export default {
       style: null,
       origin: true,
       dest: true,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let polygon = turf.polygon(${JSON.stringify(this.coordinates)});
+let result = turf.tesselate(polygon);`;
+    },
+  },
   mounted() {
-    let triangles = turf.tesselate(turf.polygon(this.coordinates), {});
+    this.result = turf.tesselate(turf.polygon(this.coordinates));
 
-    this.features = new GeoJSON().readFeatures(JSON.stringify(triangles));
+    this.features = new GeoJSON().readFeatures(JSON.stringify(this.result));
     this.style = new Style({
       stroke: new Stroke({
         width: 2,
@@ -119,8 +143,24 @@ export default {
 ```vue
 <template>
   <base-map>
-    <input type="checkbox" v-model="origin" />源
-    <input type="checkbox" v-model="dest" />三角形
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space>源： <input type="checkbox" v-model="origin" /></a-space
+      ></a-row>
+      <a-row
+        ><a-space>三角形： <input type="checkbox" v-model="dest" /></a-space
+      ></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector :visible="origin" key="1">
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -147,6 +187,8 @@ export default {
       style: null,
       origin: true,
       dest: true,
+      result: null,
+      visible: true,
     };
   },
   mounted() {
@@ -162,6 +204,17 @@ export default {
       this.init();
     },
   },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let polygon = turf.polygon(${JSON.stringify(
+        this.geometry.getCoordinates()
+      )});
+let result = turf.tesselate(polygon);`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
@@ -170,11 +223,12 @@ export default {
       if (!this.geometry) {
         return;
       }
-      let triangles = turf.tesselate(
+
+      this.result = turf.tesselate(
         turf.polygon(this.geometry.getCoordinates())
       );
 
-      this.features = new GeoJSON().readFeatures(JSON.stringify(triangles));
+      this.features = new GeoJSON().readFeatures(JSON.stringify(this.result));
       this.style = new Style({
         stroke: new Stroke({
           width: 2,

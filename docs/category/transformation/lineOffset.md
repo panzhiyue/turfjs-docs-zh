@@ -37,7 +37,7 @@ var line = turf.lineString(
   [
     [-83, 30],
     [-84, 36],
-    [-78, 41]
+    [-78, 41],
   ],
   { stroke: "#F00" }
 );
@@ -67,6 +67,18 @@ var offsetLine = turf.lineOffset(line, 2, { units: "miles" });
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -97,14 +109,23 @@ export default {
         [120.13926029205324, 27.989206790924072],
       ],
       offsetCoordinates: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+let result = turf.lineOffset(line, 2, {
+  units: "miles",
+});`;
+    },
+  },
   mounted() {
-    this.offsetCoordinates = turf.lineOffset(
-      turf.lineString(this.coordinates),
-      2,
-      { units: "miles" }
-    ).geometry.coordinates;
+    this.result = turf.lineOffset(turf.lineString(this.coordinates), 2, {
+      units: "miles",
+    });
+    this.offsetCoordinates = this.result.geometry.coordinates;
 
     this.offsetStyle = new Style({
       stroke: new Stroke({
@@ -125,9 +146,21 @@ export default {
 ```vue
 <template>
   <base-map>
-    距离：<input type="number" v-model="distance" /> 单位：<length-units
-      :value.sync="units"
-    ></length-units>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>距离：<a-input-number v-model="distance" /> </a-row>
+      <a-row>单位：<length-units :value.sync="units"></length-units></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -159,6 +192,8 @@ export default {
       distance: 10,
       offsetCoordinates: null,
       offsetStyle: null,
+      result: null,
+      visible: true,
     };
   },
   mounted() {
@@ -180,6 +215,21 @@ export default {
       this.init();
     },
   },
+  computed: {
+    code() {
+      if (!this.geometry) {
+        return;
+      }
+      return `let line = turf.lineString(${JSON.stringify(
+        this.geometry.getCoordinates()
+      )});
+      let result = turf.lineOffset(
+        line,
+        ${this.distance},
+        { units: '${this.units}' }
+      );`;
+    },
+  },
   methods: {
     handleDrawEnd(e) {
       this.geometry = e.feature.getGeometry();
@@ -188,11 +238,12 @@ export default {
       if (!this.geometry) {
         return;
       }
-      this.offsetCoordinates = turf.lineOffset(
+      this.result = turf.lineOffset(
         turf.lineString(this.geometry.getCoordinates()),
         this.distance,
         { units: this.units }
-      ).geometry.coordinates;
+      );
+      this.offsetCoordinates = this.result.geometry.coordinates;
     },
   },
 };

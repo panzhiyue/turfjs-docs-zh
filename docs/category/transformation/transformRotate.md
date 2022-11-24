@@ -39,8 +39,8 @@ var poly = turf.polygon([
     [0, 29],
     [3.5, 29],
     [2.5, 32],
-    [0, 29]
-  ]
+    [0, 29],
+  ],
 ]);
 var options = { pivot: [0, 25] };
 var rotatedPoly = turf.transformRotate(poly, 10, options);
@@ -71,6 +71,18 @@ var rotatedPoly = turf.transformRotate(poly, 10, options);
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -102,14 +114,24 @@ export default {
       ],
       rotateCoordinates: null,
       style: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+let pivot = ${JSON.stringify(this.coordinates[0])}
+let result = turf.transformRotate(line, 60, {
+  pivot: pivot,
+});`;
+    },
+  },
   mounted() {
-    this.rotateCoordinates = turf.transformRotate(
-      turf.lineString(this.coordinates),
-      60,
-      { pivot: this.coordinates[0] }
-    ).geometry.coordinates;
+    this.result = turf.transformRotate(turf.lineString(this.coordinates), 60, {
+      pivot: this.coordinates[0],
+    });
+    this.rotateCoordinates = this.result.geometry.coordinates;
 
     this.style = new Style({
       stroke: new Stroke({
@@ -130,15 +152,33 @@ export default {
 ```vue
 <template>
   <base-map>
-    <select v-model="type">
-      <option value=""></option>
-      <option value="Point">点</option>
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <select v-model="type">
+          <option value=""></option>
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row
+        ><a-button type="button" @click="handleClickPrvote"
+          >pivot</a-button
+        ></a-row
+      >
+      <a-row>angle：<a-input-number type="number" v-model="angle" /></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
 
-    <input type="button" value="pivot" @click="handleClickPrvote" />
-    angle：<input type="number" v-model="angle" />
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -180,6 +220,8 @@ export default {
       rotateGeometry: null,
       style: null,
       angle: 60,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -211,6 +253,20 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.feature1 || !this.feature2) {
+        return;
+      }
+      return `let polygon = ${new GeoJSON().writeFeature(this.feature1)};
+let pivot = ${JSON.stringify(this.feature2.getGeometry().getCoordinates())};
+let result = turf.transformRotate(
+  polygon,
+  ${this.angle},
+  { pivot: pivot }
+);`;
+    },
+  },
   methods: {
     handleClickPrvote() {
       this.isDrawPivot = true;
@@ -225,14 +281,14 @@ export default {
       if (!this.feature1 || !this.feature2) {
         return;
       }
-      console.log(this.angle);
-      let f = turf.transformRotate(
+
+      this.result = turf.transformRotate(
         JSON.parse(new GeoJSON().writeFeature(this.feature1)),
         parseFloat(this.angle),
         { pivot: this.feature2.getGeometry().getCoordinates() }
       );
       this.rotateGeometry = new GeoJSON().readGeometry(
-        JSON.stringify(f.geometry)
+        JSON.stringify(this.result.geometry)
       );
     },
   },

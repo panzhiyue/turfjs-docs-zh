@@ -1,5 +1,3 @@
-
-
 # 缩放(transformScale)
 
 ```
@@ -10,7 +8,7 @@
 >
 > 接收一个要素或要素集，进行缩放并返回
 >
-> 根据一个给定的点缩放GeoJSON(例如:factor=2将使GeoJSON增大200%)。如果提供了`FeatureCollection`，则将根据每个单独的`Feature`计算原点。
+> 根据一个给定的点缩放 GeoJSON(例如:factor=2 将使 GeoJSON 增大 200%)。如果提供了`FeatureCollection`，则将根据每个单独的`Feature`计算原点。
 
 **参数**
 
@@ -20,18 +18,18 @@
 | factor  | number  | 缩放比例，只能为是正值 |
 | options | Object  | 可配置项               |
 
-**options选项**
+**options 选项**
 
-| 属性   | 类型         | 默认值     | 描述                                                         |
-| :----- | :----------- | :--------- | :----------------------------------------------------------- |
+| 属性   | 类型         | 默认值     | 描述                                                                 |
+| :----- | :----------- | :--------- | :------------------------------------------------------------------- |
 | origin | string\|Coor | "centroid" | 缩放的中心点，如果是 String 的话，选项有 sw/se/nw/ne/center/centroid |
-| mutate | boolean      | false      | 是否返回入参的 GeoJSON。如果为 true，则可显着提高性能        |
+| mutate | boolean      | false      | 是否返回入参的 GeoJSON。如果为 true，则可显着提高性能                |
 
 **返回**
 
 GeoJSON - scaled GeoJSON
 
-GeoJSON - 缩放后的GeoJSON
+GeoJSON - 缩放后的 GeoJSON
 
 **示例**
 
@@ -41,8 +39,8 @@ var poly = turf.polygon([
     [0, 29],
     [3.5, 29],
     [2.5, 32],
-    [0, 29]
-  ]
+    [0, 29],
+  ],
 ]);
 var scaledPoly = turf.transformScale(poly, 3);
 /*
@@ -66,13 +64,24 @@ var scaledPoly = turf.transformScale(poly, 3);
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/transformScale.3ae75920.webp)
 
-
 **基础用法**
 ::: demo
 
 ```vue
 <template>
   <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
@@ -104,13 +113,19 @@ export default {
       ],
       scaleCoordinates: null,
       style: null,
+      result: null,
+      visible: true,
     };
   },
+  computed: {
+    code() {
+      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+let result = turf.transformScale(line, 2);`;
+    },
+  },
   mounted() {
-    this.scaleCoordinates = turf.transformScale(
-      turf.lineString(this.coordinates),
-      2
-    ).geometry.coordinates;
+    this.result = turf.transformScale(turf.lineString(this.coordinates), 2);
+    this.scaleCoordinates = this.result.geometry.coordinates;
 
     this.style = new Style({
       stroke: new Stroke({
@@ -131,13 +146,28 @@ export default {
 ```vue
 <template>
   <base-map>
-    <select v-model="type">
-      <option value=""></option>
-      <option value="Point">点</option>
-      <option value="LineString">线</option>
-      <option value="Polygon">面</option>
-    </select>
-    factor：<input type="number" v-model="factor" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <select v-model="type">
+          <option value=""></option>
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row>factor：<a-input-number v-model="factor" /></a-row>
+      <a-row> <json :data="result"></json> </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
@@ -168,6 +198,8 @@ export default {
       scaleGeometry: null,
       style: null,
       factor: 2,
+      result: null,
+      visible: true,
     };
   },
   watch: {
@@ -191,6 +223,15 @@ export default {
       }),
     });
   },
+  computed: {
+    code() {
+      if (!this.feature1) {
+        return;
+      }
+      return `let f = new GeoJSON().writeFeature(this.feature1);
+let result = turf.transformScale(f,${this.factor});`;
+    },
+  },
   methods: {
     handleDrawEnd1(e) {
       this.feature1 = e.feature;
@@ -199,12 +240,13 @@ export default {
       if (!this.feature1) {
         return;
       }
-      let f = turf.transformScale(
+
+      this.result = turf.transformScale(
         JSON.parse(new GeoJSON().writeFeature(this.feature1)),
-        parseFloat(this.factor),
+        parseFloat(this.factor)
       );
       this.scaleGeometry = new GeoJSON().readGeometry(
-        JSON.stringify(f.geometry)
+        JSON.stringify(this.result.geometry)
       );
     },
   },
