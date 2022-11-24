@@ -7,6 +7,8 @@
 > Takes a ring and return true or false whether or not the ring is clockwise or counter-clockwise.
 >
 > 接收一个 type 为 LineString 的线要素，判断该要素是否顺时针走向
+>
+> 注意：当为闭环时，顺时针为 true，当不为闭环时，顺时针为 false
 
 **参数**
 
@@ -145,6 +147,7 @@ export default {
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row><a-checkbox v-model="isClose">是否闭环</a-checkbox></a-row>
       <a-row> {{ result }} </a-row>
     </drawer>
     <vue2ol-layer-vector>
@@ -179,6 +182,7 @@ export default {
       result: null,
       visible: true,
       style: null,
+      isClose: false,
     };
   },
   mounted() {
@@ -197,6 +201,9 @@ export default {
   },
   watch: {
     geometry() {
+      this.init();
+    },
+    isClose() {
       this.init();
     },
   },
@@ -222,10 +229,11 @@ export default {
       if (!this.geometry) {
         return;
       }
-      let value = turf.booleanClockwise(
-        turf.lineString(this.geometry.getCoordinates())
-      );
-      console.log(value, this.geometry.getCoordinates());
+      let coordinates = this.geometry.getCoordinates();
+      if (this.isClose) {
+        coordinates.push(coordinates[0]);
+      }
+      let value = turf.booleanClockwise(turf.lineString(coordinates));
       this.result = value;
     },
   },
