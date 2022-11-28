@@ -10,16 +10,16 @@
 
 **参数**
 
-| 参数       | 类型    | 描述                            |
-| :--------- | :------ | :------------------------------ |
-| geojson    | GeoJSON | 任意 geojson 对象               |
-| properties | Object  | 输出 geojson 的 properties 属性 |
+| 参数       | 类型                                     | 描述                            |
+| :--------- | :--------------------------------------- | :------------------------------ |
+| geojson    | [GeoJSON](../other/type.html#allgeojson) | 任意 geojson 对象               |
+| properties | Object                                   | 输出 geojson 的 properties 属性 |
 
 **返回**
 
-`Feature <Point>` - the centroid of the input features
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - the centroid of the input features
 
-`Feature <Point>` - 矩心
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - 矩心
 
 **示例**
 

@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型              | 描述                |
-| :------ | :---------------- | :------------------ |
-| geojson | Geometry\|Feature | Feature 或 Geometry |
-| options | Object            | 可配置项            |
+| 参数    | 类型                                                         | 描述                |
+| :------ | :----------------------------------------------------------- | :------------------ |
+| geojson | [Geometry](../other/type.html#geometry)\|[Feature](../other/type.html#feature) | Feature 或 Geometry |
+| options | Object                                                       | 可配置项            |
 
 **options 选项**
 
@@ -23,9 +23,9 @@
 
 **返回**
 
-Geometry|Feature - the cleaned input Feature/Geometry
+[Geometry](../other/type.html#geometry)\|[Feature](../other/type.html#feature) - the cleaned input Feature/Geometry
 
-Geometry|Feature - 已清理的 Feature/Geometry
+[Geometry](../other/type.html#geometry)\|[Feature](../other/type.html#feature) - 已清理的 Feature/Geometry
 
 **示例**
 

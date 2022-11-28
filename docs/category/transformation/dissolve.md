@@ -12,10 +12,10 @@
 
 **参数**
 
-| 参数              | 类型                          | 描述                 |
-| :---------------- | :---------------------------- | :------------------- |
-| featureCollection | `FeatureCollection <Polygon>` | 需要被分解的要素集合 |
-| options           | Object                        | 可配置项             |
+| 参数              | 类型                                                         | 描述                 |
+| :---------------- | :----------------------------------------------------------- | :------------------- |
+| featureCollection | [FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\> | 需要被分解的要素集合 |
+| options           | Object                                                       | 可配置项             |
 
 **options选项**
 
@@ -25,9 +25,9 @@
 
 **返回**
 
-`FeatureCollection <Polygon>` - a FeatureCollection containing the dissolved polygons
+  [FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\> - a FeatureCollection containing the dissolved polygons
 
-`FeatureCollection <Polygon>` - 分解后的多边形要素集
+  [FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\> - 分解后的多边形要素集
 
 **示例**
 

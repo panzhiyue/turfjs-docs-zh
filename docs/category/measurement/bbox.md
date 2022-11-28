@@ -6,21 +6,19 @@
 
 > Takes a set of features, calculates the bbox of all input features, and returns a bounding box.
 >
-> 传入一组`feature`，计算所有`feature`的`bbox`，并返回一个边界框。
+> 传入任意GeoJSON对象，计算并返回边界框(bbox)
 
 > 边界框是由右上角的坐标和左下角的坐标组成的一位数组
 
 **参数**
 
-| 参数    | 类型    | 描述                   |
-| :------ | :------ | :--------------------- |
-| geojson | GeoJSON | 一个任意类型的 GeoJSON |
+| 参数    | 类型                                     | 描述                   |
+| :------ | :--------------------------------------- | :--------------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 一个任意类型的 GeoJSON |
 
 **返回**
 
-BBox - bbox extent in minX, minY, maxX, maxY order
-
-BBox - bbox 范围，按 minX、minY、maxX、maxY 顺序排列
+[bbox](../other/type.html#bbox)
 
 **示例**
 
@@ -50,64 +48,71 @@ var bboxPolygon = turf.bboxPolygon(bbox);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
-      <a-row> {{ extent }} </a-row>
+      <a-row
+        ><a-space
+          >几何：<geojson-type :value.sync="type1"></geojson-type></a-space
+      ></a-row>
+      <a-row> {{ result }} </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-linestring
-            :coordinates="coordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-        <vue2ol-feature>
-          <vue2ol-geom-point :coordinates="coordinates2"></vue2ol-geom-point>
-        </vue2ol-feature>
-        <vue2ol-feature v-if="extent">
-          <vue2ol-geom-polygon
-            :coordinates="[
-              [
-                [extent[0], extent[3]],
-                [extent[2], extent[3]],
-                [extent[2], extent[1]],
-                [extent[0], extent[1]],
-              ],
-            ]"
-          ></vue2ol-geom-polygon>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
+import { getTestOL, getTestTurf, getTestFeatures } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.74649906158449, 28.134775638580322],
-        [119.77396488189699, 27.921915531158447],
-        [120.06372928619386, 27.858744144439697],
-        [120.13926029205324, 27.989206790924072],
-      ],
-      coordinates2: [120.32465457916261, 28.229897499084473],
-      extent: null,
       visible: true,
+      result: null,
+      type1: "LineString",
+      features: [],
+      styleRed,
     };
   },
   computed: {
     code() {
-      return `let value = turf.bbox(
-  turf.lineString(${JSON.stringify(this.coordinates)}),
-  turf.point(${JSON.stringify(this.coordinates2)})
-);`;
+      return `let value = turf.bbox(${JSON.stringify(this.turfObj1)});`;
+    },
+    olObj1() {
+      return getTestOL(this.type1);
+    },
+    turfObj1() {
+      return getTestTurf(this.type1);
+    },
+    features1() {
+      return getTestFeatures(this.type1);
+    },
+  },
+  watch: {
+    type1() {
+      this.init();
     },
   },
   mounted() {
-    let value = turf.bbox(
-      turf.lineString(this.coordinates),
-      turf.point(this.coordinates2)
-    );
-    this.extent = value;
+    this.init();
+  },
+  methods: {
+    init() {
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.bbox(this.turfObj1);
+        this.features = getFeaturesFromTurf(turf.bboxPolygon(this.result));
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
   },
 };
 </script>
@@ -176,7 +181,7 @@ export default {
       extent: null,
       geometry: null,
       type: "LineString",
-      visible:true
+      visible: true,
     };
   },
   watch: {

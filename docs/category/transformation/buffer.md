@@ -10,11 +10,11 @@ npm install @turf/buffer
 
 **参数**
 
-| 参数    | 类型                                    | 描述                       |
-| :------ | :-------------------------------------- | :------------------------- |
-| geojson | (FeatureCollection\|Geometry\|Feature ) | 任意类型 的 GeoJSON        |
-| radius  | number                                  | 绘制缓冲区的距离(允许负值) |
-| options | Object                                  | 可配置项                   |
+| 参数    | 类型                                                         | 描述                       |
+| :------ | :----------------------------------------------------------- | :------------------------- |
+| geojson | [FeatureCollection](../other/type.html#featurecollection)\|[Geometry](../other/type.html#geometry)\|[Feature](../other/type.html#feature) | 任意类型 的 GeoJSON        |
+| radius  | number                                                       | 绘制缓冲区的距离(允许负值) |
+| options | Object                                                       | 可配置项                   |
 
 **options 选项**
 
@@ -25,9 +25,9 @@ npm install @turf/buffer
 
 **返回**
 
-(`FeatureCollection`|`Feature <(Polygon|MultiPolygon)>`|`undefined`) - buffered features
+[FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>|[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>\|undefined - buffered features
 
-(`FeatureCollection`|`Feature <(Polygon|MultiPolygon)>`|`undefined`) - 缓冲要素
+[FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>|[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>\|undefined - 缓冲要素
 
 **示例**
 

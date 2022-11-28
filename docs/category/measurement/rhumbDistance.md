@@ -10,11 +10,11 @@
 
 **参数**
 
-| 参数    | 类型           | 描述     |
-| :------ | :------------- | :------- |
-| from    | Coord\|GeoJSON | 起始点   |
-| to      | Coord\|GeoJSON | 目标点   |
-| options | Object         | 可配置项 |
+| 参数    | 类型                            | 描述     |
+| :------ | :------------------------------ | :------- |
+| from    | [Coor](../other/type.html#coor) | 起始点   |
+| to      | [Coor](../other/type.html#coor) | 目标点   |
+| options | Object                          | 可配置项 |
 
 **options 选项**
 

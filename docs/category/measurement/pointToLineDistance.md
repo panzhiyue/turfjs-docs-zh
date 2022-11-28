@@ -10,11 +10,11 @@
 
 **参数**
 
-| 参数    | 类型                   | 描述           |
-| :------ | :--------------------- | :------------- |
-| pt      | Coord\|GeoJSON         | 参与计算的点   |
-| line    | `Feature <LineString>` | 参与计算的线段 |
-| options | Object                 | 可配置项       |
+| 参数    | 类型                                                         | 描述           |
+| :------ | :----------------------------------------------------------- | :------------- |
+| pt      | [Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\>\|Array | 参与计算的点   |
+| line    | [Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> | 参与计算的线段 |
+| options | Object                                                       | 可配置项       |
 
 **options 选项**
 

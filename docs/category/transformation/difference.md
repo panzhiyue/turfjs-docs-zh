@@ -11,15 +11,15 @@
 **参数**
 
 | 参数     | 类型               | 描述            |
-| -------- | ------------------ | --------------- | ---- |
-| polygon1 | `Feature <(Polygon | MultiPolygon)>` | 面 1 |
-| polygon2 | `Feature <(Polygon | MultiPolygon)>` | 面 2 |
+| -------- | --------------- | ---- |
+| polygon1 | [Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\> | 面 1 |
+| polygon2 | [Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\> | 面 2 |
 
 **返回**
 
-(`Feature <(Polygon|MultiPolygon)>`|`null`) - a Polygon or MultiPolygon feature showing the area of polygon1 excluding the area of polygon2 (if empty returns null )
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>|null - a Polygon or MultiPolygon feature showing the area of polygon1 excluding the area of polygon2 (if empty returns null )
 
-(`Feature <(Polygon|MultiPolygon)>`|`null`) - polygon1 去掉与 polygon2 相交部分后的要素（如果为空，则返回 null）
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>|null - polygon1 去掉与 polygon2 相交部分后的要素（如果为空，则返回 null）
 
 **示例**
 

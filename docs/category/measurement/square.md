@@ -10,15 +10,15 @@
 
 **参数**
 
-| 参数 | 类型 | 描述                  |
-| :--- | :--- | :-------------------- |
-| bbox | BBox | [xmin,ymin,xmax,ymax] |
+| 参数 | 类型                            | 描述                  |
+| :--- | :------------------------------ | :-------------------- |
+| bbox | [bbox](../other/type.html#bbox) | [xmin,ymin,xmax,ymax] |
 
 **返回**
 
-BBox - a square surrounding bbox
+[bbox](../other/type.html#bbox) - a square surrounding bbox
 
-BBox - 一个正方形的 bbox
+[bbox](../other/type.html#bbox) - 一个正方形的 bbox
 
 **示例**
 

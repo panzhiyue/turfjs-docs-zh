@@ -10,15 +10,15 @@
 
 **参数**
 
-| 参数    | 类型    | 描述             |
-| :------ | :------ | :--------------- |
-| geojson | GeoJSON | 需要深拷贝的要素 |
+| 参数    | 类型                                     | 描述             |
+| :------ | :--------------------------------------- | :--------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 需要深拷贝的要素 |
 
 **返回**
 
-GeoJSON - cloned GeoJSON Object
+[GeoJSON](../other/type.html#allgeojson) - cloned GeoJSON Object
 
-GeoJSON - 克隆后的GeoJSON对象
+[GeoJSON](../other/type.html#allgeojson) - 克隆后的GeoJSON对象
 
 **示例**
 

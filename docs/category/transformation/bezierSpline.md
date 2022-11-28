@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型                   | 描述                         |
-| :------ | :--------------------- | :--------------------------- |
-| line    | `Feature <LineString>` | 类型为 LineString 的 GeoJSON |
-| options | Object                 | 可配置项                     |
+| 参数    | 类型                                                         | 描述                         |
+| :------ | :----------------------------------------------------------- | :--------------------------- |
+| line    | [Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> | 类型为 LineString 的 GeoJSON |
+| options | Object                                                       | 可配置项                     |
 
 **options 选项**
 
@@ -24,9 +24,9 @@
 
 **返回**
 
-`Feature <LineString>` - curved line
+[Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> - curved line
 
-`Feature <LineString>` - 贝塞尔曲线
+[Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> - 贝塞尔曲线
 
 **示例**
 

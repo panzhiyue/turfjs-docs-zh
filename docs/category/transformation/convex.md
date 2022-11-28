@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型    | 描述           |
-| :------ | :------ | :------------- |
-| geojson | GeoJSON | 要素或要素集合 |
-| options | Object  | 可配置项       |
+| 参数    | 类型                                     | 描述           |
+| :------ | :--------------------------------------- | :------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 要素或要素集合 |
+| options | Object                                   | 可配置项       |
 
 **options 选项**
 
@@ -24,9 +24,9 @@
 
 **返回**
 
-`Feature <Polygon>` - a convex hull
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - a convex hull
 
-`Feature <Polygon>` - 凸状外壳
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - 凸状外壳
 
 **示例**
 

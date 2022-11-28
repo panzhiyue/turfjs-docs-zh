@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型    | 描述            |
-| :------ | :------ | :-------------- |
-| geojson | GeoJSON | 任意GeoJSON对象 |
-| options | Object  | 可配置项        |
+| 参数    | 类型                                     | 描述            |
+| :------ | :--------------------------------------- | :-------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 任意GeoJSON对象 |
+| options | Object                                   | 可配置项        |
 
 **options选项**
 
@@ -25,9 +25,9 @@
 
 **返回**
 
-GeoJSON - layer with truncated geometry
+[GeoJSON](../other/type.html#allgeojson) - layer with truncated geometry
 
-GeoJSON - 四舍五入后的GeoJSON
+[GeoJSON](../other/type.html#allgeojson) - 四舍五入后的GeoJSON
 
 
 

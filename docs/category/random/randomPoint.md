@@ -16,15 +16,15 @@
 
 **options 选项**
 
-| 属性 | 类型  | 默认值            | 描述   |
-| :--- | :---- | :---------------- | :----- |
-| bbox | Array | [-180,-90,180,90] | 边界框 |
+| 属性 | 类型                            | 默认值            | 描述   |
+| :--- | :------------------------------ | :---------------- | :----- |
+| bbox | [bbox](../other/type.html#bbox) | [-180,-90,180,90] | 边界框 |
 
 **返回**
 
-`FeatureCollection <Point>` - GeoJSON FeatureCollection of points
+[FeatureCollection](../other/type.html#featurecollection)\<[Point](../other/type.html#point)\> - GeoJSON FeatureCollection of points
 
-`FeatureCollection <Point>` - 点要素集
+[FeatureCollection](../other/type.html#featurecollection)\<[Point](../other/type.html#point)\> - 点要素集
 
 **示例**
 

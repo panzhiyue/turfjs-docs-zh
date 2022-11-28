@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型    | 描述              |
-| :------ | :------ | :---------------- |
-| geojson | GeoJSON | 任意 geojson 对象 |
-| options | Object  | 可配置项          |
+| 参数    | 类型                                     | 描述              |
+| :------ | :--------------------------------------- | :---------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 任意 geojson 对象 |
+| options | Object                                   | 可配置项          |
 
 **options 选项**
 

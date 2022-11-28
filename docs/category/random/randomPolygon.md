@@ -16,17 +16,17 @@
 
 **options 选项**
 
-| 属性              | 类型   | 默认值            | 描述                                                       |
-| :---------------- | :----- | :---------------- | :--------------------------------------------------------- |
-| bbox              | Array  | [-180,-90,180,90] | 边界框                                                     |
-| num_vertices      | number | 10                | 每个要素包含的坐标数量                                     |
-| max_radial_length | number | 10                | 坐标点相对于该面要素的中心点的最大经度或纬度，单位为十进制 |
+| 属性              | 类型                            | 默认值            | 描述                                                       |
+| :---------------- | :------------------------------ | :---------------- | :--------------------------------------------------------- |
+| bbox              | [bbox](../other/type.html#bbox) | [-180,-90,180,90] | 边界框                                                     |
+| num_vertices      | number                          | 10                | 每个要素包含的坐标数量                                     |
+| max_radial_length | number                          | 10                | 坐标点相对于该面要素的中心点的最大经度或纬度，单位为十进制 |
 
 **返回**
 
-`FeatureCollection <Polygon>` - GeoJSON FeatureCollection of polygons
+[FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\> - GeoJSON FeatureCollection of polygons
 
-`FeatureCollection <Polygon>` - 面要素集
+[FeatureCollection](../other/type.html#featurecollection)\<[Polygon](../other/type.html#polygon)\> - 面要素集
 
 **示例**
 

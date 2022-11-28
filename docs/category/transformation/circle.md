@@ -10,11 +10,11 @@
 
 **参数**
 
-| 参数    | 类型                       | 描述     |
-| :------ | :------------------------- | :------- |
-| center  | (`Feature <Point>`\|Array) | 圆心     |
-| radius  | number                     | 半径     |
-| options | Object                     | 可配置项 |
+| 参数    | 类型                                                         | 描述     |
+| :------ | :----------------------------------------------------------- | :------- |
+| center  | [Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\>\|Array | 圆心     |
+| radius  | number                                                       | 半径     |
+| options | Object                                                       | 可配置项 |
 
 **options 选项**
 
@@ -26,9 +26,9 @@
 
 **返回**
 
-`Feature <Polygon>` - circle polygon
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - circle polygon
 
-`Feature <Polygon>` - 圆几何面
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - 圆几何面
 
 ```js
 var center = [-75.343, 39.984];

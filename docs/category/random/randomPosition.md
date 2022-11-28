@@ -9,15 +9,15 @@
 
 **参数**
 
-| 参数 | 类型  | 描述   |
-| :--- | :---- | :----- |
-| bbox | Array | 边界框 |
+| 参数 | 类型                            | 描述   |
+| :--- | :------------------------------ | :----- |
+| bbox | [bbox](../other/type.html#bbox) | 边界框 |
 
 **返回**
 
-Array - Position longitude, latitude
+[Position](../other/type.html#position) - Position longitude, latitude
 
-Array - 经纬度坐标
+[Position](../other/type.html#position) - 经纬度坐标
 
 **示例**
 

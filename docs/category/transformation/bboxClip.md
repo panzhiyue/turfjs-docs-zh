@@ -11,13 +11,13 @@
 **参数**
 
 | 入参    | 类型                  | 描述                  |
-| ------- | --------------------- | --------------------- | ------- | --------------- | ---------------------- |
-| feature | `Feature <(LineString | MultiLineString       | Polygon | MultiPolygon)>` | 需要与 bbox 裁剪的要素 |
-| bbox    | BBox                  | [xmin,ymin,xmax,ymax] |
+| ------- | ---------------------| ---------------------- |
+| feature | [Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\|[MultiLineString](../other/type.html#multilinestring)\|[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\> | 需要与 bbox 裁剪的要素 |
+| bbox    | [bbox](../other/type.html#bbox) | [xmin,ymin,xmax,ymax] |
 
 **返回**
 
-`Feature <(LineString|MultiLineString|Polygon|MultiPolygon)>` - 裁剪后的 feature
+[Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\|[MultiLineString](../other/type.html#multilinestring)\|[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\> - 裁剪后的 feature
 
 **示例**
 

@@ -12,10 +12,10 @@
 
 **参数**
 
-| 参数    | 类型    | 描述                   |
-| :------ | :------ | :--------------------- |
-| geojson | GeoJSON | 类型为Polygon的GeoJSON |
-| options | Object  | 可配置项               |
+| 参数    | 类型                                     | 描述                   |
+| :------ | :--------------------------------------- | :--------------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 类型为Polygon的GeoJSON |
+| options | Object                                   | 可配置项               |
 
 **options 选项**
 
@@ -26,9 +26,9 @@
 
 **返回**
 
-GeoJSON - rewind Polygon
+[GeoJSON](../other/type.html#allgeojson) - rewind Polygon
 
-GeoJSON - 重绕后的Polygon
+[GeoJSON](../other/type.html#allgeojson) - 重绕后的Polygon
 
 **示例**
 

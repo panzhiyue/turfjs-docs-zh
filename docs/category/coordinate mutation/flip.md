@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型    | 描述                   |
-| :------ | :------ | :--------------------- |
-| geojson | GeoJSON | 一个任意类型的 GeoJSON |
-| options | Object  | 可配置项               |
+| 参数    | 类型                                     | 描述                   |
+| :------ | :--------------------------------------- | :--------------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 一个任意类型的 GeoJSON |
+| options | Object                                   | 可配置项               |
 
 **options 选项**
 
@@ -23,9 +23,9 @@
 
 **返回**
 
-GeoJSON - a feature or set of features of the same type as input with flipped coordinates
+[GeoJSON](../other/type.html#allgeojson) - a feature or set of features of the same type as input with flipped coordinates
 
-GeoJSON - 翻转坐标后的GeoJSON
+[GeoJSON](../other/type.html#allgeojson) - 翻转坐标后的GeoJSON
 
 **示例**
 

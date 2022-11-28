@@ -12,15 +12,15 @@
 
 **参数**
 
-| 参数    | 类型    | 描述              |
-| :------ | :------ | :---------------- |
-| geojson | GeoJSON | 任意 GeoJSON 对象 |
+| 参数    | 类型                                     | 描述              |
+| :------ | :--------------------------------------- | :---------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 任意 GeoJSON 对象 |
 
 **返回**
 
-`Feature <Point>` - a point on the surface of input
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - a point on the surface of input
 
-`Feature <Point>` - 在输入要素表面的一个点
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - 在输入要素表面的一个点
 
 **示例**
 

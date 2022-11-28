@@ -10,16 +10,18 @@
 
 **参数**
 
+
+
 | 参数    | 类型             | 描述           |
-| ------- | ---------------- | -------------- | ---------------- |
-| pt      | Coord \| GeoJSON | 参与计算的点   |
-| polygon | `Feature<Polygon | MultiPolygon>` | 参与计算的多边形 |
+| ------- |  -------------- | ---------------- |
+| pt      | [Coor](../other/type.html#coor) | 参与计算的点   |
+| polygon | [Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\> | 参与计算的多边形 |
 
 **返回**
 
-`FeatureCollection <Point>` - Feature Collection containing the two tangent points
+[FeatureCollection](../other/type.html#featurecollection)\<[Point](../other/type.html#point)\> - Feature Collection containing the two tangent points
 
-`FeatureCollection <Point>` - 包含两个切点的要素集合
+[FeatureCollection](../other/type.html#featurecollection)\<[Point](../other/type.html#point)\> - 包含两个切点的要素集合
 
 **示例**
 

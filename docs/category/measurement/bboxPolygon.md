@@ -10,23 +10,23 @@
 
 **参数**
 
-| 参数    | 类型     | 描述                   |
-| :------ | :------- | :--------------------- |
-| bbox    | BBox     | [minX,minY,maxX,maxY ] |
-| options | (Object) | 可配置项               |
+| 参数    | 类型                            | 描述     |
+| :------ | :------------------------------ | :------- |
+| bbox    | [bbox](../other/type.html#bbox) | 边界框   |
+| options | Object                          | 可配置项 |
 
 **options 选项**
 
-| 属性       | 类型             | 默认值 | 描述                                |
-| :--------- | :--------------- | :----- | :---------------------------------- |
-| properties | Properties       | {}     | 返回 GeoJSON 的 properties 属性对象 |
-| id         | (string\|number) | {}     | 返回 GeoJSON 的 id                  |
+| 属性       | 类型           | 默认值 | 描述                                |
+| :--------- | :------------- | :----- | :---------------------------------- |
+| properties | Properties     | {}     | 返回 GeoJSON 的 properties 属性对象 |
+| id         | string\|number | {}     | 返回 GeoJSON 的 id                  |
 
 **返回**
 
-Feature `<Polygon>` - a Polygon representation of the bounding box
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - a Polygon representation of the bounding box
 
-Feature `<Polygon>` - 表示边界框的多边形要素
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - 表示边界框的多边形要素
 
 **示例**
 
@@ -64,46 +64,73 @@ var poly = turf.bboxPolygon(bbox);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
-      <a-row> <json :data="result"></json> </a-row>
+      <a-row
+        ><a-space
+          >几何：<geojson-type :value.sync="type1"></geojson-type></a-space
+      ></a-row>
+      <a-row> {{ result }} </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature v-if="geometry" :geometry="geometry"></vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
+import { getTestOL, getTestTurf, getTestFeatures } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      geometry: null,
       visible: true,
       result: null,
+      type1: "LineString",
+      features: [],
+      styleRed,
     };
   },
   computed: {
     code() {
-      return `let extent = [
-  119.74649906158449, 27.858744144439697, 120.13926029205324,
-  28.134775638580322,
-];
-let bboxPolygon = turf.bboxPolygon(extent);`;
+      let extent = turf.bbox(this.turfObj1);
+      return `let result = turf.bbox(${JSON.stringify(extent)});`;
+    },
+    olObj1() {
+      return getTestOL(this.type1);
+    },
+    turfObj1() {
+      return getTestTurf(this.type1);
+    },
+    features1() {
+      return getTestFeatures(this.type1);
+    },
+  },
+  watch: {
+    type1() {
+      this.init();
     },
   },
   mounted() {
-    let extent = [
-      119.74649906158449, 27.858744144439697, 120.13926029205324,
-      28.134775638580322,
-    ];
-    let bboxPolygon = turf.bboxPolygon(extent);
+    this.init();
+  },
+  methods: {
+    init() {
+      try {
+        this.features = [];
+        this.result = null;
 
-    this.geometry = new GeoJSON().readGeometry(
-      JSON.stringify(bboxPolygon.geometry)
-    );
-    this.result = this.geometry;
+        this.result = turf.bbox(this.turfObj1);
+        console.log(getFeaturesFromTurf(turf.bboxPolygon(this.result)));
+        this.features = getFeaturesFromTurf(turf.bboxPolygon(this.result));
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
   },
 };
 </script>
@@ -177,7 +204,7 @@ export default {
       if (!this.geometry) {
         return;
       }
-       let extent = turf.bbox(
+      let extent = turf.bbox(
         JSON.parse(new GeoJSON().writeGeometry(this.geometry))
       );
       return `let extent = ${JSON.stringify(extent)};

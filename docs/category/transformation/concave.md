@@ -12,10 +12,10 @@
 
 **参数**
 
-| 参数    | 类型                        | 描述       |
-| :------ | :-------------------------- | :--------- |
-| points  | `FeatureCollection <Point>` | 若干点要素 |
-| options | Object                      | 可配置项   |
+| 参数    | 类型                                                         | 描述       |
+| :------ | :----------------------------------------------------------- | :--------- |
+| points  | [FeatureCollection](../other/type.html#featurecollection)\<[Point](../other/type.html#point)\> | 若干点要素 |
+| options | Object                                                       | 可配置项   |
 
 **options 选项**
 
@@ -26,9 +26,9 @@
 
 **返回**
 
-(`Feature <(Polygon|MultiPolygon)>`|`null`) - a concave hull (null value is returned if unable to compute hull)
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>|null - a concave hull (null value is returned if unable to compute hull)
 
-(`Feature <(Polygon|MultiPolygon)>`|`null`) - 凹型多边形，若无法计算则返回 null
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\>|null - 凹型多边形，若无法计算则返回 null
 
 **示例**
 

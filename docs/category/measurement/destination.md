@@ -10,12 +10,12 @@
 
 **参数**
 
-| 参数     | 类型           | 描述                                  |
-| :------- | :------------- | :------------------------------------ |
-| origin   | Coord\|GeoJSON | 起始点，即参照物                      |
-| distance | number         | 和起始点的距离                        |
-| bearing  | number         | 和起始点的角度，介于 -180 至 180 之间 |
-| options  | Object         | 可配置项                              |
+| 参数     | 类型                            | 描述                                  |
+| :------- | :------------------------------ | :------------------------------------ |
+| origin   | [Coor](../other/type.html#coor) | 起始点，即参照物                      |
+| distance | number                          | 和起始点的距离                        |
+| bearing  | number                          | 和起始点的角度，介于 -180 至 180 之间 |
+| options  | Object                          | 可配置项                              |
 
 **options 选项**
 
@@ -26,9 +26,9 @@
 
 **返回**
 
-`Feature<Point>` - destination point
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - destination point
 
-`Feature<Point>` - 目标点
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - 目标点
 
 **示例**
 

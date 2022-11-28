@@ -6,15 +6,15 @@
 
 > Takes one or more features and returns their area in square meters.
 >
-> 获取一个或多个`feature`，并返回其面积平方米。
+> 获取一个或多个`feature`，并返回其面积,单位为平方米。
 
 > 值得注意的是，该方法应该是传入 polygon 类型的 GeoJSON，即 Point 点类型和 LineString 线段类型均为 0
 
 **参数**
 
-| 参数    | 类型    | 描述                |
-| :------ | :------ | :------------------ |
-| geojson | GeoJSON | 一个或多个`feature` |
+| 参数    | 类型                                     | 描述                |
+| :------ | :--------------------------------------- | :------------------ |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 一个或多个`feature` |
 
 **返回**
 
@@ -79,44 +79,67 @@ var area = turf.area({
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-type :value.sync="type1"></geojson-type></a-space
+      ></a-row>
       <a-row> {{ result }}平方米 </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-polygon :coordinates="coordinates"></vue2ol-geom-polygon>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
+import { getTestOL, getTestTurf, getTestFeatures } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [
-          [119.82697608925122, 28.20411200111616],
-          [119.67655860065376, 27.864037679069753],
-          [120.06895204916886, 27.71144022686944],
-          [120.37414695356948, 27.927256623552736],
-          [120.24552910100064, 28.193212183101853],
-          [119.82697608925122, 28.20411200111616],
-        ],
-      ],
       result: null,
       visible: true,
+      type1: "LineString",
+      styleRed,
     };
   },
   computed: {
     code() {
-      return `let value = turf.area(turf.polygon(${JSON.stringify(this.coordinates)}));`;
+      return `let value = turf.area(${JSON.stringify(
+        this.turfObj1
+      )});`;
+    },
+    olObj1() {
+      return getTestOL(this.type1);
+    },
+    turfObj1() {
+      return getTestTurf(this.type1);
+    },
+    features1() {
+      return getTestFeatures(this.type1);
+    },
+  },
+  watch: {
+    type1() {
+      this.init();
     },
   },
   mounted() {
-    let value = turf.area(turf.polygon(this.coordinates));
-    this.result = value;
+    this.init();
+  },
+  methods: {
+    init() {
+      try {
+        this.result = null;
+        let value = turf.area(this.turfObj1);
+        this.result = value;
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
   },
 };
 </script>
@@ -140,13 +163,21 @@ export default {
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><select v-model="type">
+          <option value="Point">点</option>
+          <option value="LineString">线</option>
+          <option value="Polygon">面</option>
+        </select></a-row
+      >
+      <a-row><a-checkbox v-model="isGeometry">读取geometry</a-checkbox></a-row>
       <a-row> {{ result }}平方米 </a-row>
     </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-interaction-draw
           :active="true"
-          type="Polygon"
+          :type="type"
           @drawend="handleDrawEnd"
         ></vue2ol-interaction-draw>
       </vue2ol-source-vector>
@@ -157,38 +188,52 @@ export default {
 import { Feature } from "ol";
 import { LineString } from "ol/geom";
 import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
 export default {
   data() {
     return {
-      geometry: null,
+      feature: null,
       result: null,
       visible: true,
+      type: "Polygon",
+      isGeometry: false,
     };
   },
   mounted() {},
   watch: {
-    geometry() {
+    feature() {
+      this.init();
+    },
+    isGeometry() {
       this.init();
     },
   },
   computed: {
     code() {
-      if (!this.geometry) {
+      if (!this.feature) {
         return;
       }
-      return `let value = turf.area(turf.polygon(${JSON.stringify(this.geometry.getCoordinates())}));`;
+      let g = JSON.parse(new GeoJSON().writeFeature(this.feature));
+      if (this.isGeometry) {
+        g = g.geometry;
+      }
+      return `let value = turf.area(${JSON.stringify(g)});`;
     },
   },
   methods: {
     handleDrawEnd(e) {
-      this.geometry = e.feature.getGeometry();
+      this.feature = e.feature;
     },
 
     init() {
-      if (!this.geometry) {
+      if (!this.feature) {
         return;
       }
-      let value = turf.area(turf.polygon(this.geometry.getCoordinates()));
+      let g = JSON.parse(new GeoJSON().writeFeature(this.feature));
+      if (this.isGeometry) {
+        g = g.geometry;
+      }
+      let value = turf.area(g);
       this.result = value;
     },
   },

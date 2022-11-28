@@ -12,15 +12,15 @@
 
 **参数**
 
-| 参数    | 类型    | 描述         |
-| :------ | :------ | :----------- |
-| geojson | GeoJSON | 任意 GeoJSON |
+| 参数    | 类型                                     | 描述         |
+| :------ | :--------------------------------------- | :----------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 任意 GeoJSON |
 
 **返回**
 
-`Feature <Polygon>` - a rectangular Polygon feature that encompasses all vertices
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - a rectangular Polygon feature that encompasses all vertices
 
-`Feature <Polygon>` - 包含所有入参要素顶点的 GeoJSON
+[Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> - 包含所有入参要素顶点的 GeoJSON
 
 **示例**
 

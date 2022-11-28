@@ -10,16 +10,16 @@
 
 **参数**
 
-| 参数  | 类型                | 描述 |
-| :---- | :------------------ | :--- |
-| poly1 | `Feature <Polygon>` | 面 1 |
-| poly2 | `Feature <Polygon>` | 面 2 |
+| 参数  | 类型                                                         | 描述 |
+| :---- | :----------------------------------------------------------- | :--- |
+| poly1 | [Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> | 面 1 |
+| poly2 | [Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\> | 面 2 |
 
 **返回**
 
 (Feature|null) - returns a feature representing the point(s) they share (in case of a Point or MultiPoint ), the borders they share (in case of a LineString or a MultiLineString ), the area they share (in case of Polygon or MultiPolygon ). If they do not share any point, returns null.
 
-(Feature|null) - 没有交集或接收不是 type 为 polygon 的多边形都会返回 null
+(Feature|null) - 返回表示它们共享的点（如果是点或多点）、共享的边界（如果是LineString或MultiLineString）、共享区域（如果是多边形或多多边形）的特征。
 
 **示例**
 

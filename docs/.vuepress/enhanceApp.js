@@ -61,6 +61,17 @@ export default async ({
     ).then((module) => {
       Vue.component("LengthUnits", module.default);
     });
+    await import(
+      "../components/AreaUnits.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("AreaUnits", module.default);
+    });
+
+    await import(
+      "../components/GeojsonType.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("GeojsonType", module.default);
+    });
 
     await import(
       "../components/Drawer.vue" /* webpackChunkName: "notification" */

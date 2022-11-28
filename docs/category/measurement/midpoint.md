@@ -10,16 +10,16 @@
 
 **参数**
 
-| 参数   | 类型  | 描述     |
-| :----- | :---- | :------- |
-| point1 | Coord | 第一个点 |
-| point2 | Coord | 第二个点 |
+| 参数   | 类型                            | 描述     |
+| :----- | :------------------------------ | :------- |
+| point1 | [Coor](../other/type.html#coor) | 第一个点 |
+| point2 | [Coor](../other/type.html#coor) | 第二个点 |
 
 **返回**
 
-`Feature <Point>` - a point midway between pt1 and pt2
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - a point midway between pt1 and pt2
 
-`Feature <Point>` - 中点
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - 中点
 
 **示例**
 

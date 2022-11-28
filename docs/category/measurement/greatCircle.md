@@ -10,11 +10,11 @@ npm install @turf/great-circle
 
 **参数**
 
-| 参数    | 类型           | 描述     |
-| :------ | :------------- | :------- |
-| start   | Coord\|GeoJSON | 起始点   |
-| end     | Coord\|GeoJSON | 目标点   |
-| options | Object         | 可配置项 |
+| 参数    | 类型                            | 描述     |
+| :------ | :------------------------------ | :------- |
+| start   | [Coor](../other/type.html#coor) | 起始点   |
+| end     | [Coor](../other/type.html#coor) | 目标点   |
+| options | Object                          | 可配置项 |
 
 **options 选项**
 
@@ -26,9 +26,9 @@ npm install @turf/great-circle
 
 **返回**
 
-`Feature <LineString>` - great circle line feature
+[Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> - great circle line feature
 
-`Feature <LineString>` - 大圆线
+[Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> - 大圆线
 
 **示例**
 

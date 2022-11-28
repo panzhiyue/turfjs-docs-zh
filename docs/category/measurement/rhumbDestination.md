@@ -10,12 +10,12 @@
 
 **参数**
 
-| 参数     | 类型           | 描述                               |
-| :------- | :------------- | :--------------------------------- |
-| origin   | Coord\|GeoJSON | 参与计算的点                       |
-| distance | number         | 参与计算的线段                     |
-| bearing  | number         | 与正北的角度，范围从-180 到 180 度 |
-| options  | Object         | 可配置项                           |
+| 参数     | 类型                            | 描述                               |
+| :------- | :------------------------------ | :--------------------------------- |
+| origin   | [Coor](../other/type.html#coor) | 参与计算的点                       |
+| distance | number                          | 参与计算的线段                     |
+| bearing  | number                          | 与正北的角度，范围从-180 到 180 度 |
+| options  | Object                          | 可配置项                           |
 
 **options 选项**
 
@@ -26,9 +26,9 @@
 
 **返回**
 
-`Feature <Point>` - Destination point。
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - Destination point。
 
-`Feature <Point>` - 目标点
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - 目标点
 
 **示例**
 

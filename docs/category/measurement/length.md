@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型    | 描述               |
-| :------ | :------ | :----------------- |
-| geojson | GeoJSON | 需要测量的 GeoJSON |
-| options | Object  | 可配置项           |
+| 参数    | 类型                                                         | 描述               |
+| :------ | :----------------------------------------------------------- | :----------------- |
+| geojson | [Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\|[MultiLineString](../other/type.html#multilinestring)\> | 需要测量的 GeoJSON |
+| options | Object                                                       | 可配置项           |
 
 **options 选项**
 
