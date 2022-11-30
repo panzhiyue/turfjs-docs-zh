@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     code() {
-      return `let result = turf.bearingToAzimuth(this.origin);`;
+      return `let result = turf.bearingToAzimuth(${this.origin});`;
     },
     dest() {
       return turf.bearingToAzimuth(this.origin);

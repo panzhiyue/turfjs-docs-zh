@@ -6,7 +6,7 @@
 
 > Takes any Feature or a FeatureCollection and returns its center of mass using this formula: Centroid of Polygon.
 >
-> 接收入参要素`Feature`或要素集`FeatureCollection`，并使用以下公式返回其质心：多边形的质心。
+> 接收任意GeoJSON对象，并使用以下公式返回其质心：多边形的质心。
 
 **参数**
 
@@ -70,68 +70,72 @@ var center = turf.centerOfMass(polygon, {
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json></a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature v-for="coordinate in coordinates">
-          <vue2ol-geom-point :coordinates="coordinate"></vue2ol-geom-point>
-        </vue2ol-feature>
-        <vue2ol-feature v-if="center" :style-obj="centerStyle">
-          <vue2ol-geom-point :coordinates="center"></vue2ol-geom-point>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
-import { Style, Stroke, Text, Circle, Fill } from "ol/style";
+import { getTestOL } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.72040653228761, 28.17103910446167],
-        [119.72727298736574, 27.908740520477295],
-        [120.22852420806886, 28.13808012008667],
-      ],
-      center: null,
-      centerStyle: null,
       visible: true,
       result: null,
+      type1: "LineString",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      let ps = this.coordinates.map((item) => {
-        return turf.point(item);
-      });
-      let features = turf.featureCollection(ps);
-      return `let features = ${JSON.stringify(features)};
+      return `let features = ${JSON.stringify(this.turfObj1)};
 let result = turf.centerOfMass(features);`;
     },
   },
-  mounted() {
-    let ps = this.coordinates.map((item) => {
-      return turf.point(item);
-    });
-    let features = turf.featureCollection(ps);
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-    this.result = turf.centerOfMass(features);
-    this.center = this.result.geometry.coordinates;
-
-    this.centerStyle = new Style({
-      image: new Circle({
-        radius: 8,
-        stroke: new Stroke({
-          color: "#ff0000",
-        }),
-        fill: new Fill({
-          color: "rgba(255,0,0,0.5)",
-        }),
-      }),
-    });
+        this.result = turf.centerOfMass(this.turfObj1);
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

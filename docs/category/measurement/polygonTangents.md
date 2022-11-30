@@ -10,11 +10,9 @@
 
 **参数**
 
-
-
-| 参数    | 类型             | 描述           |
-| ------- |  -------------- | ---------------- |
-| pt      | [Coor](../other/type.html#coor) | 参与计算的点   |
+| 参数    | 类型                                                                                                                            | 描述             |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| pt      | [Coor](../other/type.html#coor)                                                                                                 | 参与计算的点     |
 | polygon | [Feature](../other/type.html#feature)\<[Polygon](../other/type.html#polygon)\|[MultiPolygon](../other/type.html#multipolygon)\> | 参与计算的多边形 |
 
 **返回**
@@ -83,77 +81,84 @@ var tangents = turf.polygonTangents(point, polygon);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json></a-row>
     </drawer>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
         <vue2ol-feature>
-          <vue2ol-geom-polygon :coordinates="coordinates"></vue2ol-geom-polygon>
-        </vue2ol-feature>
-        <vue2ol-feature>
-          <vue2ol-geom-point :coordinates="coordinates2"></vue2ol-geom-point>
+          <vue2ol-geom-point :coordinates="coordinates"></vue2ol-geom-point>
         </vue2ol-feature>
       </vue2ol-source-vector>
     </vue2ol-layer-vector>
-    <vue2ol-layer-vector :style-obj="tangentsStyle">
-      <vue2ol-source-vector :features="tangentsFeatures">
-      </vue2ol-source-vector>
+    <vue2ol-layer-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
-import { Style, Circle, Stroke, Fill } from "ol/style";
+import { getTestOL } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
 export default {
   data() {
     return {
-      coordinates: [
-        [
-          [119.74649906158449, 28.134775638580322],
-          [119.77396488189699, 27.921915531158447],
-          [120.06372928619386, 27.858744144439697],
-          [120.13926029205324, 27.989206790924072],
-          [119.74649906158449, 28.134775638580322],
-        ],
-      ],
-      coordinates2: [120.32465457916261, 28.229897499084473],
-      tangentsFeatures: null,
-      tangentsStyle: null,
+      coordinates: [120.32465457916261, 28.229897499084473],
       result: null,
       visible: true,
+      type1: "Polygon",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
-  computed:{
-    code(){
+  computed: {
+    code() {
       return `let result = turf.polygonTangents(
-  turf.point(${JSON.stringify(this.coordinates2)}),
-  turf.polygon(${JSON.stringify(this.coordinates)})
-);`
-    }
+  turf.point(${JSON.stringify(this.coordinates)}),
+  ${JSON.stringify(this.turfObj1)}
+);`;
+    },
   },
-  mounted() {
-    this.result = turf.polygonTangents(
-      turf.point(this.coordinates2),
-      turf.polygon(this.coordinates)
-    );
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-    this.tangentsFeatures = new GeoJSON().readFeatures(
-      JSON.stringify(this.result)
-    );
-
-    this.tangentsStyle = new Style({
-      image: new Circle({
-        radius: 6,
-        stroke: new Stroke({
-          color: "#ff0000",
-          width: 2,
-        }),
-        fill: new Fill({
-          color: "rgba(255,0,0,0.5)",
-        }),
-      }),
-    });
+        this.result = turf.polygonTangents(
+          turf.point(this.coordinates),
+          this.turfObj1
+        );
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

@@ -139,6 +139,9 @@ export const styleRed = new Style({
 
 export const getTestOL = (type) => {
   switch (type) {
+    case "Position": {
+      return POINT_GEOMETRY;
+    }
     case "Point": {
       return POINT_GEOMETRY;
     }
@@ -189,7 +192,9 @@ export const getTestOL = (type) => {
 
 export const getTestTurf = (type) => {
   let testOL = getTestOL(type);
-  if (type == "FeatureCollection") {
+  if (type == "Position") {
+    return POINT_COORDINATES;
+  } else if (type.indexOf("FeatureCollection") > -1) {
     return JSON.parse(format.writeFeatures(testOL));
   } else if (type.indexOf("Feature") > -1) {
     return JSON.parse(format.writeFeature(testOL));
@@ -200,7 +205,6 @@ export const getTestTurf = (type) => {
 
 export const getTestFeatures = (type) => {
   let testOL = getTestOL(type);
-  console.log(type, testOL);
   if (type == "FeatureCollection") {
     return testOL;
   } else if (type.indexOf("Feature") > -1) {
@@ -214,7 +218,9 @@ export const getTestFeatures = (type) => {
   }
 };
 export const getOLFromTurf = (obj) => {
-  if (obj.type == "FeatureCollection") {
+  if (obj instanceof Array) {
+    return new Point(obj);
+  } else if (obj.type == "FeatureCollection") {
     return format.readFeatures(JSON.stringify(obj));
   } else if (obj.type == "Feature") {
     return format.readFeature(JSON.stringify(obj));
@@ -232,7 +238,7 @@ export const getFeaturesFromTurf = (obj) => {
   } else {
     return [
       new Feature({
-        geometr: olObj,
+        geometry: olObj,
       }),
     ];
   }

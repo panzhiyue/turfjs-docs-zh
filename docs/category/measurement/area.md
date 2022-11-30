@@ -81,7 +81,10 @@ var area = turf.area({
     <drawer :visible.sync="visible" :code="code">
       <a-row
         ><a-space
-          >几何：<geojson-type :value.sync="type1"></geojson-type></a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
       ></a-row>
       <a-row> {{ result }}平方米 </a-row>
     </drawer>
@@ -100,36 +103,27 @@ export default {
     return {
       result: null,
       visible: true,
-      type1: "LineString",
+      type1: "Polygon",
       styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let value = turf.area(${JSON.stringify(
-        this.turfObj1
-      )});`;
-    },
-    olObj1() {
-      return getTestOL(this.type1);
-    },
-    turfObj1() {
-      return getTestTurf(this.type1);
-    },
-    features1() {
-      return getTestFeatures(this.type1);
+      return `let value = turf.area(${JSON.stringify(this.turfObj1)});`;
     },
   },
   watch: {
-    type1() {
+    turfObj1() {
       this.init();
     },
   },
-  mounted() {
-    this.init();
-  },
   methods: {
     init() {
+      if (!this.turfObj1) {
+        return;
+      }
       try {
         this.result = null;
         let value = turf.area(this.turfObj1);
@@ -139,6 +133,10 @@ export default {
           error: e.toString(),
         };
       }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
     },
   },
 };

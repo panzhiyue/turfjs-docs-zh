@@ -24,3 +24,72 @@ number - 弧度
 ```js
 turf.lengthToRadians(6671704.814011974, 'meters');  // 1.0471975511965976
 ```
+
+
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <div style="position:relative;width:100%;height:400px; overflow: hidden;">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >要被转换的长度数值：<a-input-number
+            v-model="origin"
+          ></a-input-number></a-space
+      ></a-row>
+      <a-row
+        ><a-space
+          >单位：<length-units
+            :value.sync="unit"
+          ></length-units></a-space
+      ></a-row>
+      <a-row
+        ><a-space
+          >转换后的弧度：<a-input-number
+            style="width:100%"
+            :value="dest"
+            disabled
+          ></a-input-number></a-space
+      ></a-row>
+      <a-row> {{ result }}</a-row>
+    </drawer>
+  </div>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+import { Style, Stroke } from "ol/style";
+export default {
+  data() {
+    return {
+      origin: 1,
+      unit: "kilometers",
+      result: null,
+      visible: true,
+    };
+  },
+  computed: {
+    code() {
+      return `let result = turf.lengthToRadians(${this.origin}, '${this.unit}');`;
+    },
+    dest() {
+      return turf.lengthToRadians(this.origin, this.unit);
+    },
+  },
+};
+</script>
+```
+
+:::

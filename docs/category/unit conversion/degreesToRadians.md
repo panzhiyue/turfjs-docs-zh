@@ -22,3 +22,57 @@ number - 弧度
 ```js
 turf.degreesToRadians(60); // 1.0471975511965976
 ```
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <div style="position:relative;width:100%;height:400px; overflow: hidden;">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >角度：<a-input-number v-model="origin"></a-input-number></a-space
+      ></a-row>
+      <a-row
+        ><a-space
+          >弧度：<a-input-number :value="dest"   style="width:100%" disabled></a-input-number></a-space
+      ></a-row>
+      <a-row> {{ result }}</a-row>
+    </drawer>
+  </div>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+import { Style, Stroke } from "ol/style";
+export default {
+  data() {
+    return {
+      origin: 60,
+      result: null,
+      visible: true,
+    };
+  },
+  computed: {
+    code() {
+      return `let result = turf.degreesToRadians(${this.origin});`;
+    },
+    dest() {
+      return turf.degreesToRadians(this.origin);
+    },
+  },
+};
+</script>
+```
+
+:::

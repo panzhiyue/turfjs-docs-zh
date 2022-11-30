@@ -66,7 +66,10 @@ var poly = turf.bboxPolygon(bbox);
     <drawer :visible.sync="visible" :code="code">
       <a-row
         ><a-space
-          >几何：<geojson-type :value.sync="type1"></geojson-type></a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
       ></a-row>
       <a-row> {{ result }} </a-row>
     </drawer>
@@ -91,45 +94,41 @@ export default {
       type1: "LineString",
       features: [],
       styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
       let extent = turf.bbox(this.turfObj1);
-      return `let result = turf.bbox(${JSON.stringify(extent)});`;
-    },
-    olObj1() {
-      return getTestOL(this.type1);
-    },
-    turfObj1() {
-      return getTestTurf(this.type1);
-    },
-    features1() {
-      return getTestFeatures(this.type1);
+      return `let result = turf.bboxPolygon(${JSON.stringify(extent)});`;
     },
   },
   watch: {
-    type1() {
+    turfObj1() {
       this.init();
     },
   },
-  mounted() {
-    this.init();
-  },
   methods: {
     init() {
+      if (!this.turfObj1) {
+        return;
+      }
       try {
         this.features = [];
         this.result = null;
-
-        this.result = turf.bbox(this.turfObj1);
-        console.log(getFeaturesFromTurf(turf.bboxPolygon(this.result)));
-        this.features = getFeaturesFromTurf(turf.bboxPolygon(this.result));
+        let bbox = turf.bbox(this.turfObj1);
+        this.result = turf.bboxPolygon(bbox);
+        this.features = getFeaturesFromTurf(this.result);
       } catch (e) {
         this.result = {
           error: e.toString(),
         };
       }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
     },
   },
 };
@@ -225,12 +224,11 @@ let bboxPolygon = turf.bboxPolygon(extent);`;
       );
       this.extent = value;
 
-      let bboxPolygon = turf.bboxPolygon(this.extent);
+      this.result = turf.bboxPolygon(this.extent);
 
       this.bboxGeometry = new GeoJSON().readGeometry(
-        JSON.stringify(bboxPolygon.geometry)
+        JSON.stringify(this.result.geometry)
       );
-      this.result = this.bboxGeometry;
     },
   },
 };

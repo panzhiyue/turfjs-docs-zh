@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       types: [
+        "Position",
         "Point",
         "MultiPoint",
         "Feature<Point>",
@@ -22,7 +23,7 @@ export default {
         "Feature<MultiPolygon>",
         "GeometryCollection",
         "Feature<GeometryCollection>",
-        "FeatureCollection"
+        "FeatureCollection",
       ],
     };
   },
@@ -34,6 +35,7 @@ export default {
   methods: {
     handleChange(e) {
       this.$emit("update:value", e.target.value);
+      this.$emit("change", e.target.value);
     },
   },
 };

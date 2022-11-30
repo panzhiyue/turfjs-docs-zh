@@ -6,7 +6,7 @@
 
 > Takes a Feature or FeatureCollection and returns the absolute center point of all features.
 >
-> 接收入参要素`Feature`或要素集`FeatureCollection`，计算并返回它们的绝对中心点。
+> 接收任意GeoJSON对象，计算并返回它们的绝对中心点。
 
 **参数**
 
@@ -23,9 +23,9 @@
 
 **返回**
 
-`Feature <Point>` - a Point feature at the absolute center point of all input features
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - a Point feature at the absolute center point of all input features
 
-`Feature <Point>` - 所有输入要素的绝对中心点
+[Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\> - 所有输入要素的绝对中心点
 
 **示例**
 
@@ -96,17 +96,21 @@ var center = turf.center(
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json></a-row>
     </drawer>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature v-for="coordinate in coordinates">
-          <vue2ol-geom-point :coordinates="coordinate"></vue2ol-geom-point>
-        </vue2ol-feature>
-        <vue2ol-feature v-if="center" :style-obj="centerStyle">
-          <vue2ol-geom-point :coordinates="center"></vue2ol-geom-point>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
@@ -114,50 +118,53 @@ var center = turf.center(
 import * as turf from "@turf/turf";
 import { GeoJSON } from "ol/format";
 import { Style, Stroke, Text, Circle, Fill } from "ol/style";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.72040653228761, 28.17103910446167],
-        [119.72727298736574, 27.908740520477295],
-        [120.22852420806886, 28.13808012008667],
-      ],
-      center: null,
-      centerStyle: null,
       result: null,
       visible: true,
+      type1: "MultiPoint",
+      turfObj1: null,
+      features1: [],
+      styleRed
     };
   },
   computed: {
     code() {
-      let ps = this.coordinates.map((item) => {
-        return turf.point(item);
-      });
-      let features = turf.featureCollection(ps);
-      return `let points = ${JSON.stringify(features)};
-let result = turf.center(points);`;
+      return `let result = turf.center(${JSON.stringify(this.turfObj1)});`;
+    },
+  },
+  watch: {
+    turfObj1() {
+      this.init();
     },
   },
   mounted() {
-    let ps = this.coordinates.map((item) => {
-      return turf.point(item);
-    });
-    let features = turf.featureCollection(ps);
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-    this.result = turf.center(features);
-    this.center = this.result.geometry.coordinates;
-
-    this.centerStyle = new Style({
-      image: new Circle({
-        radius: 8,
-        stroke: new Stroke({
-          color: "#ff0000",
-        }),
-        fill: new Fill({
-          color: "rgba(255,0,0,0.5)",
-        }),
-      }),
-    });
+        this.result = turf.center(this.turfObj1);
+        this.features = getFeaturesFromTurf(this.result);
+        // this.center = this.result.geometry.coordinates;
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

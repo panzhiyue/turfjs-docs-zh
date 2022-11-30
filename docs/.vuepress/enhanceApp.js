@@ -93,5 +93,15 @@ export default async ({
     ).then((module) => {
       Vue.component("GridType", module.default);
     });
+    await import(
+      "../components/GeojsonText.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("GeojsonText", module.default);
+    });
+    await import(
+      "../components/Position.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("Position", module.default);
+    });
   }
 };

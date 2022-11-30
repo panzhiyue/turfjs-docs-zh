@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型                                                         | 描述               |
-| :------ | :----------------------------------------------------------- | :----------------- |
+| 参数    | 类型                                                                                                                                        | 描述               |
+| :------ | :------------------------------------------------------------------------------------------------------------------------------------------ | :----------------- |
 | geojson | [Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\|[MultiLineString](../other/type.html#multilinestring)\> | 需要测量的 GeoJSON |
-| options | Object                                                       | 可配置项           |
+| options | Object                                                                                                                                      | 可配置项           |
 
 **options 选项**
 
@@ -55,48 +55,69 @@ var length = turf.length(line, { units: "miles" }); // 2738.9663893575207
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row>{{ result }}</a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-linestring
-            :coordinates="coordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
-import { Feature } from "ol";
-import { LineString } from "ol/geom";
 import * as turf from "@turf/turf";
+import { getTestOL } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.74649906158449, 28.134775638580322],
-        [119.77396488189699, 27.921915531158447],
-        [120.06372928619386, 27.858744144439697],
-        [120.13926029205324, 27.989206790924072],
-      ],
       result: null,
       visible: true,
+      type1: "LineString",
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
       return `let options = { units: "miles" };
-let result = turf.length(turf.lineString(${JSON.stringify(
-        this.coordinates
-      )}), 10, options);`;
+let result = turf.length(${JSON.stringify(this.turfObj1)}), 10, options);`;
     },
   },
-  mounted() {
-    let options = { units: "miles" };
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-    this.result = turf.length(turf.lineString(this.coordinates), 10, options);
+        let options = { units: "miles" };
+
+        this.result = turf.length(this.turfObj1, 10, options);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

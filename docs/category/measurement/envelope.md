@@ -6,7 +6,7 @@
 
 > Takes any number of features and returns a rectangular Polygon that encompasses all vertices.
 >
-> 接受任意数量的`feature`并返回包含所有顶点的矩形多边形。
+> 接受任意的GeoJSON对象，计算并返回包含所有顶点的矩形多边形。
 
 > 值得注意的是，矩形是正四边形，所以会去包含更靠外的要素顶点，从而保证所有的要素都在矩形内
 
@@ -79,64 +79,72 @@ var enveloped = turf.envelope(features);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json></a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-linestring
-            :coordinates="coordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-        <vue2ol-feature>
-          <vue2ol-geom-point :coordinates="coordinates2"></vue2ol-geom-point>
-        </vue2ol-feature>
-        <vue2ol-feature
-          v-if="envelopeGeometry"
-          :geometry="envelopeGeometry"
-        ></vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
+import { getTestOL } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.74649906158449, 28.134775638580322],
-        [119.77396488189699, 27.921915531158447],
-        [120.06372928619386, 27.858744144439697],
-        [120.13926029205324, 27.989206790924072],
-      ],
-      coordinates2: [120.32465457916261, 28.229897499084473],
-      envelopeGeometry: null,
-      result: null,
       visible: true,
+      result: null,
+      type1: "LineString",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let result = turf.envelope(
-  turf.featureCollection([
-    turf.lineString(${JSON.stringify(this.coordinates)}),
-    turf.point(${JSON.stringify(this.coordinates2)}),
-  ])
-);`;
+      return `let features = ${JSON.stringify(this.turfObj1)};
+let result = turf.envelope(features);`;
     },
   },
-  mounted() {
-    this.result = turf.envelope(
-      turf.featureCollection([
-        turf.lineString(this.coordinates),
-        turf.point(this.coordinates2),
-      ])
-    );
-    this.envelopeGeometry = new GeoJSON().readGeometry(
-      JSON.stringify(this.result.geometry)
-    );
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.envelope(this.turfObj1);
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

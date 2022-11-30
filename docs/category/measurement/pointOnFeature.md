@@ -6,7 +6,9 @@
 
 > Takes a Feature or FeatureCollection and returns a Point guaranteed to be on the surface of the feature.
 >
-> 获取一个`Feature`或`FeatureCollection`，并返回一个点，保证在该`feature`的表面。
+> 接收任意一个GeoJSON对象，计算并返回内部一点。
+>
+> 注意：返回的点要素是固定的，并非随机
 
 > 值得注意的是，返回的点要素是固定的，并非随机
 
@@ -69,69 +71,72 @@ var pointOnPolygon = turf.pointOnFeature(polygon);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json></a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature v-for="coordinate in coordinates">
-          <vue2ol-geom-point :coordinates="coordinate"></vue2ol-geom-point>
-        </vue2ol-feature>
-        <vue2ol-feature v-if="center" :style-obj="centerStyle">
-          <vue2ol-geom-point :coordinates="center"></vue2ol-geom-point>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
-import { Style, Stroke, Text, Circle, Fill } from "ol/style";
+import { getTestOL } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.72727298736574, 27.908740520477295],
-        [119.72040653228761, 28.17103910446167],
-        [120.22852420806886, 28.13808012008667],
-      ],
-      center: null,
-      centerStyle: null,
-      result: null,
       visible: true,
+      result: null,
+      type1: "LineString",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      let ps = this.coordinates.map((item) => {
-        return turf.point(item);
-      });
-      let features = turf.featureCollection(ps);
-      return `let features = ${JSON.stringify(features)};
+      return `let features = ${JSON.stringify(this.turfObj1)};
 let result = turf.pointOnFeature(features);`;
     },
   },
-  mounted() {
-    let ps = this.coordinates.map((item) => {
-      return turf.point(item);
-    });
-    let features = turf.featureCollection(ps);
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-    let center = turf.pointOnFeature(features);
-    this.result = center;
-    this.center = center.geometry.coordinates;
-
-    this.centerStyle = new Style({
-      image: new Circle({
-        radius: 8,
-        stroke: new Stroke({
-          color: "#ff0000",
-        }),
-        fill: new Fill({
-          color: "rgba(255,0,0,0.5)",
-        }),
-      }),
-    });
+        this.result = turf.pointOnFeature(this.turfObj1);
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

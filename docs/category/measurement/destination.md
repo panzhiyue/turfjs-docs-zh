@@ -69,41 +69,55 @@ var destination = turf.destination(point, distance, bearing, options);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json></a-row>
     </drawer>
-    <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature :style-obj="startStyle">
-          <vue2ol-geom-point :coordinates="startPoint"></vue2ol-geom-point>
-        </vue2ol-feature>
-        <vue2ol-feature v-if="endPoint" :style-obj="endStyle">
-          <vue2ol-geom-point :coordinates="endPoint"></vue2ol-geom-point>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+    <vue2ol-layer-vector :style-obj="startStyle">
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="endStyle">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
 import { Style, Circle, Stroke, Fill, Text } from "ol/style";
+import { getTestOL } from "../../utils/index.js";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      startPoint: [119.80829715728761, 28.102567672729492],
-      endPoint: null,
       startStyle: null,
       endStyle: null,
       visible: true,
       result: null,
+      type1: "Point",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `var point = turf.point(${JSON.stringify(this.startPoint)});
+      return `var point = turf.point(${JSON.stringify(this.turfObj1)});
 var distance = 10;
 var bearing = 90;
 var options = { units: "miles" };
 this.result = turf.destination(point, distance, bearing, options);`;
+    },
+  },
+  watch: {
+    turfObj1() {
+      this.init();
     },
   },
   mounted() {
@@ -141,15 +155,38 @@ this.result = turf.destination(point, distance, bearing, options);`;
         font: "20px sans-serif",
       }),
     });
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-    var point = turf.point(this.startPoint);
-    var distance = 10;
-    var bearing = 90;
-    var options = { units: "miles" };
+        var distance = 10;
+        var bearing = 90;
+        var options = { units: "miles" };
 
-    this.result = turf.destination(point, distance, bearing, options);
+        this.result = turf.destination(
+          this.turfObj1,
+          distance,
+          bearing,
+          options
+        );
 
-    this.endPoint = this.result.geometry.coordinates;
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>
@@ -216,8 +253,8 @@ export default {
       result: null,
       visible: true,
       drawLayer: null,
-      startStyle:null,
-      endStyle:null
+      startStyle: null,
+      endStyle: null,
     };
   },
   mounted() {

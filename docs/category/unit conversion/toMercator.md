@@ -1,4 +1,4 @@
-# WGS84转墨卡托(toMercator)
+# WGS84 转墨卡托(toMercator)
 
 ```
 > npm install @turf/projection
@@ -9,12 +9,12 @@
 
 **参数**
 
-| 参数    | 类型              | 描述                  |
-| :------ | :---------------- | :-------------------- |
-| geojson | GeoJSON\|Position | WGS-84 坐标系 GeoJSON |
-| options | Object            | 可配置项              |
+| 参数    | 类型                                                         | 描述                  |
+| :------ | :----------------------------------------------------------- | :-------------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson)\|[Position](../other/type.html#position) | WGS-84 坐标系 GeoJSON |
+| options | Object                                                       | 可配置项              |
 
-**options选项**
+**options 选项**
 
 | 属性   | 类型    | 默认值 | 描述                                           |
 | :----- | :------ | :----- | :--------------------------------------------- |
@@ -22,7 +22,7 @@
 
 **返回**
 
-GeoJSON - 投影后的GeoJSON
+[GeoJSON](../other/type.html#allgeojson) - 投影后的 GeoJSON
 
 **示例**
 
@@ -40,3 +40,54 @@ var converted = turf.toMercator(pt);
 }
 */
 ```
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <div style="position:relative;width:100%;height:400px; overflow: hidden;">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space>WGS84：<position :value.sync="origin"></position></a-space
+      ></a-row>
+      <a-row
+        ><a-space>墨卡托：<position :value="dest" disabled></position></a-space
+      ></a-row>
+    </drawer>
+  </div>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+import { Style, Stroke } from "ol/style";
+export default {
+  data() {
+    return {
+      origin: [-71, 41],
+      unit: "kilometers",
+      visible: true,
+    };
+  },
+  computed: {
+    code() {
+      return `let result = turf.toMercator(${this.origin});`;
+    },
+    dest() {
+      return turf.toMercator(this.origin);
+    },
+  },
+};
+</script>
+```
+
+:::

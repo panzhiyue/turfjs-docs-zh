@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型              | 描述                     |
-| :------ | :---------------- | :----------------------- |
-| geojson | GeoJSON\|Position | EPSG:3857 坐标系 GeoJSON |
-| options | Object            | 可配置项                 |
+| 参数    | 类型                                                         | 描述                     |
+| :------ | :----------------------------------------------------------- | :----------------------- |
+| geojson | [GeoJSON](../other/type.html#allgeojson)\|[Position](../other/type.html#position) | EPSG:3857 坐标系 GeoJSON |
+| options | Object                                                       | 可配置项                 |
 
 **options选项**
 
@@ -23,7 +23,7 @@
 
 **返回**
 
-GeoJSON - 投影后的GeoJSON
+[GeoJSON](../other/type.html#allgeojson) - 投影后的GeoJSON
 
 **示例**
 
@@ -41,3 +41,55 @@ var converted = turf.toWgs84(pt);
 }
 */
 ```
+
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <div style="position:relative;width:100%;height:400px; overflow: hidden;">
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space>墨卡托：<position :value.sync="origin"></position></a-space
+      ></a-row>
+      <a-row
+        ><a-space>WGS84：<position :value="dest" disabled></position></a-space
+      ></a-row>
+    </drawer>
+  </div>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+import { Style, Stroke } from "ol/style";
+export default {
+  data() {
+    return {
+      origin: [-7903683.846322424, 5012341.663847514],
+      unit: "kilometers",
+      visible: true,
+    };
+  },
+  computed: {
+    code() {
+      return `let result = turf.toWgs84(${this.origin});`;
+    },
+    dest() {
+      return turf.toWgs84(this.origin);
+    },
+  },
+};
+</script>
+```
+
+:::

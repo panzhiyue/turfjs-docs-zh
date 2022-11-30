@@ -6,7 +6,7 @@
 
 > Takes a set of features, calculates the bbox of all input features, and returns a bounding box.
 >
-> 传入任意GeoJSON对象，计算并返回边界框(bbox)
+> 传入任意 GeoJSON 对象，计算并返回边界框(bbox)
 
 > 边界框是由右上角的坐标和左下角的坐标组成的一位数组
 
@@ -50,7 +50,10 @@ var bboxPolygon = turf.bboxPolygon(bbox);
     <drawer :visible.sync="visible" :code="code">
       <a-row
         ><a-space
-          >几何：<geojson-type :value.sync="type1"></geojson-type></a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
       ></a-row>
       <a-row> {{ result }} </a-row>
     </drawer>
@@ -75,32 +78,25 @@ export default {
       type1: "LineString",
       features: [],
       styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
       return `let value = turf.bbox(${JSON.stringify(this.turfObj1)});`;
     },
-    olObj1() {
-      return getTestOL(this.type1);
-    },
-    turfObj1() {
-      return getTestTurf(this.type1);
-    },
-    features1() {
-      return getTestFeatures(this.type1);
-    },
   },
   watch: {
-    type1() {
+    turfObj1() {
       this.init();
     },
   },
-  mounted() {
-    this.init();
-  },
   methods: {
     init() {
+      if (!this.turfObj1) {
+        return;
+      }
       try {
         this.features = [];
         this.result = null;
@@ -112,6 +108,10 @@ export default {
           error: e.toString(),
         };
       }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
     },
   },
 };
