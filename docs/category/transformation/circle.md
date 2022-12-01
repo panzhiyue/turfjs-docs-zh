@@ -10,11 +10,11 @@
 
 **参数**
 
-| 参数    | 类型                                                         | 描述     |
-| :------ | :----------------------------------------------------------- | :------- |
+| 参数    | 类型                                                                              | 描述     |
+| :------ | :-------------------------------------------------------------------------------- | :------- |
 | center  | [Feature](../other/type.html#feature)\<[Point](../other/type.html#point)\>\|Array | 圆心     |
-| radius  | number                                                       | 半径     |
-| options | Object                                                       | 可配置项 |
+| radius  | number                                                                            | 半径     |
+| options | Object                                                                            | 可配置项 |
 
 **options 选项**
 
@@ -79,51 +79,78 @@ var circle = turf.circle(center, radius, options);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json> </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-point :coordinates="coordinates"></vue2ol-geom-point>
-        </vue2ol-feature>
-
-        <vue2ol-feature>
-          <vue2ol-geom-polygon
-            :coordinates="circleCoordinates"
-          ></vue2ol-geom-polygon>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [119.74649906158449, 28.134775638580322],
-
-      circleCoordinates: null,
       result: null,
       visible: true,
+      type1: "Point",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let result = turf.circle(${JSON.stringify(this.coordinates)}, 5, {
+      return `let result = turf.circle(${JSON.stringify(this.turfObj1)}, 5, {
   steps: 10,
   units: "kilometers",
   properties: { foo: "bar" },
 });`;
     },
   },
-  mounted() {
-    this.result = turf.circle(this.coordinates, 5, {
-      steps: 10,
-      units: "kilometers",
-      properties: { foo: "bar" },
-    });
-    this.circleCoordinates = this.result.geometry.coordinates;
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.circle(this.turfObj1, 5, {
+          steps: 10,
+          units: "kilometers",
+          properties: { foo: "bar" },
+        });
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

@@ -103,5 +103,10 @@ export default async ({
     ).then((module) => {
       Vue.component("Position", module.default);
     });
+    await import(
+      "../components/GeojsonObj.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("GeojsonObj", module.default);
+    });
   }
 };

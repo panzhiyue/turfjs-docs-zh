@@ -10,11 +10,11 @@ npm install @turf/buffer
 
 **参数**
 
-| 参数    | 类型                                                         | 描述                       |
-| :------ | :----------------------------------------------------------- | :------------------------- |
+| 参数    | 类型                                                                                                                                      | 描述                       |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------- | :------------------------- |
 | geojson | [FeatureCollection](../other/type.html#featurecollection)\|[Geometry](../other/type.html#geometry)\|[Feature](../other/type.html#feature) | 任意类型 的 GeoJSON        |
-| radius  | number                                                       | 绘制缓冲区的距离(允许负值) |
-| options | Object                                                       | 可配置项                   |
+| radius  | number                                                                                                                                    | 绘制缓冲区的距离(允许负值) |
+| options | Object                                                                                                                                    | 可配置项                   |
 
 **options 选项**
 
@@ -54,54 +54,75 @@ var buffered = turf.buffer(point, 500, { units: "miles" });
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row> <json :data="result"></json> </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-linestring
-            :coordinates="coordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-
-        <vue2ol-feature>
-          <vue2ol-geom-polygon
-            :coordinates="bufferCoordinates"
-          ></vue2ol-geom-polygon>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
     return {
-      coordinates: [
-        [119.74649906158449, 28.134775638580322],
-        [119.77396488189699, 27.921915531158447],
-        [120.06372928619386, 27.858744144439697],
-        [120.13926029205324, 27.989206790924072],
-      ],
-      bufferCoordinates: null,
       result: null,
       visible: true,
+      type1: "LineString",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
-let result = turf.buffer(line, 2, {
+      return `let f = ${JSON.stringify(this.turfObj1)};
+let result = turf.buffer(f, 2, {
   units: "miles",
 });`;
     },
   },
-  mounted() {
-    this.result = turf.buffer(turf.lineString(this.coordinates), 2, {
-      units: "miles",
-    });
-    this.bufferCoordinates = this.result.geometry.coordinates;
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.buffer(this.turfObj1, 2, {
+          units: "miles",
+        });
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

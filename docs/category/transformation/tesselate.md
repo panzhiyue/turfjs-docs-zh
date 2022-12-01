@@ -44,7 +44,7 @@ var triangles = turf.tesselate(poly); // 裁剪成四个三角形要素
 
 ```vue
 <template>
-  <base-map :center="[-70.603637, -33.399918]">
+  <base-map>
     <a-button
       type="primary"
       @click="
@@ -56,6 +56,14 @@ var triangles = turf.tesselate(poly); // 裁剪成四个三角形要素
     >
     <drawer :visible.sync="visible" :code="code">
       <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text
+        ></a-space>
+      </a-row>
+      <a-row
         ><a-space>源： <input type="checkbox" v-model="origin" /></a-space
       ></a-row>
       <a-row
@@ -63,73 +71,65 @@ var triangles = turf.tesselate(poly); // 裁剪成四个三角形要素
       ></a-row>
       <a-row> <json :data="result"></json> </a-row>
     </drawer>
+
     <vue2ol-layer-vector :visible="origin" key="1">
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-polygon :coordinates="coordinates"></vue2ol-geom-polygon>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
-    <vue2ol-layer-vector :style-obj="style" :visible="dest" key="2">
+    <vue2ol-layer-vector :style-obj="styleRed" :visible="dest" key="2">
       <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { Style, Stroke } from "ol/style";
-import { GeoJSON } from "ol/format";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
 export default {
   data() {
     return {
-      coordinates: [
-        [
-          [-70.603637, -33.399918],
-          [-70.614624, -33.395332],
-          [-70.639343, -33.392466],
-          [-70.659942, -33.394759],
-          [-70.683975, -33.404504],
-          [-70.697021, -33.419406],
-          [-70.701141, -33.434306],
-          [-70.700454, -33.446339],
-          [-70.694274, -33.458369],
-          [-70.682601, -33.465816],
-          [-70.668869, -33.472117],
-          [-70.646209, -33.473835],
-          [-70.624923, -33.472117],
-          [-70.609817, -33.468107],
-          [-70.595397, -33.458369],
-          [-70.587158, -33.442901],
-          [-70.587158, -33.426283],
-          [-70.590591, -33.414248],
-          [-70.594711, -33.406224],
-          [-70.603637, -33.399918],
-        ],
-      ],
       features: [],
-      style: null,
       origin: true,
       dest: true,
       result: null,
       visible: true,
+      type1: "Feature<Polygon>",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let polygon = turf.polygon(${JSON.stringify(this.coordinates)});
-let result = turf.tesselate(polygon);`;
+      return `let f = ${JSON.stringify(this.turfObj1)};
+let result = turf.tesselate(f);`;
     },
   },
-  mounted() {
-    this.result = turf.tesselate(turf.polygon(this.coordinates));
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+        this.result = turf.tesselate(this.turfObj1);
 
-    this.features = new GeoJSON().readFeatures(JSON.stringify(this.result));
-    this.style = new Style({
-      stroke: new Stroke({
-        width: 2,
-        color: "#ff0000",
-      }),
-    });
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

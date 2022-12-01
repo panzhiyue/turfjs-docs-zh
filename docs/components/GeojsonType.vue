@@ -24,6 +24,9 @@ export default {
         "GeometryCollection",
         "Feature<GeometryCollection>",
         "FeatureCollection",
+        "FeatureCollection<Point>",
+        "FeatureCollection<LineString>",
+        "FeatureCollection<Polygon>",
       ],
     };
   },

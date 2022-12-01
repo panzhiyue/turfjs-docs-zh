@@ -25,7 +25,7 @@
 
 [GeoJSON](../other/type.html#allgeojson) - a feature or set of features of the same type as input with flipped coordinates
 
-[GeoJSON](../other/type.html#allgeojson) - 翻转坐标后的GeoJSON
+[GeoJSON](../other/type.html#allgeojson) - 翻转坐标后的 GeoJSON
 
 **示例**
 
@@ -51,35 +51,73 @@ var saudiArabia = turf.flip(serbia);
 ```vue
 <template>
   <base-map>
-    <input type="button" value="执行" @click="handleClick" />
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <geojson-obj :value.sync="turfObj1"></geojson-obj></a-row>
+      <a-row> <input type="button" value="执行" @click="handleClick" /></a-row>
+      <a-row>
+        <a-space><json :data="result"></json></a-space>
+      </a-row>
+    </drawer>
+    <vue2ol-layer-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
+
 export default {
   data() {
-    return {};
+    return {
+      visible: true,
+      result: null,
+      turfObj1: turf.lineString([
+        [119.67302799224855, 28.048086643218994],
+        [119.77302799224855, 28.048086643218994],
+        [119.87302799224855, 28.048086643218994],
+        [119.97302799224855, 28.048086643218994],
+      ]),
+    };
   },
   mounted() {},
+  computed: {
+    features1() {
+      if (this.turfObj1) {
+        return getFeaturesFromTurf(this.turfObj1);
+      } else {
+        return [];
+      }
+    },
+    code() {
+      return `let line=${JSON.stringify(this.turfObj1)};
+this.result = turf.flip(line);`;
+    },
+  },
   methods: {
     handleClick() {
-      var line = turf.lineString([
-        [0, 0],
-        [0, 1],
-        [0, 2],
-        [0, 3],
-        [0, 4],
-      ]);
-      var multiPoint = turf.multiPoint([
-        [0, 2],
-        [2, 1],
-      ]);
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
 
-      console.log(turf.flip(line).geometry.coordinates);
-      //= [[0, 0], [0, 10]]
-
-      console.log(turf.flip(multiPoint).geometry.coordinates);
-      //= [[0, 0], [2, 2]]
+        this.result = turf.flip(this.turfObj1);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
     },
   },
 };

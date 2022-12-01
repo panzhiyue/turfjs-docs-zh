@@ -10,10 +10,10 @@
 
 **参数**
 
-| 参数    | 类型                                                         | 描述                         |
-| :------ | :----------------------------------------------------------- | :--------------------------- |
+| 参数    | 类型                                                                                 | 描述                         |
+| :------ | :----------------------------------------------------------------------------------- | :--------------------------- |
 | line    | [Feature](../other/type.html#feature)\<[LineString](../other/type.html#linestring)\> | 类型为 LineString 的 GeoJSON |
-| options | Object                                                       | 可配置项                     |
+| options | Object                                                                               | 可配置项                     |
 
 **options 选项**
 
@@ -61,60 +61,72 @@ var curved = turf.bezierSpline(line);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text></a-space
+      ></a-row>
       <a-row><json :data="result"></json> </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-linestring
-            :coordinates="coordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-        <vue2ol-feature v-if="bezierSpline" :style-obj="highlightStyle">
-          <vue2ol-geom-linestring
-            :coordinates="bezierSpline"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
-import { Feature } from "ol";
-import { LineString } from "ol/geom";
 import * as turf from "@turf/turf";
-import { Style, Stroke } from "ol/style";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
 export default {
   data() {
     return {
-      coordinates: [
-        [119.74649906158449, 28.134775638580322],
-        [119.77396488189699, 27.921915531158447],
-        [120.06372928619386, 27.858744144439697],
-        [120.13926029205324, 27.989206790924072],
-      ],
-      bezierSpline: null,
       result: null,
       visible: true,
+      type1: "LineString",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
+      return `let line = ${JSON.stringify(this.turfObj1)};
 let result = turf.bezierSpline(line);`;
     },
   },
-  mounted() {
-    this.result = turf.bezierSpline(turf.lineString(this.coordinates));
-    this.bezierSpline = this.result.geometry.coordinates;
-
-    this.highlightStyle = new Style({
-      stroke: new Stroke({
-        color: "#f00",
-        width: 2,
-      }),
-    });
+  watch: {
+    turfObj1() {
+      this.init();
+    },
   },
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.bezierSpline(this.turfObj1);
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
+  },
+  mounted() {},
 };
 </script>
 ```

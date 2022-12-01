@@ -81,64 +81,82 @@ var rotatedPoly = turf.transformRotate(poly, 10, options);
       >打开</a-button
     >
     <drawer :visible.sync="visible" :code="code">
+      <a-row
+        ><a-space
+          >几何：<geojson-text
+            :type.sync="type1"
+            @change="handleChange"
+          ></geojson-text
+        ></a-space>
+      </a-row>
       <a-row> <json :data="result"></json> </a-row>
     </drawer>
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-linestring
-            :coordinates="coordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-
-        <vue2ol-feature :style-obj="style">
-          <vue2ol-geom-linestring
-            :coordinates="rotateCoordinates"
-          ></vue2ol-geom-linestring>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+    <vue2ol-layer-vector :style-obj="styleRed">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
   </base-map>
 </template>
 <script>
 import * as turf from "@turf/turf";
-import { Style, Stroke } from "ol/style";
+import { getFeaturesFromTurf, styleRed } from "../../utils/index.js";
 export default {
   data() {
     return {
-      coordinates: [
-        [119.74649906158449, 28.134775638580322],
-        [119.77396488189699, 27.921915531158447],
-        [120.06372928619386, 27.858744144439697],
-        [120.13926029205324, 27.989206790924072],
-      ],
-      rotateCoordinates: null,
-      style: null,
       result: null,
       visible: true,
+      type1: "Polygon",
+      features: [],
+      styleRed,
+      turfObj1: null,
+      features1: [],
     };
   },
   computed: {
     code() {
-      return `let line = turf.lineString(${JSON.stringify(this.coordinates)});
-let pivot = ${JSON.stringify(this.coordinates[0])}
-let result = turf.transformRotate(line, 60, {
+      if (!this.turfObj1) {
+        return;
+      }
+      return `let f = ${JSON.stringify(this.turfObj1)};
+let pivot = ${JSON.stringify(
+        this.features1[0].getGeometry().getFirstCoordinate()
+      )}
+let result = turf.transformRotate(f, 60, {
   pivot: pivot,
 });`;
     },
   },
-  mounted() {
-    this.result = turf.transformRotate(turf.lineString(this.coordinates), 60, {
-      pivot: this.coordinates[0],
-    });
-    this.rotateCoordinates = this.result.geometry.coordinates;
+  watch: {
+    turfObj1() {
+      this.init();
+    },
+  },
 
-    this.style = new Style({
-      stroke: new Stroke({
-        width: 2,
-        color: "#ff0000",
-      }),
-    });
+  methods: {
+    init() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.transformRotate(this.turfObj1, 60, {
+          pivot: this.features1[0].getGeometry().getFirstCoordinate(),
+        });
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+    handleChange(obj) {
+      this.turfObj1 = obj;
+      this.features1 = getFeaturesFromTurf(this.turfObj1);
+    },
   },
 };
 </script>

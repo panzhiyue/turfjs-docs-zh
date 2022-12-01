@@ -4,18 +4,16 @@
 > npm install @turf/rewind
 ```
 
-
-
 > Rewind (Multi)LineString or (Multi)Polygon outer ring counterclockwise and inner rings clockwise (Uses Shoelace Formula ).
 >
-> 接收(Multi)LineString或(Multi)Polygon，将外环顺序修改为逆时针，内环顺序修改为顺时针(采用[Shoelace formula 公式 (opens new window)](https://blog.csdn.net/zhangll98/article/details/84150535))。
+> 接收(Multi)LineString 或(Multi)Polygon，将外环顺序修改为逆时针，内环顺序修改为顺时针(采用[Shoelace formula 公式 (opens new window)](https://blog.csdn.net/zhangll98/article/details/84150535))。
 
 **参数**
 
-| 参数    | 类型                                     | 描述                   |
-| :------ | :--------------------------------------- | :--------------------- |
-| geojson | [GeoJSON](../other/type.html#allgeojson) | 类型为Polygon的GeoJSON |
-| options | Object                                   | 可配置项               |
+| 参数    | 类型                                     | 描述                      |
+| :------ | :--------------------------------------- | :------------------------ |
+| geojson | [GeoJSON](../other/type.html#allgeojson) | 类型为 Polygon 的 GeoJSON |
+| options | Object                                   | 可配置项                  |
 
 **options 选项**
 
@@ -28,7 +26,7 @@
 
 [GeoJSON](../other/type.html#allgeojson) - rewind Polygon
 
-[GeoJSON](../other/type.html#allgeojson) - 重绕后的Polygon
+[GeoJSON](../other/type.html#allgeojson) - 重绕后的 Polygon
 
 **示例**
 
@@ -39,8 +37,8 @@ var polygon = turf.polygon([
     [138, -29],
     [138, -18],
     [121, -18],
-    [121, -29]
-  ]
+    [121, -29],
+  ],
 ]);
 
 var rewind = turf.rewind(polygon);
@@ -70,15 +68,30 @@ var rewind = turf.rewind(polygon);
 
 ```vue
 <template>
-  <base-map v-if="rewindCoordinates">
-    <input type="radio" v-model="type" value="origin" />源
-    <input type="radio" v-model="type" value="dest" />修改后
+  <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row> <geojson-obj :value.sync="turfObj1"></geojson-obj></a-row>
+      <a-row>
+        <input type="radio" v-model="type" value="origin" />源
+        <input type="radio" v-model="type" value="dest" />修改后</a-row
+      >
+      <a-row> <input type="button" value="执行" @click="handleClick" /></a-row>
+      <a-row>
+        <a-space><json :data="result"></json></a-space>
+      </a-row>
+    </drawer>
+
     <vue2ol-layer-vector>
-      <vue2ol-source-vector>
-        <vue2ol-feature>
-          <vue2ol-geom-polygon :coordinates="coordinates"></vue2ol-geom-polygon>
-        </vue2ol-feature>
-      </vue2ol-source-vector>
+      <vue2ol-source-vector :features="features1"> </vue2ol-source-vector>
     </vue2ol-layer-vector>
     <vue2ol-layer-vector>
       <vue2ol-source-vector>
@@ -95,11 +108,12 @@ var rewind = turf.rewind(polygon);
 </template>
 <script>
 import * as turf from "@turf/turf";
+import { getFeaturesFromTurf } from "../../utils/index.js";
 import { Style, Stroke, Fill, Text, Circle } from "ol/style";
 export default {
   data() {
     return {
-      coordinates1: [
+      turfObj1: turf.polygon([
         [
           [119.82697608925122, 28.20411200111616],
           [120.24552910100064, 28.193212183101853],
@@ -108,28 +122,35 @@ export default {
           [119.67655860065376, 27.864037679069753],
           [119.82697608925122, 28.20411200111616],
         ],
-      ],
+      ]),
       rewindCoordinates: null,
       type: "origin",
-      style: null,
+      style:null,
+      features: [],
+      result: null,
+      visible: true,
     };
   },
   computed: {
-    coordinates() {
-      if (this.type == "origin") {
-        return this.coordinates1;
+    features1() {
+      if (this.turfObj1) {
+        return getFeaturesFromTurf(this.turfObj1);
       } else {
-        return this.rewindCoordinates;
+        return [];
       }
     },
+    coordinates() {
+      if (this.type == "origin") {
+        return this.features1[0].getGeometry().getCoordinates();
+      } else {
+        return this.features[0].getGeometry().getCoordinates();
+      }
+    },
+    code() {
+      return `this.result = turf.rewind(${JSON.stringify(this.turfObj1)});`;
+    },
   },
-  mounted() {
-    this.rewindCoordinates = turf.rewind(
-      turf.polygon(this.coordinates1)
-    ).geometry.coordinates;
-
-    console.log(this.coordinates);
-
+   mounted() {
     this.style = (feature) => {
       return new Style({
         text: new Text({
@@ -143,7 +164,24 @@ export default {
       });
     };
   },
-  methods: {},
+  methods: {
+    handleClick() {
+      if (!this.turfObj1) {
+        return;
+      }
+      try {
+        this.features = [];
+        this.result = null;
+
+        this.result = turf.rewind(this.turfObj1);
+        this.features = getFeaturesFromTurf(this.result);
+      } catch (e) {
+        this.result = {
+          error: e.toString(),
+        };
+      }
+    },
+  },
 };
 </script>
 ```
