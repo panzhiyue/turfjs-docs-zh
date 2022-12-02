@@ -1,8 +1,11 @@
 # feature
 
+```
 > npm install @turf/helpers
+```
 
 > Wraps a GeoJSON Geometry in a GeoJSON Feature.
+> 
 > 接收Geometry，创建一个GeoJSON要素(Feature)
 
 **参数**

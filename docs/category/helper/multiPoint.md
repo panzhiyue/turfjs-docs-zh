@@ -1,8 +1,11 @@
+# 多点(multiPoint)
+
 ```
 > npm install @turf/helper
 ```
 
 > Creates a Feature based on a coordinate array. Properties can be added optionally.
+> 
 > 接收二维数组坐标，创建并返回多点要素(`Feature<MultiPoint>`)
 
 

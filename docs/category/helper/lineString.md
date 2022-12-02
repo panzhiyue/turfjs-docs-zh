@@ -5,6 +5,7 @@
 ```
 
 > Creates a LineString Feature from an Array of Positions.
+> 
 > 接收二维数组坐标，创建线要素(`Feature<LineString>`)。
 
 **参数**

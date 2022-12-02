@@ -5,6 +5,7 @@
 ```
 
 > Creates a Point Feature from a Position.
+> 
 > 接收一个一维数组坐标，创建一个点要素(`Feature<Point>`)
 
 **参数**

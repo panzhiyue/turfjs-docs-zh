@@ -5,6 +5,7 @@
 ```
 
 > Takes one or more Features and creates a FeatureCollection.
+> 
 > 接收一个或多个`Feature`，创建并返回他们的要素集(`FeatureCollection`)。
 
 **参数**

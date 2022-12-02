@@ -127,6 +127,7 @@ export default {
       visible: true,
       type1: "MultiPoint",
       turfObj1: null,
+      features:[],
       features1: [],
       styleRed
     };

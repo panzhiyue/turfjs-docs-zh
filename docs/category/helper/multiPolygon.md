@@ -5,6 +5,7 @@
 ```
 
 > Creates a Feature based on a coordinate array. Properties can be added optionally.
+> 
 > 接收四维数组坐标，创建并返回多面要素(`Feature<MultiPolygon>`)
 
 **参数**

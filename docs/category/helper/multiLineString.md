@@ -5,6 +5,7 @@
 ```
 
 > Creates a Feature based on a coordinate array. Properties can be added optionally.
+> 
 > 接收三维数组坐标，创建多线要素(`Feature<MultiLineString>`)
 
 

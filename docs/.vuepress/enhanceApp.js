@@ -108,5 +108,10 @@ export default async ({
     ).then((module) => {
       Vue.component("GeojsonObj", module.default);
     });
+    await import(
+      "../components/Draw.vue" /* webpackChunkName: "notification" */
+    ).then((module) => {
+      Vue.component("Draw", module.default);
+    });
   }
 };

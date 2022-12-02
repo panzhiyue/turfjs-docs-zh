@@ -23,7 +23,7 @@ export default {
     },
   },
   mounted() {
-    console.log(1221);
+    console.log(this.value);
     this.text = JSON.stringify(this.value);
   },
 };

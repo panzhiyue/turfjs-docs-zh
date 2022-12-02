@@ -5,6 +5,7 @@
 ```
 
 > Creates a Feature based on a coordinate array. Properties can be added optionally.
+> 
 > 接收任意的Geometry数组，创建tyoe为GeometryCollection的集合
 
 

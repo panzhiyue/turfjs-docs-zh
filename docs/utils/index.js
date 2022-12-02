@@ -132,12 +132,40 @@ export const styleRed = new Style({
       width: 2,
       color: "#ff0000",
     }),
+    fill: new Fill({
+      color: "rgba(255,0,0,0.5)",
+    }),
   }),
   stroke: new Stroke({
     width: 2,
     color: "#ff0000",
   }),
+  fill: new Fill({
+    color: "rgba(255,0,0,0.5)",
+  }),
 });
+
+export const styleRandom = () => {
+  let color = `rgba(${Math.random() * 255},${Math.random() * 255},${
+    Math.random() * 255
+  },0.5)`;
+  return new Style({
+    image: new Circle({
+      radius: 4,
+      stroke: new Stroke({
+        width: 2,
+        color: color,
+      }),
+    }),
+    stroke: new Stroke({
+      width: 2,
+      color: color,
+    }),
+    fill: new Fill({
+      color: color,
+    }),
+  });
+};
 
 export const getTestOL = (type) => {
   switch (type) {

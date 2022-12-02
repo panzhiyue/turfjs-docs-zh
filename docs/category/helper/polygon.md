@@ -5,6 +5,7 @@
 ```
 
 > Creates a Polygon Feature from an Array of LinearRings.
+> 
 > 接收一个二维数组坐标，创建面要素(`Feature<Polygon>`)
 
 **参数**
