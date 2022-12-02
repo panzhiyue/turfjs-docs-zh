@@ -34,45 +34,9 @@
 var polygons = turf.randomPolygon(25, { bbox: [-180, -90, 180, 90] }); // 25个面要素集合
 ```
 
-**基本用法**
-::: demo
 
-```vue
-<template>
-  <base-map :zoom="1">
-    <vue2ol-layer-vector :zIndex="20" v-if="features">
-      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
-    </vue2ol-layer-vector>
-  </base-map>
-</template>
-<script>
-import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
-export default {
-  data() {
-    return {
-      coordinate: null,
 
-      features: null,
-    };
-  },
-  mounted() {
-    this.result = turf.randomPolygon(25, {
-      bbox: [-180, -90, 180, 90],
-      num_vertices: 10,
-      max_radial_length: 10,
-    });
-    this.features = new GeoJSON().readFeatures(this.result);
-    console.log(this.features);
-  },
-  methods: {},
-};
-</script>
-```
-
-:::
-
-**动态设置**
+**基础用法**
 ::: demo
 
 ```vue
@@ -139,7 +103,7 @@ export default {
   computed: {
     code() {
       return `let polygons  = turf.randomPolygon(${this.count}, {
-  bbox:${this.bbox},
+  bbox:${JSON.stringify(this.bbox)},
   num_vertices: ${this.num_vertices},
   max_radial_length: ${this.max_radial_length},
 });`;

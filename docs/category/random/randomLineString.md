@@ -41,43 +41,6 @@ var lineStrings = turf.randomLineString(25, { bbox: [-180, -90, 180, 90] }); // 
 ```vue
 <template>
   <base-map :zoom="1">
-    <vue2ol-layer-vector :zIndex="20" v-if="features">
-      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
-    </vue2ol-layer-vector>
-  </base-map>
-</template>
-<script>
-import * as turf from "@turf/turf";
-import { GeoJSON } from "ol/format";
-export default {
-  data() {
-    return {
-      coordinate: null,
-      features: null,
-    };
-  },
-  mounted() {
-    this.result = turf.randomLineString(25, {
-      bbox: [-180, -90, 180, 90],
-      num_vertices: 10,
-      max_length: 10,
-      max_rotation: 0.39269908169872414,
-    });
-    this.features = new GeoJSON().readFeatures(this.result);
-  },
-  methods: {},
-};
-</script>
-```
-
-:::
-
-**动态设置**
-::: demo
-
-```vue
-<template>
-  <base-map :zoom="1">
     <a-button
       type="primary"
       @click="
@@ -146,7 +109,7 @@ export default {
   computed: {
     code() {
       return `let lineStrings  = turf.randomLineString(${this.count}, {
-  bbox:${this.bbox},
+  bbox:${JSON.stringify(this.bbox)},
   num_vertices: ${this.num_vertices},
   max_length: ${this.max_length},
   max_rotation: ${this.max_rotation},

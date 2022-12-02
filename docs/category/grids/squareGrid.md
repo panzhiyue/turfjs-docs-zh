@@ -41,3 +41,113 @@ var squareGrid = turf.squareGrid(bbox, cellSide, options);
 ```
 
 ![img](https://pzy-images.oss-cn-hangzhou.aliyuncs.com/img/squareGrid.cfcce9bb.webp)
+
+
+**基础用法**
+::: demo
+
+```vue
+<template>
+  <base-map>
+    <a-button
+      type="primary"
+      @click="
+        () => {
+          visible = true;
+        }
+      "
+      >打开</a-button
+    >
+    <drawer :visible.sync="visible" :code="code">
+      <a-row>
+        <a-space><bbox :value.sync="bbox"></bbox></a-space
+      ></a-row>
+      <a-row
+        >cellSide：<a-input-number v-model="cellSide"></a-input-number
+      ></a-row>
+      <a-row>
+        单位(units)：<length-units :value.sync="units"></length-units>
+      </a-row>
+      <a-row
+        >mask：<draw :type.sync="type1" @draw-end="handleDrawEnd1"></draw
+      ></a-row>
+      <a-row>
+        <a-space><json :data="result" /></a-space>
+      </a-row>
+    </drawer>
+    <vue2ol-layer-vector :zIndex="20" v-if="features">
+      <vue2ol-source-vector :features="features"> </vue2ol-source-vector>
+    </vue2ol-layer-vector>
+  </base-map>
+</template>
+<script>
+import * as turf from "@turf/turf";
+import { GeoJSON } from "ol/format";
+export default {
+  data() {
+    return {
+      visible: true,
+      result: null,
+      features: null,
+      bbox: [
+        119.8226308822632, 27.863550662994385, 120.19891262054445,
+        28.20275354385376,
+      ],
+      cellSide: 1,
+      units: "miles",
+      type1: "Polygon",
+      feature1: null,
+    };
+  },
+  computed: {
+    code() {
+      if (!this.turfObj1) {
+        return;
+      }
+      return `let result  = turf.squareGrid(${this.bbox},${this.cellSide}, {
+  units: '${this.units}',
+  mask:${JSON.stringify(this.turfObj1)}
+});`;
+    },
+    turfObj1() {
+      if (this.feature1) {
+        return JSON.parse(new GeoJSON().writeFeature(this.feature1));
+      }
+      return null;
+    },
+  },
+  watch: {
+    bbox() {
+      this.init();
+    },
+    cellSide() {
+      this.init();
+    },
+    units() {
+      this.init();
+    },
+    feature1() {
+      this.init();
+    },
+  },
+  mounted() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.result = turf.squareGrid(this.bbox, this.cellSide, {
+        triangles: this.triangles,
+        units: this.units,
+        mask: this.turfObj1,
+      });
+      this.features = new GeoJSON().readFeatures(this.result);
+    },
+    handleDrawEnd1(feature) {
+      this.feature1 = feature;
+    },
+  },
+};
+</script>
+```
+
+:::
