@@ -1,9 +1,21 @@
 <template>
   <a-space
-    >xmin:<a-input-number :value="value[0]" @change="changeXmin"></a-input-number
-    >ymin:<a-input-number :value="value[1]" @change="changeYmin"></a-input-number
-    >xmax:<a-input-number :value="value[2]" @change="changeXmax"></a-input-number
-    >ymax:<a-input-number :value="value[3]" @change="changeYmax"></a-input-number
+    >xmin:<a-input-number
+      :value="value[0]"
+      @change="changeXmin"
+    ></a-input-number
+    >ymin:<a-input-number
+      :value="value[1]"
+      @change="changeYmin"
+    ></a-input-number
+    >xmax:<a-input-number
+      :value="value[2]"
+      @change="changeXmax"
+    ></a-input-number
+    >ymax:<a-input-number
+      :value="value[3]"
+      @change="changeYmax"
+    ></a-input-number
   ></a-space>
 </template>
 <script>
@@ -13,6 +25,10 @@ export default {
   },
   props: {
     value: {
+      type: Array,
+      default: () => {
+        return [0, 0, 0, 0];
+      },
     },
   },
   methods: {

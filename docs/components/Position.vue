@@ -19,6 +19,9 @@ export default {
   props: {
     value: {
       type: Array,
+      default: () => {
+        return [0, 0];
+      },
     },
     disabled: {
       type: Boolean,

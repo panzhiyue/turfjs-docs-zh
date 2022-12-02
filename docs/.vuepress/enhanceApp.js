@@ -83,11 +83,11 @@ export default async ({
     ).then((module) => {
       Vue.component("Json", module.default);
     });
-    await import(
-      "../components/Bbox.vue" /* webpackChunkName: "notification" */
-    ).then((module) => {
-      Vue.component("Bbox", module.default);
-    });
+    // await import(
+    //   "../components/Bbox.vue" /* webpackChunkName: "notification" */
+    // ).then((module) => {
+    //   Vue.component("Bbox", module.default);
+    // });
     await import(
       "../components/GridType.vue" /* webpackChunkName: "notification" */
     ).then((module) => {
@@ -98,11 +98,11 @@ export default async ({
     ).then((module) => {
       Vue.component("GeojsonText", module.default);
     });
-    await import(
-      "../components/Position.vue" /* webpackChunkName: "notification" */
-    ).then((module) => {
-      Vue.component("Position", module.default);
-    });
+    // await import(
+    //   "../components/Position.vue" /* webpackChunkName: "notification" */
+    // ).then((module) => {
+    //   Vue.component("Position", module.default);
+    // });
     await import(
       "../components/GeojsonObj.vue" /* webpackChunkName: "notification" */
     ).then((module) => {

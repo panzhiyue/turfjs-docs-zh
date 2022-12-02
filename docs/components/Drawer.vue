@@ -44,8 +44,12 @@ export default {
 };
 </script>
 <style>
+.ant-drawer{
+  z-index:10;
+}
 .ant-drawer-body {
   padding: 5px;
+
 }
 
 .ant-row {
